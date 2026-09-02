@@ -1,0 +1,595 @@
+{
+  "run": {
+    "path": "no_search_baseline",
+    "model": {
+      "resource": "test***",
+      "deployment": "gpt-5-6-luna",
+      "api_version": "2025-01-01-preview"
+    },
+    "reasoning_effort": "low",
+    "json_mode": false,
+    "max_completion_tokens": 4000,
+    "temperature": "unsupported (model rejects != 1)",
+    "seed_determinism": "unavailable (verified: same seed -> different outputs)",
+    "started_kst": "2026-09-02T16:28:10.824656+09:00",
+    "repeats": 3
+  },
+  "records": [
+    {
+      "query_id": 56,
+      "category": "C7",
+      "query": "서울 강남에 있는 '미래로 3층 카페' 영업시간 알려줘",
+      "trap": "존재하지 않는 상호",
+      "repeat": 1,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2220.9,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\"answer\":\"2026년 9월 2일 16시 28분 기준, 서울 강남의 ‘미래로 3층 카페’ 영업시간은 확인되지 않습니다. 정확한 영업시간은 매장에 직접 문의해 주세요.\",\"as_of\":\"2026-09-02 16:28\",\"confidence\":\"low\",\"citations\":[],\"insufficient_evidence\":true}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 303,
+        "completion_tokens": 125,
+        "reasoning_tokens": 30,
+        "total_tokens": 428
+      },
+      "server_latency": {
+        "engine_ttft_ms": 119,
+        "user_visible_ttft_ms": 687,
+        "service_ttft_ms": 788,
+        "engine_ttlt_ms": 1235,
+        "service_ttlt_ms": 1897,
+        "pre_inference_ms": 101
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 16시 28분 기준, 서울 강남의 ‘미래로 3층 카페’ 영업시간은 확인되지 않습니다. 정확한 영업시간은 매장에 직접 문의해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 56,
+      "category": "C7",
+      "query": "서울 강남에 있는 '미래로 3층 카페' 영업시간 알려줘",
+      "trap": "존재하지 않는 상호",
+      "repeat": 2,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2482.6,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2026년 9월 2일 16시 28분 기준, 서울 강남의 ‘미래로 3층 카페’ 영업시간은 확인되지 않습니다. 정확한 매장명이나 주소를 알려주시면 다시 확인하겠습니다.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"low\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 303,
+        "completion_tokens": 147,
+        "reasoning_tokens": 36,
+        "total_tokens": 450
+      },
+      "server_latency": {
+        "engine_ttft_ms": 80,
+        "user_visible_ttft_ms": 677,
+        "service_ttft_ms": 776,
+        "engine_ttlt_ms": 1262,
+        "service_ttlt_ms": 1931,
+        "pre_inference_ms": 99
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 16시 28분 기준, 서울 강남의 ‘미래로 3층 카페’ 영업시간은 확인되지 않습니다. 정확한 매장명이나 주소를 알려주시면 다시 확인하겠습니다.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 56,
+      "category": "C7",
+      "query": "서울 강남에 있는 '미래로 3층 카페' 영업시간 알려줘",
+      "trap": "존재하지 않는 상호",
+      "repeat": 3,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2373.6,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\"answer\":\"2026년 9월 2일 16시 28분 기준, 서울 강남의 ‘미래로 3층 카페’ 영업시간은 확인되지 않습니다. 정확한 지점 주소나 전화번호를 알려주시면 다시 확인하겠습니다.\",\"as_of\":\"2026-09-02 16:28\",\"confidence\":\"low\",\"citations\":[],\"insufficient_evidence\":true}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 303,
+        "completion_tokens": 133,
+        "reasoning_tokens": 35,
+        "total_tokens": 436
+      },
+      "server_latency": {
+        "engine_ttft_ms": 98,
+        "user_visible_ttft_ms": 673,
+        "service_ttft_ms": 737,
+        "engine_ttlt_ms": 1502,
+        "service_ttlt_ms": 2137,
+        "pre_inference_ms": 64
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 16시 28분 기준, 서울 강남의 ‘미래로 3층 카페’ 영업시간은 확인되지 않습니다. 정확한 지점 주소나 전화번호를 알려주시면 다시 확인하겠습니다.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 57,
+      "category": "C7",
+      "query": "어제 발표된 티맵 신규 요금제 알려줘",
+      "trap": "존재하지 않는 사실",
+      "repeat": 1,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2059.6,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\"answer\":\"2026년 9월 1일 발표된 티맵 신규 요금제의 구체적인 내용은 확인되지 않습니다. 공식 티맵 공지나 보도자료를 확인해 주세요.\",\"as_of\":\"2026-09-02 16:28\",\"confidence\":\"low\",\"citations\":[],\"insufficient_evidence\":true}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 296,
+        "completion_tokens": 116,
+        "reasoning_tokens": 31,
+        "total_tokens": 412
+      },
+      "server_latency": {
+        "engine_ttft_ms": 111,
+        "user_visible_ttft_ms": 687,
+        "service_ttft_ms": 757,
+        "engine_ttlt_ms": 1074,
+        "service_ttlt_ms": 1715,
+        "pre_inference_ms": 70
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 1일 발표된 티맵 신규 요금제의 구체적인 내용은 확인되지 않습니다. 공식 티맵 공지나 보도자료를 확인해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 57,
+      "category": "C7",
+      "query": "어제 발표된 티맵 신규 요금제 알려줘",
+      "trap": "존재하지 않는 사실",
+      "repeat": 2,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2574.2,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2026년 9월 1일 발표된 티맵 신규 요금제의 공식 내용은 확인되지 않습니다. 티맵 공식 공지나 보도자료를 확인해 주세요.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"low\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 296,
+        "completion_tokens": 140,
+        "reasoning_tokens": 43,
+        "total_tokens": 436
+      },
+      "server_latency": {
+        "engine_ttft_ms": 91,
+        "user_visible_ttft_ms": 1165,
+        "service_ttft_ms": 1213,
+        "engine_ttlt_ms": 1248,
+        "service_ttlt_ms": 2366,
+        "pre_inference_ms": 48
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 1일 발표된 티맵 신규 요금제의 공식 내용은 확인되지 않습니다. 티맵 공식 공지나 보도자료를 확인해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 57,
+      "category": "C7",
+      "query": "어제 발표된 티맵 신규 요금제 알려줘",
+      "trap": "존재하지 않는 사실",
+      "repeat": 3,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2590.8,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2026년 9월 1일 발표된 티맵 신규 요금제의 내용은 현재 확인되지 않습니다. 티맵 공식 공지나 보도자료를 확인해 주세요.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"low\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 296,
+        "completion_tokens": 144,
+        "reasoning_tokens": 47,
+        "total_tokens": 440
+      },
+      "server_latency": {
+        "engine_ttft_ms": 113,
+        "user_visible_ttft_ms": 903,
+        "service_ttft_ms": 973,
+        "engine_ttlt_ms": 1281,
+        "service_ttlt_ms": 2119,
+        "pre_inference_ms": 70
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 1일 발표된 티맵 신규 요금제의 내용은 현재 확인되지 않습니다. 티맵 공식 공지나 보도자료를 확인해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 58,
+      "category": "C7",
+      "query": "2027년형 그랜저 출시일 알려줘",
+      "trap": "미래 정보",
+      "repeat": 1,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2845.0,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2027년형 그랜저의 공식 출시일은 2026년 9월 2일 기준 확인되지 않습니다. 현대자동차의 공식 발표가 나오기 전까지는 정확한 출시일을 알 수 없습니다.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"high\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 295,
+        "completion_tokens": 137,
+        "reasoning_tokens": 33,
+        "total_tokens": 432
+      },
+      "server_latency": {
+        "engine_ttft_ms": 180,
+        "user_visible_ttft_ms": 1202,
+        "service_ttft_ms": 1272,
+        "engine_ttlt_ms": 1448,
+        "service_ttlt_ms": 2536,
+        "pre_inference_ms": 70
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2027년형 그랜저의 공식 출시일은 2026년 9월 2일 기준 확인되지 않습니다. 현대자동차의 공식 발표가 나오기 전까지는 정확한 출시일을 알 수 없습니다.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "high",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 58,
+      "category": "C7",
+      "query": "2027년형 그랜저 출시일 알려줘",
+      "trap": "미래 정보",
+      "repeat": 2,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 3741.5,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2027년형 그랜저 출시일은 2026년 9월 2일 기준 확인되지 않습니다. 현대자동차의 공식 발표 전에는 출시 시점을 추정할 수 없습니다.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"high\",\n  \"citations\": [\n    {\n      \"title\": \"현대자동차 공식 홈페이지\",\n      \"url\": \"https://www.hyundai.com/kr/ko\",\n      \"published\": null\n    }\n  ],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 295,
+        "completion_tokens": 265,
+        "reasoning_tokens": 127,
+        "total_tokens": 560
+      },
+      "server_latency": {
+        "engine_ttft_ms": 150,
+        "user_visible_ttft_ms": 626,
+        "service_ttft_ms": 693,
+        "engine_ttlt_ms": 2771,
+        "service_ttlt_ms": 3296,
+        "pre_inference_ms": 67
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2027년형 그랜저 출시일은 2026년 9월 2일 기준 확인되지 않습니다. 현대자동차의 공식 발표 전에는 출시 시점을 추정할 수 없습니다.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "high",
+        "citations": [
+          {
+            "title": "현대자동차 공식 홈페이지",
+            "url": "https://www.hyundai.com/kr/ko",
+            "published": null
+          }
+        ],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 58,
+      "category": "C7",
+      "query": "2027년형 그랜저 출시일 알려줘",
+      "trap": "미래 정보",
+      "repeat": 3,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2561.7,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2026년 9월 2일 기준, 2027년형 그랜저의 공식 출시일은 확인되지 않습니다. 현대자동차의 공식 발표를 확인해야 정확한 일정을 알 수 있습니다.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"high\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 295,
+        "completion_tokens": 148,
+        "reasoning_tokens": 47,
+        "total_tokens": 443
+      },
+      "server_latency": {
+        "engine_ttft_ms": 87,
+        "user_visible_ttft_ms": 649,
+        "service_ttft_ms": 726,
+        "engine_ttlt_ms": 1402,
+        "service_ttlt_ms": 2035,
+        "pre_inference_ms": 77
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 기준, 2027년형 그랜저의 공식 출시일은 확인되지 않습니다. 현대자동차의 공식 발표를 확인해야 정확한 일정을 알 수 있습니다.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "high",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 59,
+      "category": "C7",
+      "query": "판교역 12번 출구 근처 편의점 알려줘",
+      "trap": "출구 번호 존재 여부 불명",
+      "repeat": 1,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 3278.2,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2026년 9월 2일 16시 28분 기준, 판교역 12번 출구 근처 편의점의 정확한 위치는 확인되지 않습니다. 차량 내 지도에서 ‘판교역 12번 출구 편의점’을 검색해 주세요.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"low\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 298,
+        "completion_tokens": 168,
+        "reasoning_tokens": 52,
+        "total_tokens": 466
+      },
+      "server_latency": {
+        "engine_ttft_ms": 171,
+        "user_visible_ttft_ms": 750,
+        "service_ttft_ms": 833,
+        "engine_ttlt_ms": 1875,
+        "service_ttlt_ms": 2501,
+        "pre_inference_ms": 82
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 16시 28분 기준, 판교역 12번 출구 근처 편의점의 정확한 위치는 확인되지 않습니다. 차량 내 지도에서 ‘판교역 12번 출구 편의점’을 검색해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 59,
+      "category": "C7",
+      "query": "판교역 12번 출구 근처 편의점 알려줘",
+      "trap": "출구 번호 존재 여부 불명",
+      "repeat": 2,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 3141.5,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\"answer\":\"2026년 9월 2일 16시 28분 기준, 판교역 12번 출구 근처 편의점의 정확한 위치는 확인되지 않습니다. 내비게이션이나 지도 앱에서 ‘판교역 12번 출구 편의점’을 검색해 주세요.\",\"as_of\":\"2026-09-02 16:28\",\"confidence\":\"low\",\"citations\":[],\"insufficient_evidence\":true}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 298,
+        "completion_tokens": 148,
+        "reasoning_tokens": 42,
+        "total_tokens": 446
+      },
+      "server_latency": {
+        "engine_ttft_ms": 89,
+        "user_visible_ttft_ms": 1130,
+        "service_ttft_ms": 1192,
+        "engine_ttlt_ms": 1557,
+        "service_ttlt_ms": 2436,
+        "pre_inference_ms": 62
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 16시 28분 기준, 판교역 12번 출구 근처 편의점의 정확한 위치는 확인되지 않습니다. 내비게이션이나 지도 앱에서 ‘판교역 12번 출구 편의점’을 검색해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 59,
+      "category": "C7",
+      "query": "판교역 12번 출구 근처 편의점 알려줘",
+      "trap": "출구 번호 존재 여부 불명",
+      "repeat": 3,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2544.8,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2026년 9월 2일 16시 28분 기준, 판교역 12번 출구 근처 편의점의 정확한 위치는 확인되지 않습니다. 내비게이션이나 지도 앱에서 ‘판교역 12번 출구 편의점’을 검색해 주세요.\",\n  \"as_of\": \"2026-09-02 16:28\",\n  \"confidence\": \"low\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 298,
+        "completion_tokens": 173,
+        "reasoning_tokens": 53,
+        "total_tokens": 471
+      },
+      "server_latency": {
+        "engine_ttft_ms": 110,
+        "user_visible_ttft_ms": 567,
+        "service_ttft_ms": 639,
+        "engine_ttlt_ms": 1644,
+        "service_ttlt_ms": 2168,
+        "pre_inference_ms": 72
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 16시 28분 기준, 판교역 12번 출구 근처 편의점의 정확한 위치는 확인되지 않습니다. 내비게이션이나 지도 앱에서 ‘판교역 12번 출구 편의점’을 검색해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 60,
+      "category": "C7",
+      "query": "어제 코스피 3500 돌파했어?",
+      "trap": "거짓 전제",
+      "repeat": 1,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2361.4,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\n  \"answer\": \"2026년 9월 2일 기준, 2026년 9월 1일 코스피가 3,500을 돌파했는지는 확인되지 않습니다. 공식 종가 자료 확인이 필요합니다.\",\n  \"as_of\": \"2026-09-02\",\n  \"confidence\": \"low\",\n  \"citations\": [],\n  \"insufficient_evidence\": true\n}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 295,
+        "completion_tokens": 141,
+        "reasoning_tokens": 41,
+        "total_tokens": 436
+      },
+      "server_latency": {
+        "engine_ttft_ms": 108,
+        "user_visible_ttft_ms": 679,
+        "service_ttft_ms": 749,
+        "engine_ttlt_ms": 1341,
+        "service_ttlt_ms": 1977,
+        "pre_inference_ms": 70
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 2일 기준, 2026년 9월 1일 코스피가 3,500을 돌파했는지는 확인되지 않습니다. 공식 종가 자료 확인이 필요합니다.",
+        "as_of": "2026-09-02",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 60,
+      "category": "C7",
+      "query": "어제 코스피 3500 돌파했어?",
+      "trap": "거짓 전제",
+      "repeat": 2,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2813.4,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\"answer\":\"2026년 9월 1일 코스피가 3,500을 돌파했는지는 확인되지 않습니다. 한국거래소 공식 종가 확인이 필요합니다.\",\"as_of\":\"2026-09-02 16:28\",\"confidence\":\"low\",\"citations\":[],\"insufficient_evidence\":true}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 295,
+        "completion_tokens": 185,
+        "reasoning_tokens": 104,
+        "total_tokens": 480
+      },
+      "server_latency": {
+        "engine_ttft_ms": 91,
+        "user_visible_ttft_ms": 656,
+        "service_ttft_ms": 767,
+        "engine_ttlt_ms": 1807,
+        "service_ttlt_ms": 2479,
+        "pre_inference_ms": 110
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 1일 코스피가 3,500을 돌파했는지는 확인되지 않습니다. 한국거래소 공식 종가 확인이 필요합니다.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    },
+    {
+      "query_id": 60,
+      "category": "C7",
+      "query": "어제 코스피 3500 돌파했어?",
+      "trap": "거짓 전제",
+      "repeat": 3,
+      "now_kst": "2026-09-02 16:28",
+      "http_status": 200,
+      "client_e2e_ms": 2163.2,
+      "reasoning_effort": "low",
+      "json_mode": false,
+      "retrieval_latency_ms": null,
+      "raw_content": "{\"answer\":\"2026년 9월 1일 코스피가 3,500을 돌파했는지는 확인되지 않습니다. 공식 거래소 종가 데이터를 확인해 주세요.\",\"as_of\":\"2026-09-02 16:28\",\"confidence\":\"low\",\"citations\":[],\"insufficient_evidence\":true}",
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 295,
+        "completion_tokens": 126,
+        "reasoning_tokens": 47,
+        "total_tokens": 421
+      },
+      "server_latency": {
+        "engine_ttft_ms": 105,
+        "user_visible_ttft_ms": 1075,
+        "service_ttft_ms": 1147,
+        "engine_ttlt_ms": 1296,
+        "service_ttlt_ms": 1943,
+        "pre_inference_ms": 72
+      },
+      "parse_ok": true,
+      "parse_error": null,
+      "parsed": {
+        "answer": "2026년 9월 1일 코스피가 3,500을 돌파했는지는 확인되지 않습니다. 공식 거래소 종가 데이터를 확인해 주세요.",
+        "as_of": "2026-09-02 16:28",
+        "confidence": "low",
+        "citations": [],
+        "insufficient_evidence": true
+      }
+    }
+  ]
+}
