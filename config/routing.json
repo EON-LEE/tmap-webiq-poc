@@ -1,0 +1,80 @@
+{
+  "_comment": "Records what the planning document asked for versus what the Web IQ v3 GA surface actually supports. Deviations here are reportable findings, not implementation shortcuts.",
+  "webiq": {
+    "base_url": "https://api.microsoft.ai/v3",
+    "available_verticals": [
+      "/search/web",
+      "/search/news",
+      "/search/images",
+      "/search/videos",
+      "/browse",
+      "/search/classic"
+    ],
+    "verticals_the_document_assumed_but_do_not_exist": [
+      "places",
+      "finance"
+    ],
+    "known_constraints": {
+      "news_recency_window_days": 14,
+      "locale": { "language": "ko", "region": "KR" },
+      "profile_quota_qpm": 60,
+      "passage_mode": "contentFormat=passage returns query-relevant excerpts rather than full page text"
+    }
+  },
+  "routing": {
+    "C1": {
+      "name": "POI 기본 속성 - 영업시간·휴무",
+      "doc_intended": "places",
+      "actual": "/search/web",
+      "deviation": true,
+      "impact": "No dedicated places vertical exists, so structured opening-hours fields are unavailable. Hours must be extracted from free-text passages, which raises the extraction-error floor for the highest-priority category."
+    },
+    "C2": {
+      "name": "트렌드·소셜 기반 장소",
+      "doc_intended": "places",
+      "actual": "/search/web",
+      "deviation": true,
+      "impact": "This is one of the two categories the customer explicitly complained about, and it is served by the generic web vertical with no trend or popularity signal."
+    },
+    "C3": {
+      "name": "금융·시세",
+      "doc_intended": "finance",
+      "actual": "/search/web",
+      "deviation": true,
+      "impact": "The second customer-flagged category. No finance vertical means no real-time quote feed; same-day or real-time freshness cannot be guaranteed from web passages alone. A ground-truth market-price source is still required to score this category."
+    },
+    "C4": {
+      "name": "실시간 교통·이슈",
+      "doc_intended": "news",
+      "actual": "/search/web",
+      "secondary": "/search/news",
+      "deviation": true,
+      "impact": "Traffic incidents are often not indexed as news. Web is primary, news is a secondary probe."
+    },
+    "C5": {
+      "name": "날짜 기반 최신 뉴스",
+      "doc_intended": "news",
+      "actual": "/search/news",
+      "deviation": false,
+      "exceptions": {
+        "44": {
+          "actual": "/search/web",
+          "reason": "The question asks about recalls within the last month, but the news vertical only covers roughly 14 days."
+        }
+      }
+    },
+    "C6": {
+      "name": "차량 특화",
+      "doc_intended": "web",
+      "actual": "/search/web",
+      "deviation": false
+    },
+    "C7": {
+      "name": "함정 문항 - 환각 검증",
+      "doc_intended": "web",
+      "actual": "/search/web",
+      "deviation": false,
+      "note": "Traps must be routed identically to real questions. Any special-casing would invalidate the hallucination axis."
+    }
+  }
+}
