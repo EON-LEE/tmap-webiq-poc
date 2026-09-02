@@ -15,10 +15,16 @@
       "finance"
     ],
     "known_constraints": {
+      "_verified_against": "https://webiq.microsoft.ai/llms-full.txt",
       "news_recency_window_days": 14,
       "locale": { "language": "ko", "region": "KR" },
       "profile_quota_qpm": 60,
-      "passage_mode": "contentFormat=passage returns query-relevant excerpts rather than full page text"
+      "passage_mode": "contentFormat=passage returns query-relevant excerpts rather than full page text. Web results have no snippet field at all, so passage mode is mandatory, not optional.",
+      "max_results": { "/search/web": 50, "/search/news": 20, "/search/videos": 30 },
+      "max_query_chars": 1000,
+      "safe_search_default": "strict",
+      "location_parameter": "Web search accepts location as 'lat:<float>;long:<float>'. This is the only geographic control available in the absence of a places vertical, and an IVI assistant always has GPS, so C1 and C2 must be run with it.",
+      "date_coverage": "crawledAt and lastUpdatedAt coverage is not 100%. Missing dates must be recorded as unknown rather than scored as stale."
     }
   },
   "routing": {
@@ -27,13 +33,15 @@
       "doc_intended": "places",
       "actual": "/search/web",
       "deviation": true,
-      "impact": "No dedicated places vertical exists, so structured opening-hours fields are unavailable. Hours must be extracted from free-text passages, which raises the extraction-error floor for the highest-priority category."
+      "use_location": true,
+      "impact": "No dedicated places vertical exists, so structured opening-hours fields are unavailable. Hours must be extracted from free-text passages, which raises the extraction-error floor for the highest-priority category. The location parameter partially compensates for the geographic signal but returns no structured hours."
     },
     "C2": {
       "name": "트렌드·소셜 기반 장소",
       "doc_intended": "places",
       "actual": "/search/web",
       "deviation": true,
+      "use_location": true,
       "impact": "This is one of the two categories the customer explicitly complained about, and it is served by the generic web vertical with no trend or popularity signal."
     },
     "C3": {
