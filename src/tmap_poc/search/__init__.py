@@ -31,7 +31,7 @@ __all__ = [
     "load_routing",
 ]
 
-PASSAGE_PROVIDERS = ("null", "webiq", "exa")
+PASSAGE_PROVIDERS = ("null", "fixture", "webiq", "exa")
 ANSWER_PROVIDERS = ("gwb",)
 
 _ROUTING_PATH = Path(__file__).resolve().parents[3] / "config" / "routing.json"
@@ -45,6 +45,10 @@ def get_provider(name: str):
     """Construct a provider. Raises if its credentials are absent."""
     if name == "null":
         return NullProvider()
+    if name == "fixture":
+        from .fixture import FixtureProvider
+
+        return FixtureProvider()
     if name == "webiq":
         from .webiq import WebIQProvider
 
