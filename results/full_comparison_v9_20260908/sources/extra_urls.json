@@ -1,0 +1,16 @@
+{
+  "W2-gimpo-alt": "https://www.airport.co.kr/gimpo/cms/frCon/index.do?MENU_ID=1420",
+  "W5-arex-home": "https://www.arex.or.kr/",
+  "F3-stooq": "https://stooq.com/q/d/l/?s=%5Espx&i=d&d1=20260903&d2=20260904",
+  "F3-spx-index": "https://api.nasdaq.com/api/quote/SPX/historical?assetclass=index&fromdate=09%2F03%2F2026&todate=09%2F04%2F2026&limit=10",
+  "F4-smbs-alt": "https://smbs.biz/ExRate/TodayExRate.jsp",
+  "P4-onion": "https://www.onionkr.com/",
+  "P5-kyobo": "https://store.kyobobook.co.kr/store-info/stores",
+  "B4-parking": "https://seoulland.co.kr/?p=12",
+  "B5-home": "https://kna.forest.go.kr/",
+  "V1-reference-watch": "https://www.youtube.com/watch?v=p9rftWFaopM",
+  "V2-reference-watch": "https://www.youtube.com/watch?v=tnjaFIuoS14",
+  "V3-reference-watch": "https://www.youtube.com/watch?v=Cd8qJue7ulI",
+  "V4-reference-watch": "https://www.youtube.com/watch?v=GEs-GsSARIw",
+  "V5-reference-watch": "https://www.youtube.com/watch?v=I1PXHncGWbo"
+}

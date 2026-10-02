@@ -1,0 +1,15 @@
+{
+  "id": "V2-webiq_base-0-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D56cXQziUZWY&format=json",
+  "fetched_at": "2026-09-08T08:59:04.112396+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D56cXQziUZWY&format=json",
+  "content_sha256": "cbb3e5d82b672f7da1c57cd56fb8b618ed121d01289ed7f7dcd69dc7be8fc824",
+  "content_bytes": 1212,
+  "text": "{\"title\":\"\\uae30\\uc544 EV6 \\ucda9\\uc804 \\ubc29\\ubc95, \\ucda9\\uc804 \\uc608\\uc57d, \\ucda9\\uc804 \\uc124\\uc815 \\ubc0f \\uacf5\\uc870 \\uc2dc\\uc2a4\\ud15c  \\ud68c\\uc0dd\\uc81c\\ub3d9 V2L \\uae30\\ub2a5 \\ub4f1  \\uc54c\\uc544\\ubcf4\\uae30\",\"author_name\":\"\\ucc44\\uc6c0TV_\\uc804\\uae30 \\uc790\\ub3d9\\ucc28 \\uc640 \\ucda9\\uc804\\uae30 \",\"author_url\":\"https://www.youtube.com/@cheoomtv\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/56cXQziUZWY/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/56cXQziUZWY?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022\\uae30\\uc544 EV6 \\ucda9\\uc804 \\ubc29\\ubc95, \\ucda9\\uc804 \\uc608\\uc57d, \\ucda9\\uc804 \\uc124\\uc815 \\ubc0f \\uacf5\\uc870 \\uc2dc\\uc2a4\\ud15c  \\ud68c\\uc0dd\\uc81c\\ub3d9 V2L \\uae30\\ub2a5 \\ub4f1  \\uc54c\\uc544\\ubcf4\\uae30\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

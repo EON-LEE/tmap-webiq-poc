@@ -1,0 +1,128 @@
+{
+  "recorded_at_utc": "2026-09-28T06:22:04.526887+00:00",
+  "evidence_scope": "Actual app WebSocket (browser protocol) with text input for each pipeline and provider. Not microphone, playback, answer-accuracy or latency benchmarking.",
+  "app": "Azure Container App (Microsoft Entra sign-in required; host omitted)",
+  "api_version": "2026-07-15",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "note": "Deployed comparison screen revision on Azure Container Apps. Both engines were called at the same time through Microsoft Entra authentication (bearer token not recorded), matching what the comparison page does for one question.",
+  "checks": [
+    {
+      "id": "agent_webiq",
+      "provider": "webiq",
+      "voice_options": {},
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 21,
+        "transcript": 49,
+        "activity": 1,
+        "tool": 1,
+        "audio": 36,
+        "usage": 1,
+        "response_done": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 1,
+        "tool_discovery.catalog_observed": 1,
+        "tool_discovery.in_progress": 1,
+        "tool_discovery.completed": 1,
+        "tool.announced": 1,
+        "tool.in_progress": 1,
+        "tool.arguments_ready": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "mcp_call",
+          "name": "finance",
+          "status": "completed",
+          "argument_keys": [
+            "language",
+            "query",
+            "region"
+          ],
+          "query": "삼성전자 주식 현재 주가와 거래 정보",
+          "output_chars": 3130
+        }
+      ],
+      "followup_requests": 0,
+      "responses": [
+        "completed"
+      ],
+      "assistant_text": "삼성전자(005930) 주식입니다. **2026년 9월 28일 오후 3시 1분 기준 271,500원**, 전일 대비 **14,000원(-4.90%)**이며, 장 정규 거래시간 외로 표시됩니다.",
+      "audio_bytes": 820800,
+      "citations": 0,
+      "search_attachment": null,
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "assistant_finals": [
+        "삼성전자(005930) 주식입니다. **2026년 9월 28일 오후 3시 1분 기준 271,500원**, 전일 대비 **14,000원(-4.90%)**이며, 장 정규 거래시간 외로 표시됩니다."
+      ],
+      "elapsed_seconds": 21.949,
+      "success": true
+    },
+    {
+      "id": "agent_bing",
+      "provider": "bing",
+      "voice_options": {},
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 13,
+        "transcript": 63,
+        "activity": 1,
+        "audio": 51,
+        "citation": 1,
+        "usage": 1,
+        "response_done": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 1,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [],
+      "followup_requests": 0,
+      "responses": [
+        "completed"
+      ],
+      "assistant_text": "삼성전자 종목을 찾았습니다. **종목코드 005930, 코스피(KRX)**이며, 2026년 9월 28일 오후 기준 주가는 약 **27만 1,500~2,750원**으로 확인됩니다. 시세는 지연되거나 변동될 수 있어요. 【6:0†source】\n\n매수·매도 판단이 필요하신가요, 아니면 현재가와 차트만 보시면 될까요?",
+      "audio_bytes": 1179600,
+      "citations": 1,
+      "search_attachment": null,
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "assistant_finals": [
+        "삼성전자 종목을 찾았습니다. **종목코드 005930, 코스피(KRX)**이며, 2026년 9월 28일 오후 기준 주가는 약 **27만 1,500~2,750원**으로 확인됩니다. 시세는 지연되거나 변동될 수 있어요. 【6:0†source】\n\n매수·매도 판단이 필요하신가요, 아니면 현재가와 차트만 보시면 될까요?"
+      ],
+      "elapsed_seconds": 25.845,
+      "success": true
+    }
+  ]
+}

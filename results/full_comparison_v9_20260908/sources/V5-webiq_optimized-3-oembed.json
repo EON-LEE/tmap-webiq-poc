@@ -1,0 +1,15 @@
+{
+  "id": "V5-webiq_optimized-3-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DPzG_CJnn1G8&format=json",
+  "fetched_at": "2026-09-08T09:01:21.244283+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DPzG_CJnn1G8&format=json",
+  "content_sha256": "55d1628bd56ce1598a5fc400ac263d8046156a63b767fbb9149c53f5fd5b31fc",
+  "content_bytes": 826,
+  "text": "{\"title\":\"Android Auto Setup for ccNC Touchscreens | Hyundai\",\"author_name\":\"HyundaiUSA\",\"author_url\":\"https://www.youtube.com/@hyundai\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/PzG_CJnn1G8/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/PzG_CJnn1G8?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022Android Auto Setup for ccNC Touchscreens | Hyundai\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

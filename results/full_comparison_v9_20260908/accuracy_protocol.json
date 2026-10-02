@@ -1,0 +1,24 @@
+{
+  "version": "v9-public-source-core-claims-1",
+  "frozen_at": "2026-09-08T08:49:00+00:00",
+  "classification_started": false,
+  "scope": "All 30 frozen questions in all three conditions; no selection or reruns. No paid judge or reference injection into tested agents.",
+  "labels": {
+    "correct": "The delivered answer resolves the requested core conditions and independently fetched public evidence confirms all core factual claims.",
+    "incorrect": "At least one material core assertion or explicit requested condition is contradicted by independent evidence. Record exact numeric mismatches even if small, with minor_numeric severity when appropriate.",
+    "unverifiable": "A factual answer exists but independent public evidence is incomplete, inaccessible, conflicting, temporally ambiguous, or cannot establish a required condition. Uncertainty is not falsehood.",
+    "no_factual_answer": "No substantive answer to the requested core question was delivered; explicit inability to establish a fact is not a correct positive answer."
+  },
+  "precedence": "Confirmed core contradiction > unresolved core evidence > all core claims confirmed. No answer remains no_factual_answer. Peripheral errors never silently change core grading.",
+  "dimensions": {
+    "technical_failure": "Separate from accuracy; keep every attempted trial in denominator.",
+    "delivery_defects": "Missing direct video links, creator, duration, promised but absent information, or unsuitable voice presentation are separately recorded. If video existence/creator/topic itself is unestablished, core accuracy is unverifiable.",
+    "ancillary_errors": "Non-core volunteered claims and minor exact numeric mismatches are explicitly identified."
+  },
+  "question_criteria": "Use exact question and checks in config/full_comparison_v9.json; 2026 dates, explicit trading session/currency/instrument, indoor rather than terrace, own rather than nearby public parking, Saturday 09:00 and bookstore at 22:00 are binding.",
+  "sources": "Fetch originals/public pages now with URL, timestamp, content SHA256 and short excerpts. Old runs are URL leads only, never evidence. Official effective-date conflict stays uncertain unless resolved. Public fetch failure is not proof of nonexistence. No images, no video-watched claim from metadata.",
+  "finance": "Use historical regular-session close for specified date, not live/after-hours quote; USD/KRW named institution daily central rate, not spot. Exact numeric comparison with disclosed rounding.",
+  "news": "Validate article publication 2026-09-02 through 09-08 inclusive when requested, independently of event/effective dates.",
+  "videos": "Validate watch URL and creator/title/topic from public metadata; chapter/content claims require actual evidence. Missing metadata does not establish global absence.",
+  "aggregation": "Primary accuracy confirmed-correct / all 30 per condition. Publish four labels and technical failures. Token unknown is never zero. Paired usable-usage/completion subsets and denominators explicit. No claim of product-wide causality or statistical significance."
+}

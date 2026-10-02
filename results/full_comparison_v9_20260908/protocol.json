@@ -1,0 +1,383 @@
+{
+  "version": "v9-three-configurations",
+  "status": "frozen_before_execution",
+  "created_on": "2026-09-08",
+  "design": {
+    "questions": 30,
+    "groups": [
+      "web",
+      "places",
+      "finance",
+      "news",
+      "videos",
+      "browse"
+    ],
+    "questions_per_group": 5,
+    "conditions": [
+      "bing",
+      "webiq_base",
+      "webiq_optimized"
+    ],
+    "repeats": 1,
+    "total_trials": 90,
+    "synthetic_development_questions": true,
+    "no_image_questions": true,
+    "transport": "Voice Live direct Foundry Agent; text question input and actual service audio output. No realtime supervisor, microphone capture or speaker timing.",
+    "agents": "Same existing deployment, base instructions, low reasoning and voice. Base/optimized Web IQ have the same six available MCP tools.",
+    "routing": "Autonomous tool choice and follow-up calls allowed. Functional group is not a forced tool restriction.",
+    "input": "Exact self-contained question below; no injected destination, ETA, membership, source hints or gold facts. Runtime adds the actual clock.",
+    "order": "Rotate three-condition order by question; fresh conversations; sequential calls and shared authentication.",
+    "retries": 0,
+    "timeout_seconds": 100,
+    "optimization": "Only initial retrieval-budget instruction changes between Web IQ base and optimized. No manual removal of MCP output, format switching to REST, extra synthesis model, or pretending instructions enforce server bounds.",
+    "base_policy": "지원하는 인수가 있으면 웹·뉴스는 maxResults=3, contentFormat=passage, maxLength=1200, 영상은 maxResults=3, browse는 maxLength=4000을 초기 요청값으로 사용하세요.",
+    "optimized_policy": "지원하는 인수가 있으면 웹·뉴스는 maxResults=2, contentFormat=passage, maxLength=800, 영상은 maxResults=2, browse는 maxLength=2000을 초기 요청값으로 사용하세요.",
+    "common_instruction": "날짜·장소·차종·요금 종류가 명시된 질문은 그 조건을 그대로 확인하세요. 핵심은 두 문장으로 답하고, 영상은 직접 보기 링크 1~2개와 제작자·길이를 화면용 정보로 제시하되 긴 URL을 읽지 마세요. 필요한 도구를 스스로 선택하고 검색 자료가 핵심 조건을 뒷받침하지 못하면 필요한 추가 조회를 하거나 미확인을 명시하세요. 초기 반환량 예산은 검색 횟수나 필수 근거의 하드 제한이 아닙니다. 없는 도구 인수는 만들지 마세요. 주차·입장 정책은 최신 공지의 시행일을 확인하고 신구 자료가 충돌하면 숨기지 마세요. 금융은 명시된 거래일·정규장·통화·종목을 구분하고 다른 시각의 최근 거래가를 종가로 대체하지 마세요. 기사 날짜와 행사·통제 적용일은 별개입니다. 출처를 확인한 사실만 답하고 검색 중이라는 중간 안내는 하지 마세요.",
+    "metrics": {
+      "accuracy": "Verified core factual claims: correct, incorrect, unverifiable, no_factual_answer; separate technical failures and ancillary errors.",
+      "primary_tokens": "Agent LLM API-reported input text tokens per question, excluding audio. Cached input is a subset; do not add reasoning again.",
+      "comparison_denominator": "All 30 outcomes retained; paired-complete and comparable-usage subsets explicitly identified for token/time deltas.",
+      "first_text": "Question to first Voice Live audio transcript delta; not LLM server TTFT or pure search latency.",
+      "completion": "Question to response.done; full Agent response, not search latency.",
+      "cost": "Observed usage and known operation tariffs only; unknown Finance/Places and Voice Live accounting stay unknown."
+    },
+    "verification": "Separate current official/original source fetches, timestamps and effective dates. Do not use the search result being tested as its own independent truth. Historical financial quote dates are checked, not compared to later live ticks.",
+    "interpretation": "Three fixed configurations on the same 30 questions. Optimized vs base estimates this budget-policy change, not inherent Web IQ superiority. No statistical or production-wide claim from one run."
+  },
+  "cases": [
+    {
+      "id": "W1",
+      "endpoint": "web",
+      "question": "9월 12일 인천공항 제1터미널 장기주차장에 일반 승용차를 24시간 세우면 얼마야?",
+      "checks": [
+        "2026-09-12 적용",
+        "일반 승용차",
+        "장기주차 24시간 요금"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "W2",
+      "endpoint": "web",
+      "question": "9월 12일 토요일 김포공항 국내선 주차장에 승용차 하루 세우면 얼마야?",
+      "checks": [
+        "토요일 요금",
+        "국내선·소형 승용차",
+        "24시간 기준"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "W3",
+      "endpoint": "web",
+      "question": "서울대공원 동물원에 소형견을 이동가방에 넣으면 들어갈 수 있어?",
+      "checks": [
+        "동물원과 공원 외곽 구분",
+        "이동가방 예외 여부",
+        "안내견과 일반 반려견 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "W4",
+      "endpoint": "web",
+      "question": "2026년 9월 기준으로 일반 승용차가 남산 서울타워 정상까지 올라갈 수 있어?",
+      "checks": [
+        "일반 승용차 제한",
+        "현재 적용",
+        "허가 차량 예외를 일반화하지 않음"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "W5",
+      "endpoint": "web",
+      "question": "9월 12일 서울역에서 인천공항 제1터미널 가는 공항철도 직통열차 성인 요금 얼마야?",
+      "checks": [
+        "직통과 일반열차 구분",
+        "성인 기본 요금",
+        "할인가와 일반가 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "P1",
+      "endpoint": "places",
+      "question": "광교호수공원 원천호수 근처에 자체 주차장 있는 카페 한 곳 찾아줘.",
+      "checks": [
+        "원천호수 인근 실제 장소",
+        "자체 주차장 근거",
+        "현재 지점·주소"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "P2",
+      "endpoint": "places",
+      "question": "서울숲역 근처에 강아지가 실내에 들어갈 수 있는 카페 한 곳 찾아줘.",
+      "checks": [
+        "실내 동반 조건",
+        "실제 지점·주소",
+        "테라스 전용과 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "P3",
+      "endpoint": "places",
+      "question": "일산 호수공원 정발산역 쪽에서 아이랑 점심 먹을 주차 가능한 식당 하나 추천해줘.",
+      "checks": [
+        "정발산역·호수공원 인근",
+        "현재 영업 식당",
+        "주차 근거",
+        "없는 편의시설 추측 금지"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "P4",
+      "endpoint": "places",
+      "question": "성수역 근처에 토요일 오전 9시에 여는 베이커리 카페 있어?",
+      "checks": [
+        "성수역 인근",
+        "토요일 09시 운영",
+        "베이커리 카페 업종·지점"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "P5",
+      "endpoint": "places",
+      "question": "판교역 근처에 밤 10시에도 여는 서점 한 곳 알려줘.",
+      "checks": [
+        "판교역 인근 서점",
+        "22시 영업 가능 여부",
+        "폐점 시각·요일 예외"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "F1",
+      "endpoint": "finance",
+      "question": "2026년 9월 7일 삼성전자 보통주 코스피 정규장 종가 얼마였어?",
+      "checks": [
+        "005930",
+        "2026-09-07 KRX 정규장 종가",
+        "시간외·최근가 배제"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "F2",
+      "endpoint": "finance",
+      "question": "2026년 9월 4일 미국 나스닥 종합지수 종가랑 등락률 알려줘.",
+      "checks": [
+        "COMP 종합지수",
+        "2026-09-04",
+        "종가·전일 대비 등락"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "F3",
+      "endpoint": "finance",
+      "question": "2026년 9월 4일 미국 S&P500 지수는 얼마로 마감했어?",
+      "checks": [
+        "S&P500 지수",
+        "2026-09-04 정규장 마감",
+        "ETF 가격과 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "F4",
+      "endpoint": "finance",
+      "question": "2026년 9월 8일 서울외국환중개 기준 원달러 매매기준율 알려줘.",
+      "checks": [
+        "지정기관·고시일",
+        "USD/KRW 매매기준율",
+        "현찰·실시간 현물과 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "F5",
+      "endpoint": "finance",
+      "question": "2026년 9월 4일 테슬라 나스닥 정규장 종가는 몇 달러였어?",
+      "checks": [
+        "TSLA USD",
+        "2026-09-04 정규장 종가",
+        "시간외 가격 배제"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "N1",
+      "endpoint": "news",
+      "question": "9월 2일부터 8일 사이에 나온 서울 도로 통제 기사 하나 알려줘. 통제 날짜와 구간도 알려줘.",
+      "checks": [
+        "보도일 2026-09-02~08",
+        "통제 적용일·구간",
+        "종료·예정 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "N2",
+      "endpoint": "news",
+      "question": "9월 2일부터 8일 사이에 나온 전기차 충전요금 할인 기사 알려줘. 언제 어디에 적용되는지도 알려줘.",
+      "checks": [
+        "보도 기간",
+        "할인 적용 시간·사업자",
+        "전력량·최종 충전료 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "N3",
+      "endpoint": "news",
+      "question": "9월 12일이나 13일에 서울에서 열리는 축제를 최근 기사에서 하나 찾아줘.",
+      "checks": [
+        "서울 행사",
+        "2026-09-12 또는 13 개최",
+        "최근 보도와 운영 일정"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "N4",
+      "endpoint": "news",
+      "question": "9월 2일부터 8일 사이에 나온 고속도로 전기차 충전소 소식 하나 알려줘.",
+      "checks": [
+        "지정 보도 기간",
+        "고속도로 충전 관련성",
+        "운영 중·선정·예정 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "N5",
+      "endpoint": "news",
+      "question": "2026년 추석에 고속도로 통행료 면제하는지 기사에서 확인해줘. 적용 날짜도 알려줘.",
+      "checks": [
+        "2026 추석",
+        "공식 발표 보도",
+        "면제일·차종 또는 미정 상태"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "V1",
+      "endpoint": "videos",
+      "question": "아이오닉5 급속충전 방법을 설명하는 현대자동차 공식 영상 찾아줘.",
+      "checks": [
+        "현대자동차 제작",
+        "아이오닉5 급속충전",
+        "실제 보기 URL",
+        "휴대용 충전 대체 금지"
+      ],
+      "display": "parked_or_passenger_screen"
+    },
+    {
+      "id": "V2",
+      "endpoint": "videos",
+      "question": "기아 EV6 급속충전 방법을 설명하는 기아 공식 영상 찾아줘.",
+      "checks": [
+        "기아 공식 제작",
+        "EV6 급속충전",
+        "실제 보기 URL"
+      ],
+      "display": "parked_or_passenger_screen"
+    },
+    {
+      "id": "V3",
+      "endpoint": "videos",
+      "question": "타이어뱅크에서 만든 타이어 공기압 셀프 주입 방법 영상 찾아줘.",
+      "checks": [
+        "타이어뱅크 제작",
+        "공기 주입 주제",
+        "직접 보기 링크"
+      ],
+      "display": "parked_or_passenger_screen"
+    },
+    {
+      "id": "V4",
+      "endpoint": "videos",
+      "question": "현대차 블루링크 앱에 차 등록하는 공식 안내 영상 찾아줘.",
+      "checks": [
+        "공식 제작자",
+        "앱 차량 등록 주제",
+        "다른 기능 영상과 구분"
+      ],
+      "display": "parked_or_passenger_screen"
+    },
+    {
+      "id": "V5",
+      "endpoint": "videos",
+      "question": "현대차에서 안드로이드 오토를 유선으로 연결하는 공식 영상 찾아줘.",
+      "checks": [
+        "현대 공식 제작",
+        "유선 Android Auto",
+        "차량·인포테인먼트 차이",
+        "영상 실재"
+      ],
+      "display": "parked_or_passenger_screen"
+    },
+    {
+      "id": "B1",
+      "endpoint": "browse",
+      "question": "서울식물원 공식 안내 보고 9월 12일 토요일 온실 입장 마감 시간을 알려줘.",
+      "checks": [
+        "계절·방문일",
+        "입장과 폐장 시간",
+        "공식 최신 안내"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "B2",
+      "endpoint": "browse",
+      "question": "국립과천과학관 공식 안내 보고 9월 12일 경차로 두 시간 주차하면 얼마인지 알려줘.",
+      "checks": [
+        "경차·2시간",
+        "현재 적용 요금",
+        "신구 공지 충돌·시행 여부"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "B3",
+      "endpoint": "browse",
+      "question": "국립중앙박물관 공식 안내 보고 9월 12일 승용차로 세 시간 주차하면 얼마인지 알려줘.",
+      "checks": [
+        "승용차·3시간 계산",
+        "초과요금 단위",
+        "공식 현행 표"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "B4",
+      "endpoint": "browse",
+      "question": "서울랜드 공식 안내 보고 당일 이용권이 있으면 정문 주차장이 무료인지 알려줘.",
+      "checks": [
+        "정문 주차장 특정",
+        "이용권·정산 조건",
+        "다른 주차장 정책과 구분"
+      ],
+      "display": "voice"
+    },
+    {
+      "id": "B5",
+      "endpoint": "browse",
+      "question": "광릉 국립수목원 공식 안내 보고 9월 12일 승용차로 가려면 주차도 예약해야 하는지 알려줘.",
+      "checks": [
+        "광릉 국립수목원",
+        "2026-09-12",
+        "입장·차량 예약 구분",
+        "예약 가능 잔여량 꾸미지 않음"
+      ],
+      "display": "voice"
+    }
+  ]
+}

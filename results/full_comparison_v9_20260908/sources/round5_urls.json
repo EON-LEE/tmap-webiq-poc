@@ -1,0 +1,11 @@
+{
+  "W5-service": "https://www.arex.or.kr/main",
+  "W5-current-guide": "https://blog.danmap.co.kr/85",
+  "P4-standard-instagram": "https://www.instagram.com/standard_bread/",
+  "V2-official-watch": "https://www.youtube.com/watch?v=8iP-ooQPDUI",
+  "V2-official-oembed": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D8iP-ooQPDUI&format=json",
+  "V4-official-watch": "https://www.youtube.com/watch?v=39lpQhZjQus",
+  "V5-official-watch": "https://www.youtube.com/watch?v=oPolQQ1AHvU",
+  "V5-official-oembed": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DoPolQQ1AHvU&format=json",
+  "B4-grandpark-parking": "https://grandpark.seoul.go.kr/conts/contsView/ko/S001001001004.do"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "F1-webiq_optimized-1",
+  "url": "https://www.forwarder.kr/krx/A005930",
+  "fetched_at": "2026-09-08T08:52:02.248525+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.forwarder.kr/krx/A005930",
+  "content_sha256": "04138dde0b9d9ed047c3ad35d0c77dfc196fde2bd304a4fbea3081bcdd9f0966",
+  "content_bytes": 16128,
+  "text": "삼성전자 A005930 기업 분석 리포트 및 투자 정보(IR)\nKOSPI\n삼성전자\nA005930\n삼성전자(주) | 법인번호: 1301110006246\n기준일자: 2026-09-07\n270,000\n▲ 14,500 (5.68%)\n시가총액\n15,784,952\n억\n시가\n267,000\n고가\n270,000\n저가\n264,000\n고급정보 더보기\n일자별 시세\n날짜\n종가\n전일비\n등락률\n시가\n고가\n저가\n거래량\n2026-09-07\n270,000\n▲ 14,500\n5.68%\n267,000\n270,000\n264,000\n18,314,016\n2026-09-04\n255,500\n▲ 5,500\n2.20%\n254,000\n259,000\n252,500\n14,031,862\n2026-09-03\n250,000\n▼ 500\n-0.20%\n254,000\n255,000\n243,000\n13,756,022\n2026-09-02\n250,500\n▼ 10,500\n-4.02%\n252,000\n255,500\n249,500\n15,176,841\n2026-09-01\n261,000\n▲ 1,000\n0.38%\n256,500\n262,500\n254,000\n15,319,615\n2026-08-31\n260,000\n▲ 3,000\n1.17%\n249,000\n260,000\n246,000\n18,270,969\n2026-08-28\n257,000\n▼ 9,000\n-3.38%\n262,500\n266,000\n256,000\n15,106,746\n2026-08-27\n266,000\n▲ 4,500\n1.72%\n270,000\n271,000\n262,500\n16,829,395\n2026-08-26\n261,500\n▲ 4,500\n1.75%\n256,500\n266,500\n255,500\n19,532,523\n2026-08-25\n257,000\n0\n0.00%\n249,000\n258,000\n245,000\n21,617,407\n더보기 (1 / 14)\n고급정보 더보기\n삼성전자 A005930 기업 분석 리포트 및 투자 정보(IR)\n2026.09.08 17:52:04\nKOSPI 삼성전자(주) (코드: A005930)의 사업 포트폴리오, 최신 매출 현황 및 향후 5개년 비전 제시. 삼성전자의 성장을 증명하는 핵심 지표 요약.\n출처:\n금융감독원(FSS)\n및 금융위원회 공공데이터포털",
+  "links": [
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap",
+    "./index.php",
+    "./index.php"
+  ],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

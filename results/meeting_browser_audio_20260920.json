@@ -1,0 +1,71 @@
+{
+  "date_utc": "2026-09-20",
+  "evidence_scope": "Observed real browser AudioWorklet, WebSocket, service STT/search/TTS events and rendered chat. Curated observations, not a raw audio/event archive or a benchmark.",
+  "input_source": {
+    "kind": "synthetic_service_audio",
+    "generator": "Actual Azure Voice Live TTS",
+    "text": "인천공항 장기주차장 하루 요금을 알려줘.",
+    "pcm_bytes": 184200,
+    "sample_rate_hz": 24000,
+    "duration_seconds": 3.8375,
+    "delivery": "An isolated browser's test-only getUserMedia supplied a MediaStreamDestination. The production PCM worklet and WebSocket then sent the actual samples.",
+    "response_mocked": false,
+    "physical_microphone_used": false,
+    "physical_speaker_tested": false
+  },
+  "checks": [
+    {
+      "provider": "webiq",
+      "attempt": 1,
+      "success": false,
+      "user_transcript": "인천공항 장기주차장 하루 요금을 알려줘.",
+      "user_input_mode": "audio",
+      "assistant_final_received": false,
+      "audio_bytes_received": 120000,
+      "browser_playback_nodes_started": 6,
+      "search_results_displayed": 5,
+      "error": "음성 전송이 지연되어 대화를 중단했습니다. 연결 상태를 확인하세요.",
+      "failure_boundary": "Existing outgoing WebSocket buffer guard exceeded 96000 bytes. The UI stopped the session and marked the unfinished response instead of claiming completion."
+    },
+    {
+      "provider": "bing",
+      "attempt": 1,
+      "success": true,
+      "user_transcript": "인천공항 장기주차장 하루 요금을 알려줘.",
+      "user_input_mode": "audio",
+      "assistant_final_received": true,
+      "assistant_text": "인천공항 **장기주차장 하루 요금은 소형 차량 기준 최대 9,000원**입니다. 대형 차량은 하루 최대 **12,000원**이며, 경차·장애인·국가유공자·다자녀 가구 등은 조건에 따라 할인될 수 있습니다. ",
+      "audio_bytes_received": 712800,
+      "browser_playback_nodes_started": 31,
+      "answer_citations_displayed": 1,
+      "observed_outgoing_buffer_peak_bytes": 48000,
+      "error": null
+    },
+    {
+      "provider": "webiq",
+      "attempt": 2,
+      "success": true,
+      "user_transcript": "인천공항 장기주차장 하루 요금을 알려줘.",
+      "user_input_mode": "audio",
+      "assistant_final_received": true,
+      "assistant_text": "인천공항 **장기주차장은 하루 최대 9,000원**입니다. 최초 10분은 무료이며, 이후 시간당 1,000원이 부과됩니다. **예약주차장도 하루 최대 9,000원**이고, 경차·저공해차량 등은 별도 감면 조건에 따라 할인될 수 있습니다.",
+      "audio_bytes_received": 843000,
+      "browser_playback_nodes_started": 37,
+      "search_results_displayed": 5,
+      "observed_outgoing_buffer_peak_bytes": 62400,
+      "observed_longest_browser_task_ms": 775,
+      "observed_largest_send_scheduling_gap_ms": 1468.8,
+      "error": null,
+      "transport_guard_changed_for_retry": false
+    }
+  ],
+  "diagnosis": {
+    "service_append_spans_observed": 355,
+    "service_append_median_ms": 0.15,
+    "service_append_max_ms": 12.86,
+    "service_append_over_100ms": 0,
+    "initial_failure_root_cause": "Not conclusively determined. The append spans do not establish Azure send latency as the cause; later browser scheduling gaps were observed.",
+    "answer_accuracy_independently_evaluated": false,
+    "automatic_microphone_permission_or_hardware_validation": false
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "recorded_at_utc": "2026-09-23T10:38:11.106465+00:00",
+  "evidence_scope": "Actual Voice Live service behaviour for explicit session tool configurations with text input. Capability evidence only: not answer accuracy, latency benchmarking, microphone or playback validation.",
+  "api_version": "2026-07-15",
+  "sdk": "azure-ai-voicelive 1.3.0",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "client_followup_limit": 3,
+  "automatic_continuation_wait_seconds": 25,
+  "note": "Realtime direct-MCP continuation check. _mcp_20260923_02.json showed no automatic response after mcp_call and stopped at its one client follow-up while the model was still calling tools; this run allows up to three client response.create follow-ups.",
+  "checks": [
+    {
+      "id": "e2e_realtime_mini_direct_mcp_public_learn",
+      "category": "native_realtime_speech_to_speech",
+      "requested_model": "gpt-realtime-mini",
+      "declared_tools": [
+        {
+          "type": "mcp",
+          "server_label": "microsoft_learn",
+          "server_url": "https://learn.microsoft.com/api/mcp",
+          "require_approval": "never"
+        }
+      ],
+      "prompt": "Microsoft Learn에서 Azure Voice Live가 무엇인지 찾아서 알려줘.",
+      "input_mode": "text",
+      "started_at": "2026-09-23T10:37:08.845790+00:00",
+      "session_accepted": true,
+      "service_session_model": "gpt-realtime-mini-global-standard",
+      "echoed_tool_types": [
+        "mcp"
+      ],
+      "errors": [],
+      "event_counts": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 5,
+        "mcp_list_tools.in_progress": 1,
+        "mcp_list_tools.completed": 1,
+        "conversation.item.retrieved": 1,
+        "response.created": 3,
+        "response.output_item.added": 3,
+        "response.mcp_call_arguments.delta": 48,
+        "response.mcp_call_arguments.done": 2,
+        "response.done": 3,
+        "response.mcp_call.in_progress": 2,
+        "response.mcp_call.completed": 2,
+        "response.output_item.done": 3,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 110,
+        "response.audio.delta": 69,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1
+      },
+      "tool_items": [
+        {
+          "event": "response.output_item.added",
+          "type": "mcp_call",
+          "name": "microsoft_docs_search",
+          "server_label": "microsoft_learn",
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "mcp_call",
+          "name": "microsoft_docs_search",
+          "server_label": "microsoft_learn",
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "query"
+            ],
+            "query": "Azure Voice Live"
+          },
+          "output_chars": 23384
+        },
+        {
+          "event": "response.output_item.added",
+          "type": "mcp_call",
+          "name": "microsoft_docs_fetch",
+          "server_label": "microsoft_learn",
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "mcp_call",
+          "name": "microsoft_docs_fetch",
+          "server_label": "microsoft_learn",
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "url"
+            ]
+          },
+          "output_chars": 14217
+        }
+      ],
+      "responses": [
+        {
+          "status": "completed",
+          "output_types": [
+            "mcp_call"
+          ]
+        },
+        {
+          "status": "completed",
+          "output_types": [
+            "mcp_call"
+          ]
+        },
+        {
+          "status": "completed",
+          "output_types": [
+            "message"
+          ]
+        }
+      ],
+      "assistant_text": [
+        "Azure VoiceLive는 음성 에이전트를 위한 저지연, 고품질 음성-to-음성 상호작용을 지원하는 관리형 서비스입니다. 음성 인식, 생성 AI, 텍스트-음성 변환을 하나의 인터페이스로 통합해 자연스러운 대화형 기능을 제공합니다. \n\n자세한 내용은 공식 문서를 참고하세요: https://learn.microsoft.com/dotnet/api/overview/azure/ai.voicelive-readme?view=azure-dotnet"
+      ],
+      "audio_bytes": 1622400,
+      "usage": [
+        {
+          "total_tokens": 780,
+          "input_tokens": 753,
+          "output_tokens": 27,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 753,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 27,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0
+          }
+        },
+        {
+          "total_tokens": 5874,
+          "input_tokens": 5823,
+          "output_tokens": 51,
+          "input_token_details": {
+            "cached_tokens": 768,
+            "text_tokens": 5823,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 768,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 51,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0
+          }
+        },
+        {
+          "total_tokens": 9660,
+          "input_tokens": 8872,
+          "output_tokens": 788,
+          "input_token_details": {
+            "cached_tokens": 5824,
+            "text_tokens": 8872,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 5824,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 113,
+            "audio_tokens": 675,
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "automatic_followup_responses": 0,
+      "manual_followup_requests": 2,
+      "mcp_list_tools_status": "completed",
+      "mcp_listed_tools": [
+        "microsoft_docs_search",
+        "microsoft_code_sample_search",
+        "microsoft_docs_fetch"
+      ],
+      "elapsed_seconds": 62.268,
+      "observed_call_types": [
+        "mcp_call"
+      ],
+      "completed_with_answer": true
+    }
+  ]
+}

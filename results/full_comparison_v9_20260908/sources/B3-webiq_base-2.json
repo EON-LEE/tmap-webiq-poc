@@ -1,0 +1,23 @@
+{
+  "id": "B3-webiq_base-2",
+  "url": "https://news.tvchosun.com/site/data/html_dir/2026/06/15/2026061590144.html",
+  "fetched_at": "2026-09-08T09:03:52.149875+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://news.tvchosun.com/site/data/html_dir/2026/06/15/2026061590144.html",
+  "content_sha256": "52f571ada6b29300fa053c6b8bc7c357aa8f922702ee59c0453b7b6c9535e39f",
+  "content_bytes": 9752,
+  "text": "국립중앙박물관, 주차 요금 또 올린다…승용차 하루 최대 '3만원'\n생활문화\n전체\n국립중앙박물관, 주차 요금 또 올린다…승용차 하루 최대 '3만원'\n류주현 기자\n등록: 2026.06.15 오전 10:31\n국립중앙박물관이 최근 주차 요금 산정 방식을 조정하는 내용의 '국립중앙박물관 주차장 관리 규정' 일부 개정안을 행정 예고한 것으로 15일 전해졌다.\n개정안에 따르면 15인승 이하 승용차는 기본요금이 30분 기준 900원에서 60분 기준 1천원으로 바뀌고, 추가 요금은 10분당 500원씩 부과될 예정이다. 박물관에 2시간 머무를 시 기존 3600원이 부과됐으나, 앞으로는 4천원을 내야 한다.\n버스의 주차 기본요금은 1800원(30분 기준)에서 2000원(60분 기준), 추가 요금은 10분당 600원에서 1000원으로 오르게 된다. 주차된 차량에 부과하는 하루 최대 요금도 인상돼 승용차는 일일 최대 1만 8000원에서 3만원으로 인상되고, 버스는 일일 최대 3만 6000원에서 6만원으로 배 가까이 오른다.\n국립중앙박물관회 회원과 극장 '용' 관람객의 주차 요금 또한 3600원에서 4000원으로 변경될 예정이다. 지난해 9월 국립중앙박물관이 기본 주차 요금과 추가 요금, 일일 최대 요금 등을 인상한 지 9개월 만에 주차 요금과 산정 방식을 다시 바꾸는 조치다.\n이런 조치는 최근 관람객 증가세와 무관하지 않다. 관람객이 꾸준히 늘면서 주말과 휴일에는 주차장에 들어가는 데에도 상당한 시간이 걸리는 것으로 전해졌다.\n올해 1∼5월에 국립중앙박물관을 찾은 관람객은 총 325만5천160명으로, 지난해 같은 기간보다 관람객이 45.2% 증가한 상황이다. 올해 연간 관람객은 지난해에 이어 2년 연속 600만명대를 기록할 것이란 전망이다.\nCopyrights ⓒ TV조선. 무단전재 및 재배포 금지",
+  "links": [
+    "https://news.tvchosun.com/site/data/html_dir/2026/06/15/2026061590144.html",
+    "https://news.tvchosun.com/svc/news/article.amp.html?contid=2026061590144",
+    "https://img.tvchosun.com/news/img/favicon.png",
+    "https://img.tvchosun.com/news/css/style.css?v=1.12",
+    "https://img.tvchosun.com/news/lib/jquery-ui.css",
+    "https://img.tvchosun.com/news/lib/swiper-bundle.min.css",
+    "https://img.tvchosun.com/news/lib/slick.min.css"
+  ],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

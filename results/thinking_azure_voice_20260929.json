@@ -1,0 +1,150 @@
+{
+  "recorded_at_utc": "2026-09-29T03:09:42.811Z",
+  "evidence_scope": "Real comparison page in an isolated headless Chrome against the real services. One question sent to both engines at once; the page was sampled every 150 ms to record what each engine column showed while it worked. Not physical microphone/speaker, answer accuracy or latency benchmarking.",
+  "input": "voice",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "question": "서울역 근처 충전소 찾아줘.",
+  "thinking_seen": true,
+  "timeline": [
+    {
+      "t_ms": 8265,
+      "provider": "webiq",
+      "phase": "listening",
+      "header": "듣는 중…",
+      "bubble": "말씀을 듣는 중…"
+    },
+    {
+      "t_ms": 8265,
+      "provider": "bing",
+      "phase": "listening",
+      "header": "듣는 중…",
+      "bubble": "말씀을 듣는 중…"
+    },
+    {
+      "t_ms": 10784,
+      "provider": "webiq",
+      "phase": "transcribing",
+      "header": "인식 중…",
+      "bubble": "말씀을 글자로 바꾸는 중…"
+    },
+    {
+      "t_ms": 10784,
+      "provider": "bing",
+      "phase": "transcribing",
+      "header": "인식 중…",
+      "bubble": "말씀을 글자로 바꾸는 중…"
+    },
+    {
+      "t_ms": 11569,
+      "provider": "webiq",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Agent가 질문을 이해하고 무엇을 검색할지 생각하는 중…"
+    },
+    {
+      "t_ms": 11819,
+      "provider": "bing",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Agent가 생각하며 Bing으로 검색하는 중…"
+    },
+    {
+      "t_ms": 14000,
+      "provider": "webiq",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "WebIQ로 장소 검색 중…"
+    },
+    {
+      "t_ms": 15734,
+      "provider": "webiq",
+      "phase": "writing",
+      "header": "답변 작성 중…",
+      "bubble": "찾은 결과를 읽고 답변을 준비하는 중…"
+    },
+    {
+      "t_ms": 15908,
+      "provider": "webiq",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 20040,
+      "provider": "bing",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 24741,
+      "provider": "webiq",
+      "phase": "done",
+      "header": "응답 5.0초",
+      "bubble": ""
+    },
+    {
+      "t_ms": 25831,
+      "provider": "bing",
+      "phase": "done",
+      "header": "응답 9.1초",
+      "bubble": ""
+    }
+  ],
+  "final": {
+    "question": "“서울역 근처 충전소 찾아줘.”",
+    "cells": [
+      {
+        "provider": "webiq",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 5.0초",
+        "activity": "",
+        "steps": [
+          "input:done:인식 0.7초",
+          "think:done:2.5초",
+          "search:done:장소 검색 · 1.6초",
+          "results:done:10건",
+          "answer:done:작성 0.2초"
+        ],
+        "calls": [
+          "장소 검색완료 · 1.6초 | 검색어 “서울역 근처 전기차 충전소”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "서울역 근처에는 다음 충전소가 확인됩니다.\n\n- 서울역 E-pit: 서울역 인근, 24시간 운영\n- E-pit 충전소: 서울 중구 수하동 67, 24시간 운영\n- 테슬라 데스티네이션 차저: 서울 용산구 소월로 20-6, 24시간 운영\n\n충전기 종류나 실시간 빈자리는 확인되지 않았습니다.",
+        "timing": "응답 시작 5.0초 · 완료 13.9초",
+        "notice": ""
+      },
+      {
+        "provider": "bing",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 9.1초",
+        "activity": "",
+        "steps": [
+          "input:done:인식 0.9초",
+          "think:done:검색 포함 8.2초",
+          "search:hidden:Bing 내부 · 비공개",
+          "results:done:출처 1개",
+          "answer:done:완료"
+        ],
+        "calls": [],
+        "note": "Bing은 검색 결과 원문을 공개하지 않아요. 답변에 사용한 출처 링크만 받을 수 있어요.",
+        "sources": 1,
+        "answer": "서울역 주차장 충전소를 확인했습니다. 서울시 용산구 청파로 378, 24시간 운영, 200kW DC콤보 2기이며 검색 시점에는 2기 모두 충전 가능으로 표시됩니다. 주차요금은 기본 1시간 4,800원이고 전기차는 50% 할인으로 안내되어 있습니다. 다만 실시간 상태는 변할 수 있으니 출",
+        "timing": "응답 시작 9.1초 · 완료 14.9초",
+        "notice": ""
+      }
+    ],
+    "compare": "응답 시작 · WebIQ 5.0초 · Grounding with Bing 9.1초",
+    "error": "",
+    "overflow": false
+  },
+  "mobile": {
+    "overflow": false,
+    "width": 390
+  },
+  "errors": []
+}

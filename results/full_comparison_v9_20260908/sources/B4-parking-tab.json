@@ -1,0 +1,10 @@
+{
+  "id": "B4-parking-tab",
+  "url": "https://seoulland.co.kr/?p=12&tabs=3",
+  "fetched_at": "2026-09-08T08:50:46.744792+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "error": "<urlopen error _ssl.c:1063: The handshake operation timed out>",
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

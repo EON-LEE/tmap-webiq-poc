@@ -1,0 +1,15 @@
+{
+  "id": "N2-webiq_base-3",
+  "url": "https://ts1.mm.bing.net/th?id=ONUT.0Q9J8XkaJFMUp19eoSkd7g&pid=News",
+  "fetched_at": "2026-09-08T08:55:22.905471+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://ts1.mm.bing.net/th?id=ONUT.0Q9J8XkaJFMUp19eoSkd7g&pid=News",
+  "content_sha256": "f901e11df143ecc97e340165815385c6d53f58f17dd07f33bcfdeeb5a73af792",
+  "content_bytes": 3749,
+  "media_not_used_for_review": true,
+  "retained_as_metadata_only": true,
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

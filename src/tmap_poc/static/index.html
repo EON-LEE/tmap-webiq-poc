@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6fb">
+  <title>TMAP 음성 검색 비교 · WebIQ vs Grounding with Bing</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%234f46e5'/%3E%3Cpath d='M12 13h16M20 13v15' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script type="module" src="/static/app.js"></script>
+</head>
+<body>
+  <a id="skip-to-content" class="skip-link" href="#command-input">질문 입력으로 건너뛰기</a>
+  <div class="page">
+    <header class="page-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">T</span>
+        <div>
+          <h1 id="page-title">TMAP 음성 검색 비교</h1>
+          <p>같은 질문을 WebIQ와 Grounding with Bing에 동시에 보내 결과를 비교합니다</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="reset" type="button" class="quiet">새 대화</button>
+        <details id="connection-settings" class="settings">
+          <summary>설정</summary>
+          <section class="settings-panel" aria-labelledby="settings-title">
+            <div class="settings-head">
+              <h2 id="settings-title">음성 설정</h2>
+              <button id="voice-options-defaults" type="button" class="quiet" disabled>기본값</button>
+            </div>
+            <p id="voice-settings-state" class="hint" role="status">서버 설정을 불러오는 중…</p>
+            <p id="voice-mode-summary" class="settings-summary" hidden></p>
+            <p class="hint">설정을 바꾸면 진행 중인 연결을 끝내고 다음 질문부터 새 설정으로 비교합니다.</p>
+            <div id="voice-options-fields" class="settings-fields"></div>
+            <p id="voice-options-error" class="error" role="alert" hidden></p>
+            <details class="settings-notes">
+              <summary>지원 범위와 주의 사항</summary>
+              <div id="voice-options-unavailable"></div>
+              <ul id="voice-options-limitations"></ul>
+            </details>
+          </section>
+        </details>
+      </div>
+    </header>
+
+    <main class="compare" aria-labelledby="page-title">
+      <div class="lane-bar" role="group" aria-label="엔진별 연결 상태와 실시간 음성 출력">
+        <div class="lane-chip" data-provider="webiq">
+          <span id="lane-webiq-dot" class="lane-dot" data-state="idle" aria-hidden="true"></span>
+          <strong translate="no">WebIQ</strong>
+          <span id="lane-webiq-status" class="lane-status">대기</span>
+          <button id="lane-webiq-live" type="button" class="live-toggle" aria-pressed="true">음성 출력 중</button>
+        </div>
+        <div class="lane-chip" data-provider="bing">
+          <span id="lane-bing-dot" class="lane-dot" data-state="idle" aria-hidden="true"></span>
+          <strong translate="no">Grounding with Bing</strong>
+          <span id="lane-bing-status" class="lane-status">대기</span>
+          <button id="lane-bing-live" type="button" class="live-toggle" aria-pressed="false">이 엔진 음성 듣기</button>
+        </div>
+      </div>
+
+      <div id="compare-scroll" class="compare-scroll" role="region" aria-label="질문별 비교 결과" tabindex="0">
+        <section id="compare-empty" class="compare-empty" aria-labelledby="empty-title">
+          <h2 id="empty-title">같은 질문, 다른 검색</h2>
+          <div class="pipelines" aria-label="엔진별 처리 순서">
+            <div class="pipeline" data-provider="webiq">
+              <span class="pipeline-name">WebIQ</span>
+              <ol>
+                <li>질문</li><li>생각</li><li class="pipeline-search">WebIQ 검색</li><li>답변·음성</li>
+              </ol>
+            </div>
+            <div class="pipeline" data-provider="bing">
+              <span class="pipeline-name">Grounding with Bing</span>
+              <ol>
+                <li>질문</li><li>생각</li><li class="pipeline-search">Bing 검색</li><li>답변·음성</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+        <ol id="turns" class="turns" role="log" aria-label="질문별 WebIQ와 Grounding with Bing 결과" aria-live="polite" aria-relevant="additions"></ol>
+      </div>
+    </main>
+
+    <footer class="composer">
+      <div id="example-prompts" class="examples" role="group" aria-label="예시 질문 · 누르면 입력창에 준비합니다">
+        <button type="button" data-prompt="삼성전자 주식 찾아줘.">삼성전자 주식 찾아줘</button>
+        <button type="button" data-prompt="서울역 근처 충전소 찾아줘.">서울역 근처 충전소 찾아줘</button>
+        <button type="button" data-prompt="인천공항 주차비 얼마야?">인천공항 주차비 얼마야?</button>
+        <button type="button" data-prompt="오늘 주요 뉴스 알려줘.">오늘 주요 뉴스 알려줘</button>
+      </div>
+      <form id="command-form" class="composer-form">
+        <label for="command-input" class="visually-hidden">두 엔진에 보낼 질문</label>
+        <textarea id="command-input" name="command" rows="1" maxlength="4000" autocomplete="off" spellcheck="false" placeholder="예: 삼성전자 주식 찾아줘…"></textarea>
+        <div class="composer-actions">
+          <button id="start" type="button" class="mic" aria-label="말하기 · 두 엔진에 음성으로 질문" disabled>
+            <svg width="16" height="20" viewBox="0 0 18 22" aria-hidden="true"><rect x="6" y="1" width="6" height="12" rx="3" fill="currentColor"/><path d="M2 9v2a7 7 0 0 0 14 0V9M9 18v3M5 21h8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            <span>말하기</span>
+          </button>
+          <button id="stop" type="button" class="stop" aria-label="음성 대화 중지" disabled hidden><span class="stop-icon" aria-hidden="true"></span><span>중지</span></button>
+          <button id="send-command" type="submit" class="send" aria-label="두 엔진에 질문 보내기" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </form>
+      <p id="status" class="status" role="status">준비 중…</p>
+      <p id="error" class="error" role="alert" hidden></p>
+    </footer>
+  </div>
+</body>
+</html>

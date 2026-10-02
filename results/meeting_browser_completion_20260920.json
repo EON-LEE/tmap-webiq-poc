@@ -1,0 +1,97 @@
+{
+  "date_utc": "2026-09-20",
+  "evidence_scope": "Curated observations from actual browser AudioWorklet, WebSocket, STT, search, TTS, response_done events and rendered DOM after restarting the updated backend. Not a raw archive or benchmark.",
+  "changes_under_check": [
+    "Cooperative audio-upload and service-receive relay yielding",
+    "Scoped response completion and late-source completion cache",
+    "Visible audio transcription, actual source cards and provider attribution"
+  ],
+  "input_source": {
+    "kind": "synthetic_service_audio",
+    "generator": "Actual Azure Voice Live TTS",
+    "text": "인천공항 장기주차장 하루 요금을 알려줘.",
+    "pcm_bytes": 184200,
+    "sample_rate_hz": 24000,
+    "duration_seconds": 3.8375,
+    "delivery": "Test-only virtual getUserMedia in an isolated browser; the production AudioWorklet, WebSocket and actual Azure responses were used.",
+    "physical_microphone_used": false,
+    "physical_speaker_tested": false,
+    "response_events_mocked": false
+  },
+  "fixture_preparation": {
+    "first_attempt": "The test harness waited for a nonexistent ready event and timed out before sending its text request. This was a harness mistake, not a demo response failure.",
+    "correction": "Wait for the actual status event with state=ready. The next preparation returned the exact phrase and response_done.status=completed."
+  },
+  "existing_backpressure_limit_bytes": 96000,
+  "checks": [
+    {
+      "provider": "webiq",
+      "started_at_utc": "2026-09-20T16:27:53.294Z",
+      "ready": true,
+      "user_transcript": "인천공항 장기주차장 하루 요금을 알려줘.",
+      "user_input_mode": "audio",
+      "assistant_final": "인천공항 **장기주차장 요금은 시간당 1,000원, 하루 최대 9,000원**입니다. 최초 10분은 무료이며, 예약주차장도 같은 요금이 적용됩니다. 경차·장애인·다자녀·저공해차량 등은 조건에 따라 감면될 수 있습니다.",
+      "response_done_status": "completed",
+      "interrupted": false,
+      "audio_bytes_received": 817800,
+      "browser_playback_nodes_started": 36,
+      "observed_outgoing_buffer_peak_bytes": 72000,
+      "search_results_displayed_including_expandable": 5,
+      "source_urls": [
+        "https://www.icn-info.co.kr/guide/incheon-parking-guide",
+        "https://www.airport.kr/ap_ko/969/subview.do?hl=ko-KR",
+        "https://earn-on-everything.com/entry/incheon-airport-parking-guide/",
+        "https://avlab.co.kr/incheon-airport-long-term-parking-guide-2026/",
+        "https://newshub.co.kr/life/travel-leisure/incheon-airport-long-term-parking-reservation-discount/"
+      ],
+      "assistant_waiting_indicator_hidden": true,
+      "socket_open_after_response_done": true,
+      "service_errors": [],
+      "screen_error": null
+    },
+    {
+      "provider": "bing",
+      "started_at_utc": "2026-09-20T16:28:32.222Z",
+      "ready": true,
+      "user_transcript": "인천공항 장기주차장 하루 요금을 알려줘.",
+      "user_input_mode": "audio",
+      "assistant_final": "인천공항 **장기주차장 하루 최대 요금은 소형차 기준 9,000원**입니다. 대형차는 하루 최대 **12,000원**이며, 경차·장애인·국가유공자·다자녀 가구 등은 할인 대상일 수 있습니다. 실제 요금은 입·출차 시간을 기준으로 계산됩니다. \u30106:3\u2020source\u3011",
+      "response_done_status": "completed",
+      "interrupted": false,
+      "audio_bytes_received": 889200,
+      "browser_playback_nodes_started": 39,
+      "observed_outgoing_buffer_peak_bytes": 24000,
+      "answer_citations_displayed": 1,
+      "source_urls": [
+        "https://wave2trip.com/incheon-airport-long-term-parking-guide/"
+      ],
+      "assistant_waiting_indicator_hidden": true,
+      "opaque_citation_marker_hidden_in_display_only": true,
+      "socket_open_after_response_done": true,
+      "previous_webiq_rows_kept_original_provider_labels": true,
+      "service_errors": [],
+      "screen_error": null
+    }
+  ],
+  "layout": {
+    "emulated_viewport_css_pixels": [390, 844],
+    "document_width": 390,
+    "scroll_width": 390,
+    "horizontal_overflow": false
+  },
+  "final_state": {
+    "ui_status_after_audio_drained": "듣고 있어요.",
+    "socket_still_open": true,
+    "both_assistant_waiting_indicators_hidden": true,
+    "test_sessions_explicitly_stopped": true,
+    "virtual_input_and_socket_hooks_removed_by_reload": true,
+    "fresh_page_configured_without_errors": true
+  },
+  "limitations": [
+    "Each provider was checked once after these changes. The first earlier WebIQ buffer-guard interruption remains in meeting_browser_audio_20260920.json.",
+    "These checks do not conclusively establish the original interruption's root cause or guarantee it cannot recur.",
+    "The general question returned some unofficial sources. Answer accuracy was not independently evaluated.",
+    "Playback node creation and PCM reception do not prove physical speaker audibility or microphone performance.",
+    "The browser was instrumented for observation and virtual input; this is not an uninstrumented performance benchmark."
+  ]
+}

@@ -1,0 +1,424 @@
+{
+  "recorded_at_utc": "2026-09-23T11:21:25.524751+00:00",
+  "evidence_scope": "Actual app WebSocket (browser protocol) with text input for each pipeline and provider. Not microphone, playback, answer-accuracy or latency benchmarking.",
+  "app": "http://localhost:8125",
+  "api_version": "2026-07-15",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "checks": [
+    {
+      "id": "agent_webiq",
+      "provider": "webiq",
+      "voice_options": {},
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 21,
+        "transcript": 47,
+        "activity": 1,
+        "tool": 1,
+        "audio": 36,
+        "usage": 1,
+        "response_done": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 1,
+        "tool_discovery.catalog_observed": 1,
+        "tool_discovery.in_progress": 1,
+        "tool_discovery.completed": 1,
+        "tool.announced": 1,
+        "tool.in_progress": 1,
+        "tool.arguments_ready": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "mcp_call",
+          "name": "finance",
+          "status": "completed",
+          "argument_keys": [
+            "language",
+            "query",
+            "region"
+          ],
+          "query": "삼성전자 주식 현재 주가와 거래 정보",
+          "output_chars": 3120
+        }
+      ],
+      "followup_requests": 0,
+      "responses": [
+        "completed"
+      ],
+      "assistant_text": "삼성전자(005930)는 **2026년 9월 23일 19:59 기준 285,500원**입니다. 전일보다 **9,000원(3.26%) 상승**했으며, 정규장 운영 시간 외 기준입니다.",
+      "audio_bytes": 832800,
+      "citations": 0,
+      "search_attachment": null,
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "elapsed_seconds": 13.472,
+      "success": true
+    },
+    {
+      "id": "agent_bing",
+      "provider": "bing",
+      "voice_options": {},
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 13,
+        "transcript": 56,
+        "activity": 1,
+        "audio": 44,
+        "citation": 1,
+        "usage": 1,
+        "response_done": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 1,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [],
+      "followup_requests": 0,
+      "responses": [
+        "completed"
+      ],
+      "assistant_text": "삼성전자 **종목코드 005930**, 코스피 종목입니다.  \n2026년 9월 23일 기준 검색된 종가는 **285,500원, 전일 대비 9,000원(3.25%) 상승**입니다. 시세는 지연될 수 있으니 주문 전 증권사 앱에서 확인하세요. 【6:3†source】",
+      "audio_bytes": 1032000,
+      "citations": 1,
+      "search_attachment": null,
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "elapsed_seconds": 14.788,
+      "success": true
+    },
+    {
+      "id": "stt_llm_tts_webiq_gpt41mini",
+      "provider": "webiq",
+      "voice_options": {
+        "connection_mode": "model_search",
+        "llm_model": "gpt-4.1-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 23,
+        "transcript": 61,
+        "activity": 2,
+        "usage": 2,
+        "response_done": 2,
+        "tool": 1,
+        "audio": 36
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "tool_discovery.catalog_observed": 1,
+        "tool_discovery.in_progress": 1,
+        "tool_discovery.completed": 1,
+        "input.received": 1,
+        "response.requested": 2,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 1,
+        "tool.arguments_ready": 1,
+        "tool.in_progress": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "mcp_call",
+          "name": "finance",
+          "status": "completed",
+          "argument_keys": [
+            "language",
+            "query",
+            "region"
+          ],
+          "query": "삼성전자 주식",
+          "output_chars": 1187
+        }
+      ],
+      "followup_requests": 1,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "삼성전자 주식 현재가는 285,500원이고, 전일 대비 9,000원 3.26% 올랐어요. 52주 최고가는 374,500원, 최저가는 81,100원입니다. 추가 정보 필요하면 알려주세요.",
+      "audio_bytes": 835800,
+      "citations": 0,
+      "search_attachment": "mcp",
+      "search_tool": {
+        "type": "mcp",
+        "server_label": "webiq",
+        "server_host": "api.microsoft.ai",
+        "allowed_tools": [
+          "web",
+          "news",
+          "places",
+          "finance"
+        ]
+      },
+      "unexpected_secret_markers": false,
+      "elapsed_seconds": 14.677,
+      "success": true
+    },
+    {
+      "id": "stt_llm_tts_bing_gpt5mini",
+      "provider": "bing",
+      "voice_options": {
+        "connection_mode": "model_search",
+        "llm_model": "gpt-5-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 19,
+        "transcript": 84,
+        "activity": 2,
+        "usage": 2,
+        "response_done": 2,
+        "audio": 105,
+        "citation": 1,
+        "tool": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 1,
+        "tool.arguments_ready": 1,
+        "tool.in_progress": 1,
+        "audio.started": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "status": null,
+          "argument_keys": [
+            "input"
+          ],
+          "input": "사용자 요청: '삼성전자 주식 찾아줘.' 대화 맥락: 대화 기준시각 2026-09-23T20:20:16+09:00, 앱에서 전달한 내비게이션 맥락: 별도 앱 맥락 없음. 사용자가 삼성전자 주식(주가, 시세, 코드, 거래소 등)을 찾고자 함. 관련 정보 요청: 현재 시세(실시간), 종목 코드, 거래소(NYSE/KOSPI 등), 시가총액, 전일대비 등락, 거래량, 최근 뉴스 또는 공시, 주요 재무지표(매출, 영업이익, PER 등). 시간 민감 정보이므로 최신 데이터 제공 필요. 응답 형식 선호 없음; 한국어로 답변 요청.",
+          "output_chars": 375
+        }
+      ],
+      "followup_requests": 0,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "삼성전자 **종목코드 005930**, **한국거래소 KOSPI** 상장 종목입니다. 다만 현재 시세는 확인된 자료가 **2026년 9월 14일 기준**이라 오늘 실시간 값으로 단정할 수 없습니다.\n\n- 당시 종가: **248,500원**, 전일 대비 **-11,000원(-4.24%)**\n- 거래량: **17,776,098주**\n- 시가총액: **약 1,517조 원**\n- PER: **18.27배**, PBR: **1.87배**, EPS: **6,561원**\n- 거래 가능 시장: **KRX·NXT**로 표시됨 【5:1†source】\n\n앱의 실시간 주가 화면이나 증권사 시세에서 **현재가·오늘 등락·최신 공시**를 다시 확인하시는 것이 안전합니다.",
+      "audio_bytes": 2486400,
+      "citations": 1,
+      "search_attachment": "foundry_agent",
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "elapsed_seconds": 34.493,
+      "success": true
+    },
+    {
+      "id": "e2e_webiq_realtime_mini",
+      "provider": "webiq",
+      "voice_options": {
+        "connection_mode": "realtime_agent_tool",
+        "realtime_model": "gpt-realtime-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 28,
+        "transcript": 22,
+        "activity": 2,
+        "usage": 2,
+        "response_done": 2,
+        "tool": 2,
+        "audio": 15
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "tool_discovery.catalog_observed": 1,
+        "tool_discovery.in_progress": 1,
+        "tool_discovery.completed": 1,
+        "input.received": 1,
+        "response.requested": 2,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 2,
+        "tool.arguments_ready": 2,
+        "tool.in_progress": 2,
+        "tool.completed": 2,
+        "tool.output_observed": 2,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "mcp_call",
+          "name": "finance",
+          "status": "completed",
+          "argument_keys": [
+            "language",
+            "query",
+            "region"
+          ],
+          "query": "삼성전자 주식",
+          "output_chars": 1187
+        },
+        {
+          "kind": "mcp_call",
+          "name": "finance",
+          "status": "completed",
+          "argument_keys": [
+            "language",
+            "query",
+            "region"
+          ],
+          "query": "삼성전자",
+          "output_chars": 5844
+        }
+      ],
+      "followup_requests": 1,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "잠시만요, 삼성전자 주식 정보를 확인하고 있습니다. 조금만 기다려 주세요.",
+      "audio_bytes": 332400,
+      "citations": 0,
+      "search_attachment": "mcp",
+      "search_tool": {
+        "type": "mcp",
+        "server_label": "webiq",
+        "server_host": "api.microsoft.ai",
+        "allowed_tools": [
+          "web",
+          "news",
+          "places",
+          "finance"
+        ]
+      },
+      "unexpected_secret_markers": false,
+      "elapsed_seconds": 19.021,
+      "success": true
+    },
+    {
+      "id": "e2e_bing_realtime_mini",
+      "provider": "bing",
+      "voice_options": {
+        "connection_mode": "realtime_agent_tool",
+        "realtime_model": "gpt-realtime-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 19,
+        "transcript": 62,
+        "activity": 2,
+        "usage": 2,
+        "response_done": 2,
+        "audio": 55,
+        "tool": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 1,
+        "tool.arguments_ready": 1,
+        "tool.in_progress": 1,
+        "audio.started": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "status": null,
+          "argument_keys": [
+            "input"
+          ],
+          "input": "삼성전자 주식",
+          "output_chars": 181
+        }
+      ],
+      "followup_requests": 0,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "삼성전자(005930)는 **2026년 9월 23일 오후 3시 30분 기준 28만5,500원**, 전일 대비 **9,000원(3.25%) 상승**으로 확인됩니다. 시가총액은 약 **1,843조 원**입니다. cite5:0†source\n\n매수·매도 판단을 원하시면 **현재 보유 여부와 투자 기간**을 알려주세요.",
+      "audio_bytes": 1288800,
+      "citations": 0,
+      "search_attachment": "foundry_agent",
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "elapsed_seconds": 24.203,
+      "success": true
+    }
+  ]
+}

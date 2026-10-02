@@ -1,0 +1,148 @@
+{
+  "recorded_at_utc": "2026-09-23T11:45:13.987985+00:00",
+  "evidence_scope": "Actual app WebSocket (browser protocol) with text input for each pipeline and provider. Not microphone, playback, answer-accuracy or latency benchmarking.",
+  "app": "http://localhost:8125",
+  "api_version": "2026-07-15",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "note": "Bing Agent-tool rerun after instructing the model to pass the user's full request instead of keywords (_03: gpt-realtime-mini sent only 삼성전자 주식 and the Bing Agent asked a clarifying question).",
+  "checks": [
+    {
+      "id": "stt_llm_tts_bing_gpt5mini",
+      "provider": "bing",
+      "voice_options": {
+        "connection_mode": "model_search",
+        "llm_model": "gpt-5-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 19,
+        "transcript": 88,
+        "activity": 2,
+        "usage": 2,
+        "response_done": 2,
+        "audio": 108,
+        "citation": 2,
+        "tool": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 1,
+        "tool.arguments_ready": 1,
+        "tool.in_progress": 1,
+        "audio.started": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "status": null,
+          "argument_keys": [
+            "input"
+          ],
+          "input": "사용자 요청(원문): 삼성전자 주식 찾아줘.\n앱 내비게이션 맥락: 별도 앱 맥락 없음\n대화 기준시각: 2026-09-23T20:43:38+09:00\n요청 설명: 사용자가 '삼성전자 주식 찾아줘'라고 요청했습니다. 한국어로 답변해 주세요. 가능한 최신 시세, 거래소(코스피), 종목 코드, 시가총액, 최근 변동, 거래시간, 시세 확인 방법(앱/웹) 등을 제공해 주세요. 추가로 사용자가 가격 알림 설정이나 더 상세한 재무정보(배당, PER, EPS 등)를 원하면 어떻게 요청하면 되는지도 알려 주세요.",
+          "output_chars": 421
+        }
+      ],
+      "followup_requests": 0,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "삼성전자 **(005930)**를 찾았습니다. **코스피(KOSPI)** 종목이며, 검색으로 확인된 최근 자료 기준 **2026년 9월 22일 종가 276,500원, 전일 대비 +2,500원(+0.91%), 시가총액 약 1,616.5조 원**입니다. 다만 검색 결과 간 시점이 달라 현재 실시간 가격으로 단정할 수는 없습니다. 【5:3†source】\n\n- **거래시간:** 한국거래소 정규장 평일 09:00~15:30  \n- **시세 확인:** 증권사 앱에서 `삼성전자` 또는 `005930` 검색, 또는 네이버페이 증권·Google Finance에서 확인할 수 있습니다. 【5:2†source】\n- 가격 알림은 “삼성전자 〇〇원 되면 알려줘”처럼 말씀하시면 되고, 배당·PER·EPS 등은 “삼성전자 재무정보 보여줘”라고 요청하시면 됩니다.",
+      "audio_bytes": 2568600,
+      "citations": 2,
+      "search_attachment": "foundry_agent",
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "assistant_finals": [
+        "삼성전자 **(005930)**를 찾았습니다. **코스피(KOSPI)** 종목이며, 검색으로 확인된 최근 자료 기준 **2026년 9월 22일 종가 276,500원, 전일 대비 +2,500원(+0.91%), 시가총액 약 1,616.5조 원**입니다. 다만 검색 결과 간 시점이 달라 현재 실시간 가격으로 단정할 수는 없습니다. 【5:3†source】\n\n- **거래시간:** 한국거래소 정규장 평일 09:00~15:30  \n- **시세 확인:** 증권사 앱에서 `삼성전자` 또는 `005930` 검색, 또는 네이버페이 증권·Google Finance에서 확인할 수 있습니다. 【5:2†source】\n- 가격 알림은 “삼성전자 〇〇원 되면 알려줘”처럼 말씀하시면 되고, 배당·PER·EPS 등은 “삼성전자 재무정보 보여줘”라고 요청하시면 됩니다."
+      ],
+      "elapsed_seconds": 46.251,
+      "success": true
+    },
+    {
+      "id": "e2e_bing_realtime_mini",
+      "provider": "bing",
+      "voice_options": {
+        "connection_mode": "realtime_agent_tool",
+        "realtime_model": "gpt-realtime-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 19,
+        "transcript": 35,
+        "activity": 2,
+        "usage": 2,
+        "response_done": 2,
+        "tool": 1,
+        "audio": 18
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 1,
+        "tool.arguments_ready": 1,
+        "tool.in_progress": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "status": null,
+          "argument_keys": [
+            "input"
+          ],
+          "input": "삼성전자 주식",
+          "output_chars": 59
+        }
+      ],
+      "followup_requests": 0,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "삼성전자 주식의 **현재 주가, 전망, 실적, 배당, 또는 매수 판단** 중 어떤 정보가 필요하신가요?",
+      "audio_bytes": 406800,
+      "citations": 0,
+      "search_attachment": "foundry_agent",
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "assistant_finals": [
+        "삼성전자 주식의 **현재 주가, 전망, 실적, 배당, 또는 매수 판단** 중 어떤 정보가 필요하신가요?"
+      ],
+      "elapsed_seconds": 57.293,
+      "success": true
+    }
+  ]
+}

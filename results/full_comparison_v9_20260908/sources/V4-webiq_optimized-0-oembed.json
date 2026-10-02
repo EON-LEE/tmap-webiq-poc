@@ -1,0 +1,15 @@
+{
+  "id": "V4-webiq_optimized-0-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dx0Gp32X2c6Y&format=json",
+  "fetched_at": "2026-09-08T09:01:18.177333+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dx0Gp32X2c6Y&format=json",
+  "content_sha256": "8502e716685c8b99127945c9aec7c7d33d739507263d683b7736e956746c42f6",
+  "content_bytes": 1176,
+  "text": "{\"title\":\"\\ud604\\ub300 \\ube14\\ub8e8\\ub9c1\\ud06c \\ucc98\\uc74c \\uc4f0\\uc2dc\\uba74 \\uc774 \\uc601\\uc0c1 \\uaf2d \\ubcf4\\uc138\\uc694 I \\uac00\\uc785, \\uc0ac\\uc6a9\\ubc95, \\uc5f0\\ub3d9 \\ubc29\\ubc95, \\uafc0\\uae30\\ub2a5 \\ucd1d\\uc815\\ub9ac\",\"author_name\":\"\\uce74\\ubca0\\uc774 CARBAY\",\"author_url\":\"https://www.youtube.com/@carbaytube\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/x0Gp32X2c6Y/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/x0Gp32X2c6Y?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022\\ud604\\ub300 \\ube14\\ub8e8\\ub9c1\\ud06c \\ucc98\\uc74c \\uc4f0\\uc2dc\\uba74 \\uc774 \\uc601\\uc0c1 \\uaf2d \\ubcf4\\uc138\\uc694 I \\uac00\\uc785, \\uc0ac\\uc6a9\\ubc95, \\uc5f0\\ub3d9 \\ubc29\\ubc95, \\uafc0\\uae30\\ub2a5 \\ucd1d\\uc815\\ub9ac\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

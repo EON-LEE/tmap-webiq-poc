@@ -1,0 +1,12 @@
+{
+  "B4-parking-tab": "https://seoulland.co.kr/?p=12&tabs=3",
+  "W2-parking": "https://www.airport.co.kr/gimpo/cms/frCon/index.do?MENU_ID=140",
+  "F4-http": "http://www.smbs.biz/ExRate/TodayExRate.jsp",
+  "F3-yahoo": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?period1=1788393600&period2=1788825600&interval=1d",
+  "V2-search": "https://www.youtube.com/results?search_query=EV6+%EA%B8%89%EC%86%8D%EC%B6%A9%EC%A0%84+%EA%B8%B0%EC%95%84",
+  "V3-search": "https://www.youtube.com/results?search_query=%ED%83%80%EC%9D%B4%EC%96%B4%EB%B1%85%ED%81%AC+%EA%B3%B5%EA%B8%B0%EC%95%95+%EC%85%80%ED%94%84",
+  "V4-search": "https://www.youtube.com/results?search_query=%ED%98%84%EB%8C%80%EC%9E%90%EB%8F%99%EC%B0%A8+%EB%B8%94%EB%A3%A8%EB%A7%81%ED%81%AC+%EC%B0%A8%EB%9F%89+%EB%93%B1%EB%A1%9D",
+  "V5-search": "https://www.youtube.com/results?search_query=%ED%98%84%EB%8C%80%EC%9E%90%EB%8F%99%EC%B0%A8+%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C+%EC%98%A4%ED%86%A0+%EC%9C%A0%EC%84%A0",
+  "N4-government": "https://www.korea.kr/search.do?query=%EA%B3%A0%EC%86%8D%EB%8F%84%EB%A1%9C%20%EC%B6%A9%EC%A0%84%EC%86%8C",
+  "N5-government": "https://www.korea.kr/search.do?query=2026%20%EC%B6%94%EC%84%9D%20%ED%86%B5%ED%96%89%EB%A3%8C"
+}

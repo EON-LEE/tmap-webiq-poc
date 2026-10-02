@@ -1,0 +1,17 @@
+{
+  "id": "F5-tsla",
+  "url": "https://api.nasdaq.com/api/quote/TSLA/historical?assetclass=stocks&fromdate=2026-09-01&todate=2026-09-08&limit=10",
+  "fetched_at": "2026-09-08T08:48:59.240672+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://api.nasdaq.com/api/quote/TSLA/historical?assetclass=stocks&fromdate=2026-09-01&todate=2026-09-08&limit=10",
+  "content_sha256": "f2d4307c9833d9d14cc0899e27710615ca3aef0c446adff422c5171ba6e75903",
+  "content_bytes": 718,
+  "text": "{\"data\":{\"symbol\":\"TSLA\",\"totalRecords\":4,\"tradesTable\":{\"asOf\":null,\"headers\":{\"date\":\"Date\",\"close\":\"Close/Last\",\"volume\":\"Volume\",\"open\":\"Open\",\"high\":\"High\",\"low\":\"Low\"},\"rows\":[{\"date\":\"09/04/2026\",\"close\":\"$354.08\",\"volume\":\"65,018,210\",\"open\":\"$362.07\",\"high\":\"$364.69\",\"low\":\"$351.3201\"},{\"date\":\"09/03/2026\",\"close\":\"$376.365\",\"volume\":\"63,600,990\",\"open\":\"$365.82\",\"high\":\"$384.04\",\"low\":\"$365.82\"},{\"date\":\"09/02/2026\",\"close\":\"$357.01\",\"volume\":\"33,951,910\",\"open\":\"$360.41\",\"high\":\"$360.62\",\"low\":\"$349.92\"},{\"date\":\"09/01/2026\",\"close\":\"$356.09\",\"volume\":\"36,193,930\",\"open\":\"$360.90\",\"high\":\"$362.70\",\"low\":\"$352.96\"}]}},\"message\":null,\"status\":{\"rCode\":200,\"bCodeMessage\":null,\"developerMessage\":null}}",
+  "links": [],
+  "short_review_excerpts": [
+    "en\":\"Open\",\"high\":\"High\",\"low\":\"Low\"},\"rows\":[{\"date\":\"09/04/2026\",\"close\":\"$354.08\",\"volume\":\"65,018,210\",\"open\":\"$362.07\",\"high\":\"$364.69\",\"low\":\"$351.3201\"},{\"date\":\"09/03/2026\",\"close\":\"$376.365\",\"volume\":\"63,600,990\",\"open\":\"$365.82\",\"high\":\"$384.04\",\"low\":\"$365.82\"},{\"date\":\"09/02/2026\",\""
+  ],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

@@ -1,0 +1,15 @@
+{
+  "id": "V5-webiq_optimized-2-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DPeHUcOUCpb8&format=json",
+  "fetched_at": "2026-09-08T09:01:20.954053+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DPeHUcOUCpb8&format=json",
+  "content_sha256": "ad4a9b66e71e0824c38772ee6fa0151a50ae71e292f412c57546fca3fd0843b0",
+  "content_bytes": 931,
+  "text": "{\"title\":\"How to Connect Your Hyundai to Android Auto | Android Auto Setup for Hyundai i10, i20, i30\",\"author_name\":\"ProgrammingKnowledge2\",\"author_url\":\"https://www.youtube.com/@ProgrammingKnowledge2\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/PeHUcOUCpb8/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/PeHUcOUCpb8?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022How to Connect Your Hyundai to Android Auto | Android Auto Setup for Hyundai i10, i20, i30\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

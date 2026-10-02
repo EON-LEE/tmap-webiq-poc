@@ -1,0 +1,733 @@
+{
+  "recorded_at_utc": "2026-09-23T10:30:12.315682+00:00",
+  "evidence_scope": "Actual Voice Live service behaviour for explicit session tool configurations with text input. Capability evidence only: not answer accuracy, latency benchmarking, microphone or playback validation.",
+  "api_version": "2026-07-15",
+  "sdk": "azure-ai-voicelive 1.3.0",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "checks": [
+    {
+      "id": "cascaded_text_gpt41mini_webiq_agent_tool",
+      "category": "cascaded_stt_llm_tts",
+      "requested_model": "gpt-4.1-mini",
+      "declared_tools": [
+        {
+          "type": "foundry_agent",
+          "agent_name": "tmap-voice-webiq",
+          "agent_version": "1",
+          "return_agent_response_directly": false
+        }
+      ],
+      "prompt": "삼성전자 주식 찾아줘.",
+      "input_mode": "text",
+      "started_at": "2026-09-23T10:28:39.407277+00:00",
+      "session_accepted": true,
+      "service_session_model": "gpt-4.1-mini",
+      "echoed_tool_types": [
+        "foundry_agent"
+      ],
+      "errors": [],
+      "event_counts": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 3,
+        "response.created": 2,
+        "response.output_item.added": 2,
+        "response.foundry_agent_call_arguments.delta": 11,
+        "response.foundry_agent_call_arguments.done": 1,
+        "response.foundry_agent_call.in_progress": 2,
+        "response.done": 2,
+        "response.foundry_agent_call.completed": 1,
+        "response.output_item.done": 2,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 31,
+        "response.audio.delta": 21,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1
+      },
+      "tool_items": [
+        {
+          "event": "response.output_item.added",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-webiq",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-webiq",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "input"
+            ],
+            "input": "삼성전자 주식 현재가"
+          },
+          "output_chars": 110
+        }
+      ],
+      "responses": [
+        {
+          "status": "completed",
+          "output_types": [
+            "foundry_agent_call"
+          ]
+        },
+        {
+          "status": "completed",
+          "output_types": [
+            "message"
+          ]
+        }
+      ],
+      "assistant_text": [
+        "삼성전자 주식 현재가는 285,500원입니다. 전일 대비 9,000원, 3.26% 상승했습니다."
+      ],
+      "audio_bytes": 463200,
+      "usage": [
+        {
+          "total_tokens": 130,
+          "input_tokens": 106,
+          "output_tokens": 24,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 106,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 24,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0
+          }
+        },
+        {
+          "total_tokens": 554,
+          "input_tokens": 330,
+          "output_tokens": 224,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 330,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 32,
+            "audio_tokens": 192,
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "manual_followup_requests": 0,
+      "elapsed_seconds": 22.396,
+      "completed_with_answer": true,
+      "observed_call_types": [
+        "foundry_agent_call"
+      ]
+    },
+    {
+      "id": "cascaded_text_gpt5mini_webiq_and_bing_agent_tools",
+      "category": "cascaded_stt_llm_tts",
+      "requested_model": "gpt-5-mini",
+      "declared_tools": [
+        {
+          "type": "foundry_agent",
+          "agent_name": "tmap-voice-webiq",
+          "agent_version": "1",
+          "return_agent_response_directly": false
+        },
+        {
+          "type": "foundry_agent",
+          "agent_name": "tmap-voice-bing",
+          "agent_version": "1",
+          "return_agent_response_directly": false
+        }
+      ],
+      "prompt": "삼성전자 주식 찾아줘.",
+      "input_mode": "text",
+      "started_at": "2026-09-23T10:29:01.801032+00:00",
+      "session_accepted": true,
+      "service_session_model": "gpt-5-mini",
+      "echoed_tool_types": [
+        "foundry_agent",
+        "foundry_agent"
+      ],
+      "errors": [],
+      "event_counts": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 6,
+        "response.created": 3,
+        "response.output_item.added": 4,
+        "response.foundry_agent_call_arguments.delta": 29,
+        "response.foundry_agent_call_arguments.done": 3,
+        "response.foundry_agent_call.in_progress": 6,
+        "response.done": 3,
+        "response.foundry_agent_call.completed": 3,
+        "response.output_item.done": 4,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 99,
+        "response.audio.delta": 65,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1
+      },
+      "tool_items": [
+        {
+          "event": "response.output_item.added",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-webiq",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.added",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-webiq",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "input"
+            ],
+            "input": "삼성전자 주식 현재 시세"
+          },
+          "output_chars": 118
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "input"
+            ],
+            "input": "Samsung Electronics stock price current"
+          },
+          "output_chars": 125
+        },
+        {
+          "event": "response.output_item.added",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "input"
+            ],
+            "input": "삼성전자 주식 현재 시세"
+          },
+          "output_chars": 131
+        }
+      ],
+      "responses": [
+        {
+          "status": "completed",
+          "output_types": [
+            "foundry_agent_call",
+            "foundry_agent_call"
+          ]
+        },
+        {
+          "status": "completed",
+          "output_types": [
+            "foundry_agent_call"
+          ]
+        },
+        {
+          "status": "completed",
+          "output_types": [
+            "message"
+          ]
+        }
+      ],
+      "assistant_text": [
+        "WebIQ: 삼성전자(005930) 현재 시세 285,500원, 전일 대비 9,000원(3.26%) 상승(검색시각 2026-09-23 오후 7:09). \nBing: 삼성전자(005930) 현재가 285,500원, 전일 대비 9,000원(+3.25%) 상승(검색시각 2026-09-23 오후 3:30경)."
+      ],
+      "audio_bytes": 1516800,
+      "usage": [
+        {
+          "total_tokens": 338,
+          "input_tokens": 265,
+          "output_tokens": 73,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 265,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 73,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0
+          }
+        },
+        {
+          "total_tokens": 585,
+          "input_tokens": 557,
+          "output_tokens": 28,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 557,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 28,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0
+          }
+        },
+        {
+          "total_tokens": 2711,
+          "input_tokens": 1864,
+          "output_tokens": 847,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 1864,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 216,
+            "audio_tokens": 631,
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "manual_followup_requests": 0,
+      "elapsed_seconds": 26.18,
+      "completed_with_answer": true,
+      "observed_call_types": [
+        "foundry_agent_call"
+      ]
+    },
+    {
+      "id": "e2e_realtime_mini_webiq_and_bing_agent_tools",
+      "category": "native_realtime_speech_to_speech",
+      "requested_model": "gpt-realtime-mini",
+      "declared_tools": [
+        {
+          "type": "foundry_agent",
+          "agent_name": "tmap-voice-webiq",
+          "agent_version": "1",
+          "return_agent_response_directly": false
+        },
+        {
+          "type": "foundry_agent",
+          "agent_name": "tmap-voice-bing",
+          "agent_version": "1",
+          "return_agent_response_directly": false
+        }
+      ],
+      "prompt": "삼성전자 주식 찾아줘.",
+      "input_mode": "text",
+      "started_at": "2026-09-23T10:29:27.977127+00:00",
+      "session_accepted": true,
+      "service_session_model": "gpt-realtime-mini-global-standard",
+      "echoed_tool_types": [
+        "foundry_agent",
+        "foundry_agent"
+      ],
+      "errors": [],
+      "event_counts": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 4,
+        "response.created": 3,
+        "response.output_item.added": 3,
+        "response.foundry_agent_call_arguments.delta": 32,
+        "response.foundry_agent_call_arguments.done": 2,
+        "response.foundry_agent_call.in_progress": 4,
+        "response.done": 3,
+        "response.foundry_agent_call.completed": 2,
+        "response.output_item.done": 3,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 65,
+        "response.audio.delta": 41,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1
+      },
+      "tool_items": [
+        {
+          "event": "response.output_item.added",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-webiq",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-webiq",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "input"
+            ],
+            "input": "삼성전자 주식 현재 가격"
+          },
+          "output_chars": 97
+        },
+        {
+          "event": "response.output_item.added",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": false
+          }
+        },
+        {
+          "event": "response.output_item.done",
+          "type": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "server_label": null,
+          "status": null,
+          "arguments": {
+            "parseable": true,
+            "keys": [
+              "input"
+            ],
+            "input": "삼성전자 주식 현재 가격"
+          },
+          "output_chars": 116
+        }
+      ],
+      "responses": [
+        {
+          "status": "completed",
+          "output_types": [
+            "foundry_agent_call"
+          ]
+        },
+        {
+          "status": "completed",
+          "output_types": [
+            "foundry_agent_call"
+          ]
+        },
+        {
+          "status": "completed",
+          "output_types": [
+            "message"
+          ]
+        }
+      ],
+      "assistant_text": [
+        "WebIQ에 따르면 삼성전자 주가는 현재 285,500원이고, 전일 대비 9,000원(3.26%) 상승했어요. Bing에서는 같은 주가(285,500원)로 확인되며, 전일 대비 상승률은 3.25%로 나왔습니다."
+      ],
+      "audio_bytes": 956400,
+      "usage": [
+        {
+          "total_tokens": 205,
+          "input_tokens": 175,
+          "output_tokens": 30,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 175,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 30,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0
+          }
+        },
+        {
+          "total_tokens": 399,
+          "input_tokens": 369,
+          "output_tokens": 30,
+          "input_token_details": {
+            "cached_tokens": 192,
+            "text_tokens": 369,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 192,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 30,
+            "audio_tokens": 0,
+            "reasoning_tokens": 0
+          }
+        },
+        {
+          "total_tokens": 1053,
+          "input_tokens": 588,
+          "output_tokens": 465,
+          "input_token_details": {
+            "cached_tokens": 384,
+            "text_tokens": 588,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 384,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 67,
+            "audio_tokens": 398,
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "manual_followup_requests": 0,
+      "elapsed_seconds": 27.251,
+      "completed_with_answer": true,
+      "observed_call_types": [
+        "foundry_agent_call"
+      ]
+    },
+    {
+      "id": "cascaded_text_gpt41mini_direct_mcp_public_learn",
+      "category": "cascaded_stt_llm_tts",
+      "requested_model": "gpt-4.1-mini",
+      "declared_tools": [
+        {
+          "type": "mcp",
+          "server_label": "microsoft_learn",
+          "server_url": "https://learn.microsoft.com/api/mcp",
+          "require_approval": "never"
+        }
+      ],
+      "prompt": "Microsoft Learn에서 Azure Voice Live가 무엇인지 찾아서 알려줘.",
+      "input_mode": "text",
+      "started_at": "2026-09-23T10:29:55.225846+00:00",
+      "session_accepted": true,
+      "service_session_model": "gpt-4.1-mini",
+      "echoed_tool_types": [
+        "mcp"
+      ],
+      "errors": [],
+      "event_counts": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 3,
+        "mcp_list_tools.in_progress": 1,
+        "response.created": 1,
+        "mcp_list_tools.completed": 1,
+        "response.output_item.added": 1,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 48,
+        "response.audio.delta": 29,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1,
+        "response.output_item.done": 1,
+        "response.done": 1
+      },
+      "tool_items": [
+        {
+          "event": "conversation.item.created",
+          "type": "mcp_list_tools",
+          "server_label": "microsoft_learn",
+          "tool_names": []
+        }
+      ],
+      "responses": [
+        {
+          "status": "completed",
+          "output_types": [
+            "message"
+          ]
+        }
+      ],
+      "assistant_text": [
+        "Azure Voice Live는 Microsoft Learn에서 제공하는 실시간 음성 인식 및 변환 서비스입니다. 이 서비스는 음성을 텍스트로 변환하고, 실시간으로 음성 기반 상호작용을 가능하게 합니다."
+      ],
+      "audio_bytes": 670800,
+      "usage": [
+        {
+          "total_tokens": 386,
+          "input_tokens": 58,
+          "output_tokens": 328,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 58,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 49,
+            "audio_tokens": 279,
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "manual_followup_requests": 0,
+      "elapsed_seconds": 10.037,
+      "completed_with_answer": true,
+      "observed_call_types": []
+    },
+    {
+      "id": "e2e_realtime_mini_direct_mcp_public_learn",
+      "category": "native_realtime_speech_to_speech",
+      "requested_model": "gpt-realtime-mini",
+      "declared_tools": [
+        {
+          "type": "mcp",
+          "server_label": "microsoft_learn",
+          "server_url": "https://learn.microsoft.com/api/mcp",
+          "require_approval": "never"
+        }
+      ],
+      "prompt": "Microsoft Learn에서 Azure Voice Live가 무엇인지 찾아서 알려줘.",
+      "input_mode": "text",
+      "started_at": "2026-09-23T10:30:05.264040+00:00",
+      "session_accepted": true,
+      "service_session_model": "gpt-realtime-mini-global-standard",
+      "echoed_tool_types": [
+        "mcp"
+      ],
+      "errors": [],
+      "event_counts": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 3,
+        "mcp_list_tools.in_progress": 1,
+        "response.created": 1,
+        "response.output_item.added": 1,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 6,
+        "response.audio.delta": 7,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1,
+        "response.output_item.done": 1,
+        "response.done": 1
+      },
+      "tool_items": [
+        {
+          "event": "conversation.item.created",
+          "type": "mcp_list_tools",
+          "server_label": "microsoft_learn",
+          "tool_names": []
+        }
+      ],
+      "responses": [
+        {
+          "status": "completed",
+          "output_types": [
+            "message"
+          ]
+        }
+      ],
+      "assistant_text": [
+        "search(\"Azure Voice Live\")"
+      ],
+      "audio_bytes": 135600,
+      "usage": [
+        {
+          "total_tokens": 121,
+          "input_tokens": 51,
+          "output_tokens": 70,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 51,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 14,
+            "audio_tokens": 56,
+            "reasoning_tokens": 0
+          }
+        }
+      ],
+      "manual_followup_requests": 0,
+      "elapsed_seconds": 7.056,
+      "completed_with_answer": true,
+      "observed_call_types": []
+    }
+  ]
+}

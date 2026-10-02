@@ -1,0 +1,38 @@
+{
+  "id": "F1-naver",
+  "url": "https://finance.naver.com/item/sise_day.naver?code=005930&page=1",
+  "fetched_at": "2026-09-08T08:48:59.183103+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://finance.naver.com/item/sise_day.naver?code=005930&page=1",
+  "content_sha256": "bc45521e132df9404c3a2f17d595c0485f935fe5922610a33477b738a359ab6b",
+  "content_bytes": 10646,
+  "text": "Npay 증권\n일별\n시세\n날짜\n종가\n전일비\n시가\n고가\n저가\n거래량\n2026.09.08\n269,500\n하락\n500\n272,000\n279,000\n269,000\n22,563,172\n2026.09.07\n270,000\n상승\n14,500\n267,000\n270,000\n264,000\n18,314,016\n2026.09.04\n255,500\n상승\n5,500\n254,000\n259,000\n252,500\n14,031,862\n2026.09.03\n250,000\n하락\n500\n254,000\n255,000\n243,000\n13,756,022\n2026.09.02\n250,500\n하락\n10,500\n252,000\n255,500\n249,500\n15,176,841\n2026.09.01\n261,000\n상승\n1,000\n256,500\n262,500\n254,000\n15,319,615\n2026.08.31\n260,000\n상승\n3,000\n249,000\n260,000\n246,000\n18,270,969\n2026.08.28\n257,000\n하락\n9,000\n262,500\n266,000\n256,000\n15,106,746\n2026.08.27\n266,000\n상승\n4,500\n270,000\n271,000\n262,500\n16,829,395\n2026.08.26\n261,500\n상승\n4,500\n256,500\n266,500\n255,500\n19,532,523\n페이지 네비게이션\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n다음\n맨뒤",
+  "links": [
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/newstock.css",
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/common.css",
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/finance_header.css",
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/layout.css",
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/main.css",
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/newstock2.css",
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/newstock3.css",
+    "https://ssl.pstatic.net/imgstock/static.pc/20260827132721/css/world.css",
+    "/item/sise_day.naver?code=005930&amp;page=1",
+    "/item/sise_day.naver?code=005930&amp;page=2",
+    "/item/sise_day.naver?code=005930&amp;page=3",
+    "/item/sise_day.naver?code=005930&amp;page=4",
+    "/item/sise_day.naver?code=005930&amp;page=5",
+    "/item/sise_day.naver?code=005930&amp;page=6",
+    "/item/sise_day.naver?code=005930&amp;page=7",
+    "/item/sise_day.naver?code=005930&amp;page=8",
+    "/item/sise_day.naver?code=005930&amp;page=9",
+    "/item/sise_day.naver?code=005930&amp;page=10",
+    "/item/sise_day.naver?code=005930&amp;page=11",
+    "/item/sise_day.naver?code=005930&amp;page=756"
+  ],
+  "short_review_excerpts": [
+    "9.08\n269,500\n하락\n500\n272,000\n279,000\n269,000\n22,563,172\n2026.09.07\n270,000\n상승\n14,500\n267,000\n270,000\n264,000\n18,314,016\n2026.09.04\n255,500\n상승\n5,500\n254,000\n259,000\n252,500\n14,031,862\n2026.09.03\n250,000\n하락\n500\n254,000\n255,000\n243,000\n13,756,022\n2026.09.02\n250,500\n하락\n10,500\n252,000\n255,500\n249,500"
+  ],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

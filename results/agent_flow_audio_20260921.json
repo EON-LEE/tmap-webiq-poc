@@ -1,0 +1,341 @@
+{
+  "recorded_at_utc": "2026-09-21T02:32:53.210320+00:00",
+  "evidence_scope": "Actual Voice Live TTS fixture sent as real-time PCM through the updated app WebSocket to actual STT, WebIQ and TTS. Not a browser AudioWorklet or physical microphone/speaker test.",
+  "provider": "webiq",
+  "response_events_mocked": false,
+  "physical_microphone": false,
+  "physical_speaker": false,
+  "flow": [
+    {
+      "stage": "connection",
+      "status": "connecting",
+      "operation": "connect",
+      "source_event": null,
+      "data_fields": [
+        "agent",
+        "api_version",
+        "connection_mode",
+        "endpoint_host",
+        "foundry_resource_override",
+        "project_name",
+        "target_scope"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "connection",
+      "status": "connected",
+      "operation": "connect",
+      "source_event": null,
+      "data_fields": [],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "request",
+      "status": "sent",
+      "operation": "session.update",
+      "source_event": null,
+      "data_fields": [
+        "input_audio_format",
+        "input_audio_sampling_rate",
+        "input_audio_transcription",
+        "output_audio_format",
+        "turn_detection",
+        "voice"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "session",
+      "status": "created",
+      "operation": null,
+      "source_event": "session.created",
+      "data_fields": [
+        "input_audio_format",
+        "input_audio_sampling_rate",
+        "input_audio_transcription",
+        "model_scope",
+        "output_audio_format",
+        "service_model",
+        "service_session_id",
+        "turn_detection",
+        "voice"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "session",
+      "status": "updated",
+      "operation": null,
+      "source_event": "session.updated",
+      "data_fields": [
+        "input_audio_format",
+        "input_audio_sampling_rate",
+        "input_audio_transcription",
+        "model_scope",
+        "output_audio_format",
+        "service_model",
+        "service_session_id",
+        "turn_detection",
+        "voice"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "request",
+      "status": "sent",
+      "operation": "conversation.item.create",
+      "source_event": null,
+      "data_fields": [
+        "content_omitted",
+        "purpose",
+        "role"
+      ],
+      "item_id_provided": true,
+      "response_id_provided": false
+    },
+    {
+      "stage": "input",
+      "status": "received",
+      "operation": "browser.audio",
+      "source_event": null,
+      "data_fields": [
+        "first_frame_bytes",
+        "format",
+        "input_mode",
+        "sample_rate"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "request",
+      "status": "sent",
+      "operation": "input_audio_buffer.append",
+      "source_event": null,
+      "data_fields": [
+        "first_frame_bytes",
+        "input_mode"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "speech",
+      "status": "started",
+      "operation": null,
+      "source_event": "input_audio_buffer.speech_started",
+      "data_fields": [
+        "audio_start_ms"
+      ],
+      "item_id_provided": true,
+      "response_id_provided": false
+    },
+    {
+      "stage": "speech",
+      "status": "stopped",
+      "operation": null,
+      "source_event": "input_audio_buffer.speech_stopped",
+      "data_fields": [
+        "audio_end_ms"
+      ],
+      "item_id_provided": true,
+      "response_id_provided": false
+    },
+    {
+      "stage": "input",
+      "status": "committed",
+      "operation": null,
+      "source_event": "input_audio_buffer.committed",
+      "data_fields": [],
+      "item_id_provided": true,
+      "response_id_provided": false
+    },
+    {
+      "stage": "input",
+      "status": "accepted",
+      "operation": null,
+      "source_event": "conversation.item.created",
+      "data_fields": [
+        "role"
+      ],
+      "item_id_provided": true,
+      "response_id_provided": false
+    },
+    {
+      "stage": "response",
+      "status": "created",
+      "operation": null,
+      "source_event": "response.created",
+      "data_fields": [
+        "status"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": true
+    },
+    {
+      "stage": "tool_discovery",
+      "status": "catalog_observed",
+      "operation": null,
+      "source_event": "conversation.item.created",
+      "data_fields": [
+        "server_label",
+        "tools",
+        "tools_truncated"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "tool_discovery",
+      "status": "in_progress",
+      "operation": null,
+      "source_event": "mcp_list_tools.in_progress",
+      "data_fields": [],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "tool_discovery",
+      "status": "completed",
+      "operation": null,
+      "source_event": "mcp_list_tools.completed",
+      "data_fields": [],
+      "item_id_provided": false,
+      "response_id_provided": false
+    },
+    {
+      "stage": "tool",
+      "status": "announced",
+      "operation": null,
+      "source_event": "response.output_item.added",
+      "data_fields": [
+        "arguments_observed",
+        "arguments_parseable",
+        "kind",
+        "name",
+        "server_label"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": true
+    },
+    {
+      "stage": "tool",
+      "status": "in_progress",
+      "operation": null,
+      "source_event": "response.mcp_call.in_progress",
+      "data_fields": [
+        "kind",
+        "name"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": true
+    },
+    {
+      "stage": "tool",
+      "status": "arguments_ready",
+      "operation": null,
+      "source_event": "response.mcp_call_arguments.done",
+      "data_fields": [
+        "arguments",
+        "arguments_filtered",
+        "arguments_observed",
+        "arguments_parseable",
+        "kind",
+        "name"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": true
+    },
+    {
+      "stage": "tool",
+      "status": "completed",
+      "operation": null,
+      "source_event": "response.mcp_call.completed",
+      "data_fields": [
+        "kind",
+        "name"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": true
+    },
+    {
+      "stage": "tool",
+      "status": "output_observed",
+      "operation": null,
+      "source_event": "response.output_item.done",
+      "data_fields": [
+        "arguments",
+        "arguments_filtered",
+        "arguments_observed",
+        "arguments_parseable",
+        "kind",
+        "name",
+        "server_label"
+      ],
+      "item_id_provided": false,
+      "response_id_provided": true
+    },
+    {
+      "stage": "audio",
+      "status": "started",
+      "operation": null,
+      "source_event": "response.audio.delta",
+      "data_fields": [
+        "scope"
+      ],
+      "item_id_provided": true,
+      "response_id_provided": true
+    },
+    {
+      "stage": "audio",
+      "status": "done",
+      "operation": null,
+      "source_event": "response.audio.done",
+      "data_fields": [
+        "scope"
+      ],
+      "item_id_provided": true,
+      "response_id_provided": true
+    }
+  ],
+  "user_transcripts": [
+    {
+      "text": "삼성전자 주식 찾아줘.",
+      "input_mode": "audio",
+      "source_event": "conversation.item.input_audio_transcription.completed"
+    }
+  ],
+  "tools": [
+    {
+      "name": "finance",
+      "status": "completed",
+      "arguments": {
+        "query": "삼성전자 주가 (한국거래소 005930)",
+        "language": "ko",
+        "region": "KR"
+      }
+    }
+  ],
+  "audio_bytes_received": 787800,
+  "errors": [],
+  "input": {
+    "text": "삼성전자 주식 찾아줘.",
+    "pcm_bytes": 128400,
+    "sample_rate_hz": 24000,
+    "channels": 1,
+    "format": "PCM16",
+    "synthetic_source": "Actual Azure Voice Live TTS"
+  },
+  "assistant_final": "삼성전자(005930) 현재 주가는 **271,500원**입니다. 전일 대비 **10,500원(4.02%) 상승**했으며, 2026년 9월 21일 오전 11시 13분 기준입니다.",
+  "completion": {
+    "status": "completed",
+    "interrupted": false
+  },
+  "success": true
+}

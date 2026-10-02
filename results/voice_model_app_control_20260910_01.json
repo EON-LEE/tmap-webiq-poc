@@ -1,0 +1,86 @@
+{
+  "scope": "Small live connection checks, not a performance benchmark or a physical microphone/speaker test.",
+  "local_startup_note": "One local HTTP protocol attempt was refused before the restarted server was ready. It sent no Voice Live request. The recorded app-command check ran after /healthz returned ok.",
+  "checks": [
+    {
+      "provider": "bing",
+      "started_at": "2026-09-10T13:54:01.229022+00:00",
+      "input_mode": "session_initialization_only",
+      "prompt": null,
+      "ready": true,
+      "audio_bytes": 0,
+      "microphone_tested": false,
+      "audio_playback_tested": false,
+      "answer_quality_evaluated": false,
+      "usage_scope": "Client-visible Voice Live responses; delegated Foundry model usage may require separate server traces.",
+      "citations": [],
+      "observed_tools": [],
+      "usage": [],
+      "service_events": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 1
+      },
+      "voice_options": {
+        "connection_mode": "model_tools",
+        "llm_model": "gpt-4.1-mini",
+        "realtime_model": null,
+        "return_agent_response_directly": null,
+        "transcription_model": "azure-speech",
+        "turn_detection": "azure_semantic_vad_multilingual",
+        "speech_rate": null,
+        "silence_duration_ms": null,
+        "vad_threshold": null,
+        "semantic_threshold": null,
+        "interrupt_response": true,
+        "input_noise_reduction": null,
+        "echo_cancellation": null,
+        "voice_name": "ko-KR-SunHiNeural"
+      },
+      "end_reason": "stopped",
+      "assistant_text": [],
+      "elapsed_seconds": 3.579,
+      "success": true
+    },
+    {
+      "started_at": "2026-09-10T13:59:28.606283+00:00",
+      "input_mode": "text",
+      "prompt": "\ud2f0\ub9f5 \ucf1c\uc918",
+      "microphone_tested": false,
+      "audio_playback_tested": false,
+      "acknowledgement_source": "protocol_probe_not_browser_rendering",
+      "ready": true,
+      "actions": [
+        {
+          "action": "open_app",
+          "state": {
+            "revision": 1,
+            "app_open": true,
+            "phase": "idle",
+            "data_source": "demo_fixture",
+            "location": {
+              "name": "\ud310\uad50\uc5ed \ubd80\uadfc \u00b7 \uc608\uc2dc \uc704\uce58",
+              "point": [520, 525]
+            },
+            "query": "",
+            "results": [],
+            "destination": null,
+            "waypoints": [],
+            "route": null
+          }
+        }
+      ],
+      "audio_bytes": 516600,
+      "assistant_text": [
+        "\ub0b4\ube44\uac8c\uc774\uc158 \ub370\ubaa8 \uc571\uc744 \uc5f4\uc5c8\uc2b5\ub2c8\ub2e4. \ubb34\uc5c7\uc744 \uac80\uc0c9\ud560\uae4c\uc694?",
+        "\ub0b4\ube44\uac8c\uc774\uc158 \ub370\ubaa8 \uc571\uc744 \uc5f4\uc5c8\uc2b5\ub2c8\ub2e4. \uc5b4\ub514\ub85c \uac00\uc2dc\uaca0\uc5b4\uc694?"
+      ],
+      "model_connection": {
+        "configured": true,
+        "errors": []
+      },
+      "elapsed_seconds": 7.897,
+      "success": true
+    }
+  ]
+}
