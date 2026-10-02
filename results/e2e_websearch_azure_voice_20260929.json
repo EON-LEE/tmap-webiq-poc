@@ -1,0 +1,150 @@
+{
+  "recorded_at_utc": "2026-09-29T13:15:40.781Z",
+  "evidence_scope": "Real comparison page in an isolated headless Chrome against the real services. One question sent to both engines at once; the page was sampled every 150 ms to record what each engine column showed while it worked. Not physical microphone/speaker, answer accuracy or latency benchmarking.",
+  "input": "voice",
+  "connection_mode": "realtime_agent_tool",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "question": "하이닉스 주식 종가 알려줘.",
+  "thinking_seen": true,
+  "timeline": [
+    {
+      "t_ms": 8132,
+      "provider": "webiq",
+      "phase": "listening",
+      "header": "듣는 중…",
+      "bubble": "말씀을 듣는 중…"
+    },
+    {
+      "t_ms": 8132,
+      "provider": "bing",
+      "phase": "listening",
+      "header": "듣는 중…",
+      "bubble": "말씀을 듣는 중…"
+    },
+    {
+      "t_ms": 10210,
+      "provider": "bing",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Realtime 모델이 음성을 직접 듣고 생각하는 중…"
+    },
+    {
+      "t_ms": 10446,
+      "provider": "webiq",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "WebIQ로 금융 조회 중…"
+    },
+    {
+      "t_ms": 10608,
+      "provider": "bing",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "Bing으로 웹 검색 중…"
+    },
+    {
+      "t_ms": 11077,
+      "provider": "webiq",
+      "phase": "writing",
+      "header": "답변 작성 중…",
+      "bubble": "찾은 결과를 읽고 답변을 준비하는 중…"
+    },
+    {
+      "t_ms": 11233,
+      "provider": "webiq",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 15882,
+      "provider": "webiq",
+      "phase": "done",
+      "header": "응답 0.9초",
+      "bubble": ""
+    },
+    {
+      "t_ms": 19659,
+      "provider": "bing",
+      "phase": "writing",
+      "header": "답변 작성 중…",
+      "bubble": "찾은 결과를 읽고 답변을 준비하는 중…"
+    },
+    {
+      "t_ms": 19820,
+      "provider": "bing",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 20948,
+      "provider": "bing",
+      "phase": "done",
+      "header": "응답 9.6초",
+      "bubble": ""
+    }
+  ],
+  "final": {
+    "question": "음성 질문 · 모델이 음성을 직접 들어요",
+    "cells": [
+      {
+        "provider": "webiq",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 0.9초",
+        "activity": "",
+        "steps": [
+          "input:done:음성 그대로 전달",
+          "think:done:0.2초",
+          "search:done:금융 조회 · 0.5초",
+          "results:done:1건",
+          "answer:done:작성 0.2초"
+        ],
+        "recognized": "",
+        "filler": "",
+        "calls": [
+          "금융 조회완료 · 0.5초 | 검색어 “SK하이닉스 주가”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "SK하이닉스 주가는 현재 1,765,000원이고, 전일 대비 3,000원 하락했습니다. 52주 최고가는 2,987,000원, 최저가는 339,000원입니다. 다른 궁금한 점 있으면 말씀해 주세요.",
+        "timing": "응답 시작 0.9초 · 완료 5.5초",
+        "notice": ""
+      },
+      {
+        "provider": "bing",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 9.6초",
+        "activity": "",
+        "steps": [
+          "input:done:음성 그대로 전달",
+          "think:done:0.4초",
+          "search:done:웹 검색 · 8.9초",
+          "results:done:검색 답변 · 출처 3개",
+          "answer:done:작성 0.3초"
+        ],
+        "recognized": "",
+        "filler": "",
+        "calls": [
+          "웹 검색완료 · 8.9초 | 검색어 “2026년 9월 29일 SK하이닉스 주식 종가”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "2026년 9월 29일 기준 SK하이닉스 주식 종가가 1,765,000원이었습니다.",
+        "timing": "응답 시작 9.6초 · 완료 10.7초",
+        "notice": ""
+      }
+    ],
+    "compare": "응답 시작 · WebIQ 0.9초 · Grounding with Bing 9.6초",
+    "error": "",
+    "overflow": false
+  },
+  "mobile": {
+    "overflow": false,
+    "width": 390
+  },
+  "errors": []
+}

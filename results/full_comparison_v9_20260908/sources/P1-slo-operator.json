@@ -1,0 +1,33 @@
+{
+  "id": "P1-slo-operator",
+  "url": "https://www.instagram.com/slo_gwanggyo/",
+  "fetched_at": "2026-09-08T09:03:30.477631+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.instagram.com/slo_gwanggyo/",
+  "content_sha256": "81088b2d97891c7b0bc9dfb64daca08bf7d78584e50d8a3a9317d1614df569d2",
+  "content_bytes": 619129,
+  "text": "Instagram",
+  "links": [
+    "https://static.cdninstagram.com/rsrc.php/yr/r/rzWiSjZRxk5.webp",
+    "https://static.cdninstagram.com/rsrc.php/yj/r/f01UdNyJjJj.webp",
+    "https://static.cdninstagram.com/rsrc.php/yL/r/mMvhX4currF.webp",
+    "https://static.cdninstagram.com/rsrc.php/yY/r/5OCV_xUyQ5h.webp",
+    "https://static.cdninstagram.com/rsrc.php/y9/r/MptwNl-B2pS.webp",
+    "https://static.cdninstagram.com/rsrc.php/yw/r/icwX0xAk0pz.webp",
+    "https://static.cdninstagram.com/rsrc.php/y4/r/QaBlI0OZiks.ico",
+    "https://static.cdninstagram.com/rsrc.php/v5/yk/l/0,cross/ca1o_FRut-GaetQPuYwQ1Djd6uwu219MPcdN8w6PDpJSs97xFZK--hB.css",
+    "https://static.cdninstagram.com/rsrc.php/v4/y6/r/isxHzFu2R1n.js",
+    "https://static.cdninstagram.com/rsrc.php/v4i1zk4/yD/l/en_US/Q-N1x_SawLTvI3LcDpnPCvcKB3PQaLSYlEUOhZGWoz0WJmfSvWQ8F8pPCR-oqW9HpHLHxpprlSUCf.js",
+    "https://static.cdninstagram.com/rsrc.php/v4i-Vs4/y-/l/en_US/kAWOZco6kMrsMjj3Cuq0OGGwWBrLY6e7AnzavL8iT7sTJvBW_JJiBq2yWr65qRUzSWrji3x1Q01to4k2PBLYyHhejLEvLauqbYTXi4YQTTZBct8x9NzQZcnujaDvEYEbPnszelC2L4aczQLf-ZgNqELTGf0_uye9hpj8kDNZEbAnTtzksSrnTJit4e1GSBvj8_FEnWQR1t99SY3T2e0qnL2dG90HRtKQGwG0ihE-Qx8lcabVTDOwgx-s7CoHn42DHgaRwGYmJZCcc2ZP1Mqonn-JtdZ7PJAdmh5DEndjkKeHWrECl3_n2Jc9FVqcd252S-KrBJoNka.js",
+    "https://static.cdninstagram.com/rsrc.php/v5/yk/l/0,cross/ca1o_FRut-GaetQPuYwQ1Djd6uwu219MPcdN8w6PDpJSs97xFZK--hB.css",
+    "https://static.cdninstagram.com/rsrc.php/v4iDLo4/yO/l/en_US/DMmmu7Ls_sRlQ7INXfQec-z0lMhGbRwzig7ZU8F38lbAnZBS3hTTKtjetQJrOp5xie.js",
+    "https://static.cdninstagram.com/rsrc.php/v4iW5G4/y-/l/en_US/qEf00ctKDOG.js",
+    "https://static.cdninstagram.com/rsrc.php/v5/yC/l/0,cross/fgQe914iiBfONMKn3YhINqU49pVNahkCk.css",
+    "https://static.cdninstagram.com/rsrc.php/v4/yZ/r/vgRLME-NMFN.js",
+    "https://static.cdninstagram.com/rsrc.php/v5/yl/l/0,cross/QvuWABIjhhR.css"
+  ],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

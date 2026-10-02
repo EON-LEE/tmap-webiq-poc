@@ -1,0 +1,10 @@
+{
+  "id": "P3-qooqoo",
+  "url": "https://www.qooqoo.co.kr/bbs/board.php?bo_table=stores&sfl=wr_subject&stx=%EC%9D%BC%EC%82%B0",
+  "fetched_at": "2026-09-08T08:48:59.151704+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "error": "<urlopen error [SSL: DH_KEY_TOO_SMALL] dh key too small (_ssl.c:1081)>",
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

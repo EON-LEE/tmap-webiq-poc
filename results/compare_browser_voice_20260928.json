@@ -1,0 +1,66 @@
+{
+  "recorded_at_utc": "2026-09-28T06:24:14.171Z",
+  "evidence_scope": "Real comparison page in an isolated headless Chrome against the local server and the real services. One question sent to both engines at once. Not physical microphone/speaker, answer accuracy or latency benchmarking.",
+  "input": "Voice Live TTS audio of the question played as Chrome's fake microphone",
+  "question": "서울역 근처 충전소 찾아줘.",
+  "viewport_checks": {
+    "desktop": "1440x1000",
+    "mobile": "390x844",
+    "mobile_overflow": false
+  },
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "page_errors": [],
+  "result": {
+    "cells": [
+      {
+        "provider": "webiq",
+        "status": "done",
+        "steps": [
+          "input:done:음성 인식",
+          "search:done:장소 검색 · 1.5초",
+          "results:done:10건",
+          "answer:done:5.0초"
+        ],
+        "calls": [
+          "장소 검색완료 · 1.5초 | 검색어 “서울역 근처 전기차 충전소” | 결과 10건"
+        ],
+        "results": [
+          "서울역 E-pitEV 충전 스테이션 · 24시간 영업좌표 37.5555, 126.9696e-pit.co.kr",
+          "Tesla SuperchargerEV 충전 스테이션 · 24시간 영업좌표 37.5030, 127.0416tesla.com",
+          "Tesla SuperchargerEV 충전 스테이션 · 24시간 영업좌표 37.5405, 126.9980tesla.com"
+        ],
+        "note": "",
+        "sources": [],
+        "answer": "서울역 근처 충전소로 다음 곳이 확인됩니다.\n\n- 서울역 E-pit: 서울역 인근, 24시간 운영\n- E-pit 충전소: 서울 중구 수하동 67, 24시간 운영\n- 테슬라 데스티네이션 차저: 서울 중구 소월로 20-6, 24시간 운영\n\n실시간 충전기 빈자리와 정확한 요금은 확인되지 않았습니다. 차종이나 충전 방식이 있으면 그에 맞춰 추려드릴게요.",
+        "timing": "응답 시작 5.0초 · 완료 16.0초",
+        "replay": true,
+        "notice": ""
+      },
+      {
+        "provider": "bing",
+        "status": "done",
+        "steps": [
+          "input:done:음성 인식",
+          "search:hidden:Agent 내부 실행 · 비공개",
+          "results:done:출처 1개",
+          "answer:done:4.4초"
+        ],
+        "calls": [],
+        "results": [],
+        "note": "검색이 Agent 안에서 실행되어 검색어와 원본 결과는 공개되지 않습니다. 서비스가 알려준 답변 출처만 표시합니다.",
+        "sources": [
+          "서울역 E-pit (2026 실시간 충전 정보) - 서울특별시 중구 봉래동2가 ...chargekorea.com"
+        ],
+        "answer": "서울역 근처 전기차 충전소를 확인했습니다.\n\n- 서울역 지상 4층 주차장: 약 82m, 충전기 10대 중 9대 이용 가능\n- 서울역 한화역사: 약 118m, 2대 모두 이용 가능\n- 코레일 서울역 KTX빌딩: 약 231m, 2대 모두 이용 가능\n- 서울역 E-pit: 한강대로 405, 24시간 운영·급속 DC콤보 6대 모두 이용 가능으로 확인됩니다. 다만 ",
+        "timing": "응답 시작 4.4초 · 완료 25.7초",
+        "replay": true,
+        "notice": ""
+      }
+    ],
+    "compare": "응답 시작 · WebIQ 5.0초 · Grounding with Bing 4.4초",
+    "status": "WebIQ 답변을 들려주고 있어요.",
+    "error": "",
+    "overflow": false
+  }
+}

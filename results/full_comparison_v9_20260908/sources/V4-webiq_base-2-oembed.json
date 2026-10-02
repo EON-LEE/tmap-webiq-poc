@@ -1,0 +1,15 @@
+{
+  "id": "V4-webiq_base-2-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DxeyEyVL-nYQ&format=json",
+  "fetched_at": "2026-09-08T09:01:19.525305+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DxeyEyVL-nYQ&format=json",
+  "content_sha256": "7c4098754a8352ea2ac47b37293485407de27db24421e634f5d91323fe0e6bb3",
+  "content_bytes": 1323,
+  "text": "{\"title\":\"\\ud604\\ub300 \\ube14\\ub8e8\\ub9c1\\ud06c \\ubaa8\\ub4e0 \\uae30\\ub2a5 \\uc27d\\uac8c \\uc54c\\ub824\\ub4dc\\ub9bd\\ub2c8\\ub2e4! \\u0022\\ud074\\ub9ad \\ud55c \\ubc88\\uc5d0 \\ub0b4 \\ucc28 \\uad00\\ub9ac \\ub05d\\u0022 \\uac00\\uc785\\ubc29\\ubc95, \\uc0ac\\uc6a9\\ubc95, \\uafc0\\uae30\\ub2a5\\uae4c\\uc9c0\",\"author_name\":\"\\uc5d0\\uc774\\uc6d0\\uc624\\ud1a0 \\uc11c\\ubc31\\ub85c\",\"author_url\":\"https://www.youtube.com/@A1auto-official\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/xeyEyVL-nYQ/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/xeyEyVL-nYQ?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022\\ud604\\ub300 \\ube14\\ub8e8\\ub9c1\\ud06c \\ubaa8\\ub4e0 \\uae30\\ub2a5 \\uc27d\\uac8c \\uc54c\\ub824\\ub4dc\\ub9bd\\ub2c8\\ub2e4! \\u0026quot;\\ud074\\ub9ad \\ud55c \\ubc88\\uc5d0 \\ub0b4 \\ucc28 \\uad00\\ub9ac \\ub05d\\u0026quot; \\uac00\\uc785\\ubc29\\ubc95, \\uc0ac\\uc6a9\\ubc95, \\uafc0\\uae30\\ub2a5\\uae4c\\uc9c0\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

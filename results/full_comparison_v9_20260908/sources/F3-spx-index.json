@@ -1,0 +1,15 @@
+{
+  "id": "F3-spx-index",
+  "url": "https://api.nasdaq.com/api/quote/SPX/historical?assetclass=index&fromdate=09%2F03%2F2026&todate=09%2F04%2F2026&limit=10",
+  "fetched_at": "2026-09-08T08:50:10.282872+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://api.nasdaq.com/api/quote/SPX/historical?assetclass=index&fromdate=09%2F03%2F2026&todate=09%2F04%2F2026&limit=10",
+  "content_sha256": "63deb857a938d961fddc6640f79a311e90620eb3921d68bfbd5763ede8617a94",
+  "content_bytes": 165,
+  "text": "{\"data\":null,\"message\":null,\"status\":{\"rCode\":400,\"bCodeMessage\":[{\"code\":1011,\"errorMessage\":\"Bad or No parameter fromdate : 09/03/2026\"}],\"developerMessage\":null}}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

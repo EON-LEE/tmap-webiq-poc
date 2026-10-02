@@ -1,0 +1,15 @@
+{
+  "id": "V2-webiq_base-1-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Di3bqInj3jw0&format=json",
+  "fetched_at": "2026-09-08T08:59:04.682917+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Di3bqInj3jw0&format=json",
+  "content_sha256": "bf9e8d608467b78ab49087ebec825006e9827e3e75fb7a43ec910b6de6dea8e8",
+  "content_bytes": 917,
+  "text": "{\"title\":\"\\uc804\\uae30\\ucc28 \\ucda9\\uc804\\ubc29\\ubc95 | \\ub0b4\\ucc28\\uc0ac\\uc6a9\\uc124\\uba85\\uc11c\",\"author_name\":\"\\uae30\\uc544 (Kia Korea)\",\"author_url\":\"https://www.youtube.com/@KiaKorea\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/i3bqInj3jw0/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/i3bqInj3jw0?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022\\uc804\\uae30\\ucc28 \\ucda9\\uc804\\ubc29\\ubc95 | \\ub0b4\\ucc28\\uc0ac\\uc6a9\\uc124\\uba85\\uc11c\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

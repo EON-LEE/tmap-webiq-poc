@@ -1,0 +1,21 @@
+{
+  "id": "W2-parking",
+  "url": "https://www.airport.co.kr/gimpo/cms/frCon/index.do?MENU_ID=140",
+  "fetched_at": "2026-09-08T08:50:46.745731+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.airport.co.kr/gimpo/cms/frCon/index.do?MENU_ID=140",
+  "content_sha256": "f94a3f7b42c0790888462bc1ca9ef61019b23b9848e5c349e80643ab5cd5a696",
+  "content_bytes": 1034,
+  "text": "Error Page\n요청하신 페이지를 찾을 수 없습니다.\n주소가 잘못 입력되었거나, 변경 또는 삭제되어 요청하신 페이지를 찾을 수 없습니다. 페이지의 URL이나 이름이 변경되었거나 일시적으로 사용할 수 없습니다.\n이전 페이지",
+  "links": [
+    "/type/common/img/common/ico_favicon.ico",
+    "/type/common/img/common/ico_favicon.png",
+    "/type/common/css/common.css",
+    "#none",
+    "#none"
+  ],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

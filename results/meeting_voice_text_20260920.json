@@ -1,0 +1,172 @@
+{
+  "checks": [
+    {
+      "provider": "bing",
+      "started_at": "2026-09-20T15:03:51.989697+00:00",
+      "input_mode": "text",
+      "prompt": "인천공항 제1여객터미널 장기주차장 하루 요금을 알려줘.",
+      "ready": true,
+      "audio_bytes": 640200,
+      "microphone_tested": false,
+      "audio_playback_tested": false,
+      "answer_quality_evaluated": false,
+      "usage_scope": "Client-visible Voice Live responses; delegated Foundry model usage may require separate server traces.",
+      "citations": [
+        {
+          "url": "https://m.blog.naver.com/wb10_27/224187176389",
+          "title": "인천공항 장기주차장 vs 단기주차장 요금 비교｜2026년 최신 ..."
+        }
+      ],
+      "observed_tools": [],
+      "usage": [
+        {
+          "total_tokens": 3929,
+          "input_tokens": 3534,
+          "output_tokens": 395,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 3534,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 129,
+            "audio_tokens": 266,
+            "reasoning_tokens": 14
+          }
+        }
+      ],
+      "service_events": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 3,
+        "response.created": 1,
+        "response.output_item.added": 1,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 47,
+        "response.audio.delta": 28,
+        "response.audio_transcript.annotation.added": 1,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1,
+        "response.output_item.done": 1,
+        "response.done": 1
+      },
+      "voice_options": {
+        "connection_mode": "agent",
+        "llm_model": null,
+        "realtime_model": null,
+        "return_agent_response_directly": null,
+        "transcription_model": "azure-speech",
+        "turn_detection": "azure_semantic_vad_multilingual",
+        "speech_rate": null,
+        "silence_duration_ms": null,
+        "vad_threshold": null,
+        "semantic_threshold": null,
+        "interrupt_response": true,
+        "input_noise_reduction": null,
+        "echo_cancellation": null,
+        "voice_name": "ko-KR-SunHiNeural"
+      },
+      "response_status": "completed",
+      "end_reason": "stopped",
+      "assistant_text": [
+        "인천공항 **제1여객터미널 장기주차장 하루 요금은 소형 차량 기준 9,000원**입니다. 대형 차량은 하루 최대 **12,000원**이며, 실제 입·출차 시간 기준으로 부과됩니다. 【6:0†source】"
+      ],
+      "elapsed_seconds": 31.977,
+      "success": true
+    },
+    {
+      "provider": "webiq",
+      "started_at": "2026-09-20T15:04:23.975457+00:00",
+      "input_mode": "text",
+      "prompt": "인천공항 제1여객터미널 장기주차장 하루 요금을 알려줘.",
+      "ready": true,
+      "audio_bytes": 709800,
+      "microphone_tested": false,
+      "audio_playback_tested": false,
+      "answer_quality_evaluated": false,
+      "usage_scope": "Client-visible Voice Live responses; delegated Foundry model usage may require separate server traces.",
+      "citations": [],
+      "observed_tools": [
+        {
+          "kind": "mcp_call",
+          "name": "web",
+          "status": "completed"
+        }
+      ],
+      "usage": [
+        {
+          "total_tokens": 71646,
+          "input_tokens": 71201,
+          "output_tokens": 445,
+          "input_token_details": {
+            "cached_tokens": 0,
+            "text_tokens": 71201,
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "cached_tokens_details": {
+              "text_tokens": 0,
+              "audio_tokens": 0,
+              "image_tokens": 0
+            }
+          },
+          "output_token_details": {
+            "text_tokens": 150,
+            "audio_tokens": 295,
+            "reasoning_tokens": 13
+          }
+        }
+      ],
+      "service_events": {
+        "session.created": 1,
+        "session.updated": 1,
+        "conversation.item.created": 5,
+        "response.created": 1,
+        "mcp_list_tools.in_progress": 1,
+        "mcp_list_tools.completed": 1,
+        "response.output_item.added": 2,
+        "response.mcp_call.in_progress": 1,
+        "response.mcp_call_arguments.delta": 1,
+        "response.mcp_call_arguments.done": 1,
+        "response.mcp_call.completed": 1,
+        "response.output_item.done": 2,
+        "response.content_part.added": 1,
+        "response.audio_transcript.delta": 52,
+        "response.audio.delta": 31,
+        "response.audio.done": 1,
+        "response.audio_transcript.done": 1,
+        "response.content_part.done": 1,
+        "response.done": 1
+      },
+      "voice_options": {
+        "connection_mode": "agent",
+        "llm_model": null,
+        "realtime_model": null,
+        "return_agent_response_directly": null,
+        "transcription_model": "azure-speech",
+        "turn_detection": "azure_semantic_vad_multilingual",
+        "speech_rate": null,
+        "silence_duration_ms": null,
+        "vad_threshold": null,
+        "semantic_threshold": null,
+        "interrupt_response": true,
+        "input_noise_reduction": null,
+        "echo_cancellation": null,
+        "voice_name": "ko-KR-SunHiNeural"
+      },
+      "response_status": "completed",
+      "end_reason": "stopped",
+      "assistant_text": [
+        "인천공항 **제1여객터미널 장기주차장**은 소형차 기준 **시간당 1,000원, 하루 최대 9,000원**입니다. 최초 10분은 무료이며, 경차·장애인·다자녀·저공해차량 등은 조건에 따라 감면됩니다."
+      ],
+      "elapsed_seconds": 16.233,
+      "success": true
+    }
+  ]
+}

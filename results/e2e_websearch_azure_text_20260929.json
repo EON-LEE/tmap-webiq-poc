@@ -1,0 +1,157 @@
+{
+  "recorded_at_utc": "2026-09-29T13:14:56.647Z",
+  "evidence_scope": "Real comparison page in an isolated headless Chrome against the real services. One question sent to both engines at once; the page was sampled every 150 ms to record what each engine column showed while it worked. Not physical microphone/speaker, answer accuracy or latency benchmarking.",
+  "input": "text",
+  "connection_mode": "realtime_agent_tool",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "question": "삼성전자 주가 알려줘.",
+  "thinking_seen": true,
+  "timeline": [
+    {
+      "t_ms": 333,
+      "provider": "webiq",
+      "phase": "waiting",
+      "header": "연결 중…",
+      "bubble": "엔진에 연결하는 중…"
+    },
+    {
+      "t_ms": 333,
+      "provider": "bing",
+      "phase": "waiting",
+      "header": "연결 중…",
+      "bubble": "엔진에 연결하는 중…"
+    },
+    {
+      "t_ms": 5064,
+      "provider": "bing",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Agent가 질문을 이해하고 무엇을 검색할지 생각하는 중…"
+    },
+    {
+      "t_ms": 5504,
+      "provider": "bing",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "Bing으로 웹 검색 중…"
+    },
+    {
+      "t_ms": 8044,
+      "provider": "webiq",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Agent가 질문을 이해하고 무엇을 검색할지 생각하는 중…"
+    },
+    {
+      "t_ms": 8674,
+      "provider": "webiq",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "WebIQ로 금융 조회 중…"
+    },
+    {
+      "t_ms": 9291,
+      "provider": "webiq",
+      "phase": "writing",
+      "header": "답변 작성 중…",
+      "bubble": "찾은 결과를 읽고 답변을 준비하는 중…"
+    },
+    {
+      "t_ms": 9445,
+      "provider": "webiq",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 11679,
+      "provider": "webiq",
+      "phase": "done",
+      "header": "응답 1.4초",
+      "bubble": ""
+    },
+    {
+      "t_ms": 36813,
+      "provider": "bing",
+      "phase": "writing",
+      "header": "답변 작성 중…",
+      "bubble": "찾은 결과를 읽고 답변을 준비하는 중…"
+    },
+    {
+      "t_ms": 36981,
+      "provider": "bing",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 38416,
+      "provider": "bing",
+      "phase": "done",
+      "header": "응답 32.0초",
+      "bubble": ""
+    }
+  ],
+  "final": {
+    "question": "“삼성전자 주가 알려줘.”",
+    "cells": [
+      {
+        "provider": "webiq",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 1.4초",
+        "activity": "",
+        "steps": [
+          "input:done:텍스트",
+          "think:done:0.6초",
+          "search:done:금융 조회 · 0.7초",
+          "results:done:1건",
+          "answer:done:작성 0.1초"
+        ],
+        "recognized": "",
+        "filler": "",
+        "calls": [
+          "금융 조회완료 · 0.7초 | 검색어 “삼성전자 주가”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "현재 삼성전자 주가는 272,500원입니다. 어제 종가는 270,000원이었고, 약 0.93% 상승했네요.",
+        "timing": "응답 시작 1.4초 · 완료 3.7초",
+        "notice": ""
+      },
+      {
+        "provider": "bing",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 32.0초",
+        "activity": "",
+        "steps": [
+          "input:done:텍스트",
+          "think:done:0.5초",
+          "search:done:웹 검색 · 31.3초",
+          "results:done:검색 답변 · 출처 5개",
+          "answer:done:작성 0.2초"
+        ],
+        "recognized": "",
+        "filler": "",
+        "calls": [
+          "웹 검색완료 · 31.3초 | 검색어 “삼성전자 주가 2026년 9월 29일”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "2026년 9월 29일 기준 삼성전자 종가는 272,500원이고, 전일 대비 +1.06% 상승했습니다.",
+        "timing": "응답 시작 32.0초 · 완료 33.4초",
+        "notice": ""
+      }
+    ],
+    "compare": "응답 시작 · WebIQ 1.4초 · Grounding with Bing 32.0초",
+    "error": "",
+    "overflow": false
+  },
+  "mobile": {
+    "overflow": false,
+    "width": 390
+  },
+  "errors": []
+}

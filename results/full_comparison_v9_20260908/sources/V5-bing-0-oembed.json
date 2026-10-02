@@ -1,0 +1,15 @@
+{
+  "id": "V5-bing-0-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DzSAlEE0WNFM&format=json",
+  "fetched_at": "2026-09-08T09:01:19.901903+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DzSAlEE0WNFM&format=json",
+  "content_sha256": "b88e3c7194147a79ca0d4cd0eef64e63970a4a3af78a7179d73072e5a2386fd5",
+  "content_bytes": 1142,
+  "text": "{\"title\":\"\\uc720\\uc120 \\uce74\\ud50c\\ub808\\uc774/ \\uc548\\ub4dc\\ub85c\\uc774\\ub4dc \\uc624\\ud1a0\\ub97c \\ubb34\\uc120\\uc73c\\ub85c! \\uc124\\uce58 10\\ucd08 \\ub05d (\\ubb34\\uc120 \\uc5b4\\ub311\\ud130 \\ucd94\\ucc9c)\",\"author_name\":\"\\uc624\\ud1a0\\uce90\\uc2a4\\ud2b8 OTTOCAST\",\"author_url\":\"https://www.youtube.com/@OTTOCAST-Korea\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/zSAlEE0WNFM/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/zSAlEE0WNFM?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022\\uc720\\uc120 \\uce74\\ud50c\\ub808\\uc774/ \\uc548\\ub4dc\\ub85c\\uc774\\ub4dc \\uc624\\ud1a0\\ub97c \\ubb34\\uc120\\uc73c\\ub85c! \\uc124\\uce58 10\\ucd08 \\ub05d (\\ubb34\\uc120 \\uc5b4\\ub311\\ud130 \\ucd94\\ucc9c)\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

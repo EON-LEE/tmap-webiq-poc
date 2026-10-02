@@ -1,0 +1,17 @@
+{
+  "id": "F3-yahoo",
+  "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?period1=1788393600&period2=1788825600&interval=1d",
+  "fetched_at": "2026-09-08T08:50:46.746826+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?period1=1788393600&period2=1788825600&interval=1d",
+  "content_sha256": "7a0194e4494f3a28292d99244c76235e0e5989edc7031386b9828240e5250eb9",
+  "content_bytes": 1392,
+  "text": "{\"chart\":{\"result\":[{\"meta\":{\"currency\":\"USD\",\"symbol\":\"^GSPC\",\"exchangeName\":\"SNP\",\"fullExchangeName\":\"SNP\",\"instrumentType\":\"INDEX\",\"firstTradeDate\":-1325583000,\"regularMarketTime\":1788553986,\"hasPrePostMarketData\":false,\"gmtoffset\":-14400,\"timezone\":\"EDT\",\"exchangeTimezoneName\":\"America/New_York\",\"regularMarketPrice\":7718.6,\"regularMarketChangePercent\":-0.376,\"fulldayPrice\":7718.6,\"fulldayChange\":-29.11,\"fulldayChangePercent\":-0.376,\"fiftyTwoWeekHigh\":7816.7,\"fiftyTwoWeekLow\":6316.91,\"regularMarketDayHigh\":7750.19,\"regularMarketDayLow\":7706.12,\"regularMarketVolume\":2531375000,\"longName\":\"S&P 500\",\"shortName\":\"S&P 500\",\"chartPreviousClose\":7666.6,\"priceHint\":2,\"currentTradingPeriod\":{\"pre\":{\"timezone\":\"EDT\",\"start\":1788854400,\"end\":1788874200,\"gmtoffset\":-14400},\"regular\":{\"timezone\":\"EDT\",\"start\":1788874200,\"end\":1788897600,\"gmtoffset\":-14400},\"post\":{\"timezone\":\"EDT\",\"start\":1788897600,\"end\":1788912000,\"gmtoffset\":-14400}},\"dataGranularity\":\"1d\",\"range\":\"\",\"validRanges\":[\"1d\",\"5d\",\"1mo\",\"3mo\",\"6mo\",\"1y\",\"2y\",\"5y\",\"10y\",\"ytd\",\"max\"]},\"timestamp\":[1788442200,1788528600],\"indicators\":{\"quote\":[{\"high\":[7756.759765625,7750.18994140625],\"open\":[7686.7099609375,7750.18994140625],\"volume\":[4726400000,4103570000],\"low\":[7686.7099609375,7706.1201171875],\"close\":[7747.7099609375,7718.60009765625]}],\"adjclose\":[{\"adjclose\":[7747.7099609375,7718.60009765625]}]}}],\"error\":null}}",
+  "links": [],
+  "short_review_excerpts": [
+    "00,4103570000],\"low\":[7686.7099609375,7706.1201171875],\"close\":[7747.7099609375,7718.60009765625]}],\"adjclose\":[{\"adjclose\":[7747.7099609375,7718.60009765625]}]}}],\"error\":null}}"
+  ],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

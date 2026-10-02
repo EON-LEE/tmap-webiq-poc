@@ -1,0 +1,162 @@
+{
+  "recorded_at_utc": "2026-09-23T13:58:36.672301+00:00",
+  "evidence_scope": "Actual app WebSocket (browser protocol) with text input for each pipeline and provider. Not microphone, playback, answer-accuracy or latency benchmarking.",
+  "app": "Azure Container App (Microsoft Entra sign-in required; host omitted)",
+  "api_version": "2026-07-15",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "note": "Deployed Azure Container App, called through Microsoft Entra authentication with a bearer token (not recorded).",
+  "checks": [
+    {
+      "id": "stt_llm_tts_webiq_gpt41mini",
+      "provider": "webiq",
+      "voice_options": {
+        "connection_mode": "model_search",
+        "llm_model": "gpt-4.1-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 23,
+        "transcript": 53,
+        "activity": 2,
+        "tool": 1,
+        "usage": 2,
+        "response_done": 2,
+        "audio": 36
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "tool_discovery.catalog_observed": 1,
+        "tool_discovery.in_progress": 1,
+        "tool_discovery.completed": 1,
+        "input.received": 1,
+        "response.requested": 2,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 1,
+        "tool.arguments_ready": 1,
+        "tool.in_progress": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.started": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "mcp_call",
+          "name": "finance",
+          "status": "completed",
+          "argument_keys": [
+            "language",
+            "query",
+            "region"
+          ],
+          "query": "삼성전자 주식",
+          "output_chars": 1187
+        }
+      ],
+      "followup_requests": 1,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "삼성전자 주가는 현재 285,500원입니다. 전일 대비 9,000원(3.26%) 상승했어요. 52주 최고가는 374,500원, 최저가는 81,100원입니다.",
+      "audio_bytes": 823200,
+      "citations": 0,
+      "search_attachment": "mcp",
+      "search_tool": {
+        "type": "mcp",
+        "server_label": "webiq",
+        "server_host": "api.microsoft.ai",
+        "allowed_tools": [
+          "web",
+          "news",
+          "places",
+          "finance"
+        ]
+      },
+      "unexpected_secret_markers": false,
+      "assistant_finals": [
+        "삼성전자 주가는 현재 285,500원입니다. 전일 대비 9,000원(3.26%) 상승했어요. 52주 최고가는 374,500원, 최저가는 81,100원입니다."
+      ],
+      "elapsed_seconds": 22.92,
+      "success": true
+    },
+    {
+      "id": "e2e_bing_realtime_mini",
+      "provider": "bing",
+      "voice_options": {
+        "connection_mode": "realtime_agent_tool",
+        "realtime_model": "gpt-realtime-mini"
+      },
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "errors": [],
+      "event_counts": {
+        "status": 2,
+        "trace": 1,
+        "flow": 19,
+        "transcript": 58,
+        "activity": 2,
+        "usage": 2,
+        "response_done": 2,
+        "audio": 49,
+        "tool": 1
+      },
+      "flow_counts": {
+        "connection.connecting": 1,
+        "connection.connected": 1,
+        "request.sent": 3,
+        "session.created": 1,
+        "session.updated": 1,
+        "input.received": 1,
+        "response.requested": 1,
+        "input.accepted": 1,
+        "response.created": 2,
+        "tool.announced": 1,
+        "tool.arguments_ready": 1,
+        "tool.in_progress": 1,
+        "audio.started": 1,
+        "tool.completed": 1,
+        "tool.output_observed": 1,
+        "audio.done": 1
+      },
+      "tools": [
+        {
+          "kind": "foundry_agent_call",
+          "name": "tmap-voice-bing",
+          "status": null,
+          "argument_keys": [
+            "input"
+          ],
+          "input": "삼성전자 주식 찾아줘.",
+          "output_chars": 158
+        }
+      ],
+      "followup_requests": 0,
+      "responses": [
+        "completed",
+        "completed"
+      ],
+      "assistant_text": "삼성전자 **종목코드 005930**, 코스피 상장 종목입니다. 최신 확인 시세는 **285,500원, 전일 대비 9,000원 상승(+3.25%)**이며, 장 마감 기준입니다. cite5:1\n\n매수·매도 판단은 원금 손실 가능성을 고려해 본인의 투자 판단으로 결정하세요.",
+      "audio_bytes": 1152000,
+      "citations": 0,
+      "search_attachment": "foundry_agent",
+      "search_tool": null,
+      "unexpected_secret_markers": false,
+      "assistant_finals": [
+        "삼성전자 **종목코드 005930**, 코스피 상장 종목입니다. 최신 확인 시세는 **285,500원, 전일 대비 9,000원 상승(+3.25%)**이며, 장 마감 기준입니다. cite5:1\n\n매수·매도 판단은 원금 손실 가능성을 고려해 본인의 투자 판단으로 결정하세요."
+      ],
+      "elapsed_seconds": 41.751,
+      "success": true
+    }
+  ]
+}

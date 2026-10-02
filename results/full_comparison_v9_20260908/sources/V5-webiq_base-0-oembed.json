@@ -1,0 +1,15 @@
+{
+  "id": "V5-webiq_base-0-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DbgRCpndQQY0&format=json",
+  "fetched_at": "2026-09-08T09:01:20.255550+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DbgRCpndQQY0&format=json",
+  "content_sha256": "50417ddd21cb0ba2b95b16601e376e38148152fbfee699fbba22c3ec468ffc78",
+  "content_bytes": 1020,
+  "text": "{\"title\":\"\\u2605\\uc548\\ub4dc\\ub85c\\uc774\\ub4dc \\uc624\\ud1a0, \\uc21c\\uc815\\ub0b4\\ube44\\uc640 \\uc5f0\\uacb0\\ud558\\uae30 \\u2605\",\"author_name\":\"\\uac00\\ub2c8\\uac00\\ub2c8 - \\ucc28\\ub9b0\\uc774 \\ucc28\\ub7c9\\uc124\\uba85\\uc11c\",\"author_url\":\"https://www.youtube.com/@gani_gani\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/bgRCpndQQY0/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/bgRCpndQQY0?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022\\u2605\\uc548\\ub4dc\\ub85c\\uc774\\ub4dc \\uc624\\ud1a0, \\uc21c\\uc815\\ub0b4\\ube44\\uc640 \\uc5f0\\uacb0\\ud558\\uae30 \\u2605\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

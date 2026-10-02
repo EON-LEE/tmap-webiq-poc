@@ -1,0 +1,15 @@
+{
+  "id": "V1-official-oembed",
+  "url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dp9rftWFaopM&format=json",
+  "fetched_at": "2026-09-08T08:52:42.291946+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://www.youtube.com/oembed?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dp9rftWFaopM&format=json",
+  "content_sha256": "f3e831453681a6721141b9d055c782a3b79f7d41567c4dce3806c9d40fa30a3e",
+  "content_bytes": 1034,
+  "text": "{\"title\":\"\\ucde8\\uae09\\uc124\\uba85\\uc11c | \\uc544\\uc774\\uc624\\ub2c9 5 - \\uc644\\uc18d, \\uae09\\uc18d \\ucda9\\uc804 | \\ud604\\ub300\\uc790\\ub3d9\\ucc28\",\"author_name\":\"\\ud604\\ub300\\uc790\\ub3d9\\ucc28 (hyundai korea)\",\"author_url\":\"https://www.youtube.com/@hyundai_kor\",\"type\":\"video\",\"height\":113,\"width\":200,\"version\":\"1.0\",\"provider_name\":\"YouTube\",\"provider_url\":\"https://www.youtube.com/\",\"thumbnail_height\":360,\"thumbnail_width\":480,\"thumbnail_url\":\"https://i.ytimg.com/vi/p9rftWFaopM/hqdefault.jpg\",\"html\":\"\\u003ciframe width=\\u0022200\\u0022 height=\\u0022113\\u0022 src=\\u0022https://www.youtube.com/embed/p9rftWFaopM?feature=oembed\\u0022 frameborder=\\u00220\\u0022 allow=\\u0022accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\u0022 referrerpolicy=\\u0022strict-origin-when-cross-origin\\u0022 allowfullscreen title=\\u0022\\ucde8\\uae09\\uc124\\uba85\\uc11c | \\uc544\\uc774\\uc624\\ub2c9 5 - \\uc644\\uc18d, \\uae09\\uc18d \\ucda9\\uc804 | \\ud604\\ub300\\uc790\\ub3d9\\ucc28\\u0022\\u003e\\u003c/iframe\\u003e\"}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

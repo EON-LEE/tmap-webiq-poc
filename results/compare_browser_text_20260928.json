@@ -1,0 +1,64 @@
+{
+  "recorded_at_utc": "2026-09-28T06:23:27.660Z",
+  "evidence_scope": "Real comparison page in an isolated headless Chrome against the local server and the real services. One question sent to both engines at once. Not physical microphone/speaker, answer accuracy or latency benchmarking.",
+  "input": "typed text",
+  "question": "삼성전자 주식 찾아줘.",
+  "viewport_checks": {
+    "desktop": "1440x1000",
+    "mobile": "390x844",
+    "mobile_overflow": false
+  },
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "page_errors": [],
+  "result": {
+    "cells": [
+      {
+        "provider": "webiq",
+        "status": "done",
+        "steps": [
+          "input:done:텍스트",
+          "search:done:금융 조회 · 1.8초",
+          "results:done:1건",
+          "answer:done:4.5초"
+        ],
+        "calls": [
+          "금융 조회완료 · 1.8초 | 검색어 “삼성전자 주식 현재 주가와 거래 정보” | 결과 1건"
+        ],
+        "results": [
+          "삼성전자 (005930)271,000 KRW · ▼5.08% · 9. 28. 오후 03:03 기준msn.com"
+        ],
+        "note": "",
+        "sources": [],
+        "answer": "삼성전자(코스피, 종목코드 005930)는 2026년 9월 28일 오후 3시 3분 기준 271,000원입니다. 전일 대비 14,500원(-5.08%) 하락했으며, 현재 정규장 거래시간은 종료된 상태입니다.",
+        "timing": "응답 시작 4.5초 · 완료 17.4초",
+        "replay": true,
+        "notice": ""
+      },
+      {
+        "provider": "bing",
+        "status": "done",
+        "steps": [
+          "input:done:텍스트",
+          "search:hidden:Agent 내부 실행 · 비공개",
+          "results:done:출처 1개",
+          "answer:done:4.5초"
+        ],
+        "calls": [],
+        "results": [],
+        "note": "검색이 Agent 안에서 실행되어 검색어와 원본 결과는 공개되지 않습니다. 서비스가 알려준 답변 출처만 표시합니다.",
+        "sources": [
+          "삼성전자 주가 - 실시간 차트 · 주가 전망 · 투자정보alphasquare.co.kr"
+        ],
+        "answer": "삼성전자 (코스피 종목코드 005930)를 찾았습니다.  \n2026년 9월 28일 오후 2시 14분 기준 273,250원, 전일 대비 12,250원 하락(-4.29%)입니다. 실시간 시세는 변동될 수 있습니다.",
+        "timing": "응답 시작 4.5초 · 완료 10.0초",
+        "replay": true,
+        "notice": ""
+      }
+    ],
+    "compare": "응답 시작 · WebIQ 4.5초 · Grounding with Bing 4.5초",
+    "status": "WebIQ 답변을 들려주고 있어요.",
+    "error": "",
+    "overflow": false
+  }
+}

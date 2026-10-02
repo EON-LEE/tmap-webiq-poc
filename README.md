@@ -1,130 +1,115 @@
-# TMAP IVI — 검색 그라운딩 벤치마크 하네스
+# TMAP 음성 검색 비교 · WebIQ vs Grounding with Bing
 
-티맵모빌리티 IVI / 모바일 음성 어시스턴트의 최신 정보 feeding 품질을
-**Web IQ vs Grounding with Bing vs EXA** 3경로로 비교하기 위한 실행 하네스입니다.
+TMAP 차량 음성 에이전트에 붙일 웹 검색을 고르기 위한 데모다. 질문 한 번(텍스트 또는 음성)을
+**WebIQ와 Grounding with Bing에 동시에** 보내고, 에이전트가 어떻게 생각·검색해서 답했는지 나란히 보여 준다.
+Azure Voice Live와 Microsoft Foundry Agent를 사용한다.
 
-> ⚠️ **Private 저장소입니다. 공개 전환 금지.**
-> 실명 고객(티맵) 평가 데이터와 경쟁 비교 결과가 들어 있습니다.
-> 원본 기획 문서는 내부 제품 상태 정보를 포함하므로 **이 저장소에 커밋하지 않습니다.**
-> (`.gitignore`로 차단. 원본은 OneDrive에 보관)
+> 비공개 저장소다. 키·토큰·구독 같은 환경 값은 코드와 결과 파일에 넣지 않고 `.env`로만 설정한다.
+> 검색·모델·음성 호출은 실제 사용량이 발생하며, 한 질문에 두 엔진 비용이 함께 든다.
 
----
+## 두 가지 모드
 
-## 설계 원칙 — 검색 레이어만 변수
+**① Agent 연결 (기본, 공정 비교용)** — 같은 모델·같은 지시로 만든 두 Foundry Agent가 같은 질문 글자를 받고,
+검색 도구만 다르다.
 
-기획 문서의 전제는 "검색 레이어만 변수로 만든다"입니다. 이걸 코드 구조로 강제합니다.
+![Agent mode](docs/images/agent-mode.png)
 
-```
-질문 ─┬─ [null]    검색 없음            ─┐
-      ├─ [webiq]   raw passage 반환      ├─→ 동일 합성 프롬프트 → 동일 모델 → 답변 → 채점
-      ├─ [exa]     raw passage 반환      ─┘
-      └─ [gwb]     합성된 답변 반환 ─────────────────────────────→ 답변 → 채점
-```
+**② End-to-end** — Agent 없이 Realtime 음성 모델이 음성을 직접 듣고 검색 도구를 직접 부른다.
+WebIQ는 MCP로, Bing은 Foundry Toolbox의 Bing 기반 Web Search를 앱 서버가 대신 호출한다.
 
-`null` / `webiq` / `exa`는 같은 인터페이스(정규화된 passage 반환) 아래 갈리고,
-그 위의 프롬프트·모델·파라미터·채점은 전부 공유합니다.
+![End-to-end mode](docs/images/end-to-end-mode.png)
 
-**GwB만 구조가 다릅니다.** 원본 passage가 아니라 모델이 합성한 최종 답변을 반환하므로
-같은 인터페이스에 억지로 맞출 수 없고, `retrieval_latency`를 분리 계측할 수도 없습니다.
-이 비대칭은 결과 리포트에 반드시 명시해야 하는 항목입니다.
+| | Agent 연결 | End-to-end |
+| --- | --- | --- |
+| 생각하는 쪽 | Foundry Agent | Realtime 음성 모델 (`gpt-realtime-mini` / `gpt-realtime`) |
+| 질문 전달 | STT 글자 (두 엔진 동일) | 원본 음성 (엔진마다 따로 들음) |
+| WebIQ | Agent → MCP | 모델 → MCP |
+| Bing | Agent → Grounding with Bing | 모델 → 앱 서버 → Toolbox Web Search |
+| 응답 시작 (관측) | 약 4–7초 | WebIQ 약 1초, Bing 약 10초 |
+| 용도 | WebIQ vs Bing 공정 비교 | 속도, WebIQ가 음성 모델에 바로 붙는 점 |
 
----
+화면은 엔진별로 **질문 → 생각 → 검색 → 찾은 결과 → 답변** 단계와 걸린 시간, 검색어·검색 결과·출처,
+답변 텍스트와 음성을 보여 준다. 모드와 STT·TTS 옵션은 오른쪽 위 **설정**에서 바꾼다.
+자세한 옵션과 서비스 제약은 [음성 설정](docs/VOICE_OPTIONS.md)에 있다.
 
-## 실측으로 확인된 제약 (기획 문서와 다름)
+## 로컬 실행
 
-| 문서 요구 | 실측 | 대응 |
-|---|---|---|
-| `temperature = 0` | **HTTP 400 거부.** 기본값만 허용 | 파라미터 미설정 |
-| (대안) `seed` 고정 | **결정성 없음.** 동일 seed 3회 → 전부 다른 출력, `system_fingerprint`는 `null` | 결정성 확보 불가 |
-
-**출력 결정성을 확보할 수 없습니다.** 따라서 3회 반복은 레이턴시 분산뿐 아니라
-**출력 분산 측정**에도 씁니다. 경로 간 점수차가 동일 경로 내 반복 간 분산보다 큰지
-확인하기 전에는 우열을 주장할 수 없습니다.
-
-대신 고정 가능한 변수: `reasoning_effort`(`none`/`low`/`medium`/`high`/`xhigh`),
-`response_format`(`json_object`), `max_completion_tokens`.
-
-### 레이턴시 계측
-
-응답 `usage.latency_checkpoint`에 서버측 값이 들어옵니다
-(`engine_ttft_ms`, `user_visible_ttft_ms`, `service_ttlt_ms`, `pre_inference_ms` 등).
-스트리밍 파싱 없이 수집 가능합니다.
-
-> ⚠️ **미해결**: 동일 조건에서 클라이언트가 관측한 첫 청크 시점과 서버가 보고한
-> `user_visible_ttft_ms`가 4배 이상 벌어집니다. 고객에게 서버측 값만 제시하면
-> 과대 낙관이 됩니다. 원인 확정 전까지 리포트에는 **두 값을 분리 표기**합니다.
-
----
-
-## 구조
-
-```
-config/
-  queryset.json          60문항 (C1~C7) + 카테고리별 신선도 요구
-  runtime.example.env    환경변수 템플릿
-src/tmap_poc/
-  config.py              환경변수 기반 설정 (엔드포인트·구독은 코드에 두지 않음)
-  auth.py                Entra ID 토큰 (런타임 획득, 메모리 보관, 디스크 기록 없음)
-scripts/
-  probe_model.py         temperature 수용 여부 / latency_checkpoint 스키마
-  probe_params.py        seed 결정성 / reasoning_effort / JSON 모드 / 스트리밍 TTFT
-  check_citations.py     인용 URL 전수 HTTP 검증 (citation_dead_rate)
-docs/
-  FINDINGS_baseline.md   1차 실행 결과
-results/                 실행 결과 원본 JSON
-run_baseline.py          검색 없는 베이스라인 러너 (null 경로)
-```
-
----
-
-## 실행
+WSL Ubuntu에서 실행하고 Windows 브라우저로 접속한다. 프런트엔드 빌드는 없다.
 
 ```bash
-cp config/runtime.example.env .env      # 값 채우기 (.env는 커밋되지 않음)
-az login
-
-python3 run_baseline.py --category C7 --repeats 3
-python3 run_baseline.py --ids 56,57 --repeats 1 --reasoning-effort high
-python3 scripts/check_citations.py
+cp config/runtime.example.env .env        # 값 채우기 (아래 설정 참고)
+# Windows 마운트 아래 worktree면 가상환경을 마운트 밖에 둔다
+export UV_PROJECT_ENVIRONMENT="$HOME/.cache/tmap-webiq-poc/$(basename "$PWD")-venv"
+uv sync --frozen
+uv run tmap serve --port 8000
 ```
 
-인증은 API 키가 아니라 Entra ID입니다 (대상 리소스는 로컬 인증 비활성화).
-토큰은 실행 중 메모리에만 두고 어디에도 기록하지 않습니다.
+http://localhost:8000 을 연다. 다른 포트를 쓰면 `TMAP_ALLOWED_ORIGINS`에 그 주소를 추가한다.
+서버 시작만으로는 Azure를 호출하지 않으며, 말하기를 누를 때만 마이크를 요청한다.
 
----
+## 설정
 
-## 1차 결과 요약
+모든 값은 [`config/runtime.example.env`](config/runtime.example.env)에 설명과 함께 있다. 요약:
 
-검색 레이어 없는 베이스라인 (상세: `docs/FINDINGS_baseline.md`)
+| 그룹 | 변수 |
+| --- | --- |
+| 인증 | `TMAP_AUTH_MODE` (`cli` / `managed_identity`), `TMAP_POC_AZ_SUBSCRIPTION`, `AZURE_CLIENT_ID` |
+| Foundry 프로젝트·Agent | `GWB_PROJECT_ENDPOINT`, `TMAP_POC_MODEL_DEPLOYMENT`, `GWB_CONNECTION_ID`, `WEBIQ_CONNECTION_ID`, `TMAP_{BING,WEBIQ}_AGENT_{NAME,VERSION}` |
+| Voice Live | `TMAP_VOICE_ENDPOINT`, `TMAP_VOICE_NAME`, `TMAP_VOICE_FOUNDRY_RESOURCE_OVERRIDE`, `TMAP_WEB_SEARCH_TOOLBOX` |
+| 웹 앱·Trace | `TMAP_ALLOWED_ORIGINS`, `TMAP_TRACE_EXPORTER`, `APPLICATIONINSIGHTS_CONNECTION_STRING` |
 
-- **C7 함정 문항 5개 × 3회 = 15/15 정확 거부.** 지어낸 답 0건.
-- **대조군 C6에서 판별력 확인** — 위치·식별정보가 필요한 문항은 거부, 정적 지식은 정상 답변.
-  즉 무차별 거부가 아님. 3경로 비교에서 C7 점수가 떨어지면 원인은 모델이 아니라
-  **검색 레이어가 무관한 근거를 밀어넣어 모델을 오도한 것**으로 해석해야 합니다.
-- **인용 dead rate 66.7%** (10/15). 살아있는 건 도메인 루트뿐, 딥링크는 전부 404.
-  모델이 그럴듯한 URL을 생성합니다. 검색 레이어 도입 시 이 수치가 얼마나 내려가는지가
-  핵심 비교 지표입니다.
-- `insufficient_evidence: true`인 응답조차 citation을 붙였습니다. 따라서 채점의
-  인용 유효성 축은 "URL이 살아있는가"로 부족하고,
-  **"인용 URL이 검색 레이어가 제공한 passage 집합에 속하는가"를 함께 검증**해야 합니다.
+처음 한 번 Agent를 준비한다. 첫 명령은 계획만 보여 주고, `--apply`가 실제 Agent 버전을 등록한다.
 
----
+```bash
+uv run python scripts/setup_webiq_connection.py   # WebIQ 키를 Foundry 프로젝트 연결로 저장 (WEBIQ_API_KEY)
+uv run tmap prepare-agents
+uv run tmap prepare-agents --apply                 # 출력된 이름·버전을 .env에 넣는다
+```
 
-## 커밋 금지
+End-to-end의 Bing 쪽은 `web_search` 도구를 담은 Foundry Toolbox가 필요하다. 만드는 방법은 [배포 안내](docs/DEPLOYMENT.md)에 있다.
 
-- 원본 기획 문서 (내부 제품 상태 정보 포함)
-- 토큰·API 키·인증서
-- 구독 ID / 테넌트 ID / 리소스 엔드포인트 → `.env`에만 두고, 결과 파일에는 마스킹해 기록
+## Azure 배포
 
----
+FastAPI와 정적 화면이 Docker 이미지 하나에 들어가며 Azure Container Apps에 배포한다.
+준비된 Container App에는 한 명령으로 이미지를 빌드·갱신한다(기본은 계획만 표시, `--apply`로 실행).
 
-## 개발 환경 메모
+```bash
+uv run python scripts/deploy_voice_app.py --subscription <SUB> --resource-group <RG> --registry <ACR> --name <APP> --apply
+```
 
-WSL Ubuntu의 파일을 Windows UNC 경로(`\\wsl$\...`)로 편집하면:
+스크립트는 로그인이 꺼진 앱을 거부한다(짧은 공개 시연만 `--allow-anonymous`). 리소스·역할은 만들지 않는다.
+최초 호스팅, 인증, 역할, 배포 후 확인은 [배포 안내](docs/DEPLOYMENT.md)를 따른다.
 
-- 줄바꿈이 **CRLF**로 저장됩니다. 셸 스크립트가 깨지므로 Python으로 정규화해야 합니다
-  (`sed -i`는 이 마운트에서 반영되지 않음).
-- Windows git이 소유권을 거부합니다. 다음 등록이 필요합니다:
-  ```
-  git config --global --add safe.directory '//wsl$/Ubuntu/home/<user>/<path>'
-  ```
+## 테스트
+
+Azure를 호출하지 않는다.
+
+```bash
+uv run python -m unittest discover -s tests   # 서버
+node --test tests/frontend.test.cjs           # 화면
+python scripts/scan_secrets.py                # 커밋 전 비밀값 검사
+```
+
+## 저장소 구조
+
+| 위치 | 내용 |
+| --- | --- |
+| `src/tmap_poc/api.py`, `cli.py` | 웹 API·WebSocket(`/ws/voice`), `tmap serve / prepare-agents / compare` |
+| `src/tmap_poc/voice.py` | Voice Live 연결, 이벤트 중계, 검색 후속 답변 요청, End-to-end Bing `web_search` 실행 |
+| `src/tmap_poc/voice_options.py` | 모드·STT·LLM·TTS 옵션 검증과 세션 구성 |
+| `src/tmap_poc/webiq_mcp.py`, `web_search.py` | WebIQ MCP 대상 조회, Foundry Toolbox Web Search 호출 |
+| `src/tmap_poc/profiles.py`, `arms.py` | 두 Agent의 공통 지시와 검색 도구 정의 |
+| `src/tmap_poc/app_settings.py`, `auth.py`, `config.py` | 환경 설정, 구독 고정 CLI 인증·Managed Identity |
+| `src/tmap_poc/telemetry.py`, `tool_spans.py`, `trace_view.py` | 메타데이터 trace, 도구 span, Foundry trace 조회 API |
+| `src/tmap_poc/navigation*.py` | API 전용 앱 조작 데모(`model_tools`, 화면에서는 숨김) |
+| `src/tmap_poc/static/` | 비교 화면 (`app.js` 연결·마이크, `compare-view.js` 단계·검색·답변 표시) |
+| `scripts/` | 배포, WebIQ 연결 준비, 음성 연결 점검, 비밀값 검사 |
+| `docs/`, `results/` | 문서와 근거 결과 |
+
+## 문서
+
+- [음성 설정과 서비스 제약](docs/VOICE_OPTIONS.md)
+- [배포 안내](docs/DEPLOYMENT.md)
+- [음성 연결 검증 기록](docs/VOICE_STATUS.md) — 날짜별 실제 실행 결과와 근거 JSON
+- [Trace 설정](docs/TRACING.md)
+- [텍스트 검색 벤치마크 V9 보고서](docs/REPORT.md) — 30질문 × Bing·WebIQ 기본·WebIQ 최적화 (2026-09-08)

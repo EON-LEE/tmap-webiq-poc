@@ -1,0 +1,15 @@
+{
+  "id": "F3-sp500",
+  "url": "https://api.nasdaq.com/api/quote/SPX/historical?assetclass=index&fromdate=2026-09-01&todate=2026-09-08&limit=10",
+  "fetched_at": "2026-09-08T08:48:59.216724+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://api.nasdaq.com/api/quote/SPX/historical?assetclass=index&fromdate=2026-09-01&todate=2026-09-08&limit=10",
+  "content_sha256": "cbe508b6af79789851ca0053cc7e528bbb2e5a443696388c74b51577a052136f",
+  "content_bytes": 142,
+  "text": "{\"data\":null,\"message\":null,\"status\":{\"rCode\":400,\"bCodeMessage\":[{\"code\":1001,\"errorMessage\":\"Symbol not exists.\"}],\"developerMessage\":null}}",
+  "links": [],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

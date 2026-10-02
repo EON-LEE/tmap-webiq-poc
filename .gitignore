@@ -24,3 +24,10 @@ TMAP_WebIQ_vs_GroundingWithBing_PoC_Benchmark.md
 .DS_Store
 *.swp
 _scratch/
+.playwright-mcp/
+node_modules/
+# One-off probe scripts kept out of the repo. Anything worth reproducing gets
+# promoted into scripts/ instead of living here as an underscore file.
+_*.py
+_*.sh
+results/_*

@@ -1,0 +1,690 @@
+{
+  "recorded_at_utc": "2026-09-21T02:28:32.531834+00:00",
+  "evidence_scope": "Actual app WebSocket requests to the updated backend and actual Azure service events. Text input; not microphone, browser playback, price accuracy or performance validation.",
+  "question": "삼성전자 주식 찾아줘.",
+  "checks": [
+    {
+      "provider": "webiq",
+      "input_mode": "text",
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "flow": [
+        {
+          "stage": "connection",
+          "status": "connecting",
+          "observation": "app_operation",
+          "operation": "connect",
+          "source_event": null,
+          "data_fields": [
+            "agent",
+            "api_version",
+            "connection_mode",
+            "endpoint_host",
+            "foundry_resource_override",
+            "project_name",
+            "target_scope"
+          ],
+          "model_scope": null,
+          "target_scope": "configured",
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "connection",
+          "status": "connected",
+          "observation": "app_operation",
+          "operation": "connect",
+          "source_event": null,
+          "data_fields": [],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "request",
+          "status": "sent",
+          "observation": "app_operation",
+          "operation": "session.update",
+          "source_event": null,
+          "data_fields": [
+            "input_audio_format",
+            "input_audio_sampling_rate",
+            "input_audio_transcription",
+            "output_audio_format",
+            "turn_detection",
+            "voice"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "session",
+          "status": "created",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "session.created",
+          "data_fields": [
+            "input_audio_format",
+            "input_audio_sampling_rate",
+            "input_audio_transcription",
+            "model_scope",
+            "output_audio_format",
+            "service_model",
+            "service_session_id",
+            "turn_detection",
+            "voice"
+          ],
+          "model_scope": "voice_live_session",
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "session",
+          "status": "updated",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "session.updated",
+          "data_fields": [
+            "input_audio_format",
+            "input_audio_sampling_rate",
+            "input_audio_transcription",
+            "model_scope",
+            "output_audio_format",
+            "service_model",
+            "service_session_id",
+            "turn_detection",
+            "voice"
+          ],
+          "model_scope": "voice_live_session",
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "request",
+          "status": "sent",
+          "observation": "app_operation",
+          "operation": "conversation.item.create",
+          "source_event": null,
+          "data_fields": [
+            "content_omitted",
+            "purpose",
+            "role"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "input",
+          "status": "received",
+          "observation": "app_operation",
+          "operation": "browser.text",
+          "source_event": null,
+          "data_fields": [
+            "input_mode",
+            "text"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "request",
+          "status": "sent",
+          "observation": "app_operation",
+          "operation": "conversation.item.create",
+          "source_event": null,
+          "data_fields": [
+            "input_mode",
+            "purpose",
+            "role",
+            "text"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "response",
+          "status": "requested",
+          "observation": "app_operation",
+          "operation": "response.create",
+          "source_event": null,
+          "data_fields": [],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "input",
+          "status": "accepted",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "conversation.item.created",
+          "data_fields": [
+            "role"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "response",
+          "status": "created",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.created",
+          "data_fields": [
+            "status"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": true,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "tool_discovery",
+          "status": "catalog_observed",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "conversation.item.created",
+          "data_fields": [
+            "server_label",
+            "tools",
+            "tools_truncated"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": true
+        },
+        {
+          "stage": "tool_discovery",
+          "status": "in_progress",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "mcp_list_tools.in_progress",
+          "data_fields": [],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": true
+        },
+        {
+          "stage": "tool_discovery",
+          "status": "completed",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "mcp_list_tools.completed",
+          "data_fields": [],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": true
+        },
+        {
+          "stage": "tool",
+          "status": "announced",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.output_item.added",
+          "data_fields": [
+            "arguments_observed",
+            "arguments_parseable",
+            "kind",
+            "name",
+            "server_label"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": true,
+          "tool_id_provided": true,
+          "name": "finance"
+        },
+        {
+          "stage": "tool",
+          "status": "in_progress",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.mcp_call.in_progress",
+          "data_fields": [
+            "kind",
+            "name"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": true,
+          "tool_id_provided": true,
+          "name": "finance"
+        },
+        {
+          "stage": "tool",
+          "status": "arguments_ready",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.mcp_call_arguments.done",
+          "data_fields": [
+            "arguments",
+            "arguments_filtered",
+            "arguments_observed",
+            "arguments_parseable",
+            "kind",
+            "name"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": true,
+          "tool_id_provided": true,
+          "arguments": {
+            "query": "삼성전자 주가 (005930)",
+            "language": "ko",
+            "region": "KR"
+          },
+          "name": "finance"
+        },
+        {
+          "stage": "tool",
+          "status": "completed",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.mcp_call.completed",
+          "data_fields": [
+            "kind",
+            "name"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": true,
+          "tool_id_provided": true,
+          "name": "finance"
+        },
+        {
+          "stage": "tool",
+          "status": "output_observed",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.output_item.done",
+          "data_fields": [
+            "arguments",
+            "arguments_filtered",
+            "arguments_observed",
+            "arguments_parseable",
+            "kind",
+            "name",
+            "server_label"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": true,
+          "tool_id_provided": true,
+          "arguments": {
+            "query": "삼성전자 주가 (005930)",
+            "language": "ko",
+            "region": "KR"
+          },
+          "name": "finance"
+        },
+        {
+          "stage": "audio",
+          "status": "started",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.audio.delta",
+          "data_fields": [
+            "scope"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": true,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "audio",
+          "status": "done",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.audio.done",
+          "data_fields": [
+            "scope"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": true,
+          "tool_id_provided": false
+        }
+      ],
+      "tools": [
+        {
+          "name": "finance",
+          "status": "completed",
+          "arguments": {
+            "query": "삼성전자 주가 (005930)",
+            "language": "ko",
+            "region": "KR"
+          },
+          "source_event": "response.output_item.done",
+          "output_received": true,
+          "output_json_characters": 3120
+        }
+      ],
+      "citations": [],
+      "user_transcripts": [
+        {
+          "text": "삼성전자 주식 찾아줘.",
+          "input_mode": "text"
+        }
+      ],
+      "assistant_final": "삼성전자(005930)는 현재 **271,500원**입니다. 전일 대비 **10,500원(+4.02%)** 올랐고, 오늘 장중 고가는 272,500원, 저가는 263,500원입니다. 기준 시각은 **2026년 9월 21일 오전 11시 8분**입니다.",
+      "audio_bytes": 1134000,
+      "completions": [
+        {
+          "status": "completed",
+          "interrupted": false
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 4198,
+          "output_tokens": 605,
+          "total_tokens": 4803
+        }
+      ],
+      "errors": [],
+      "success": true
+    },
+    {
+      "provider": "bing",
+      "input_mode": "text",
+      "question": "삼성전자 주식 찾아줘.",
+      "ready": true,
+      "flow": [
+        {
+          "stage": "connection",
+          "status": "connecting",
+          "observation": "app_operation",
+          "operation": "connect",
+          "source_event": null,
+          "data_fields": [
+            "agent",
+            "api_version",
+            "connection_mode",
+            "endpoint_host",
+            "foundry_resource_override",
+            "project_name",
+            "target_scope"
+          ],
+          "model_scope": null,
+          "target_scope": "configured",
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "connection",
+          "status": "connected",
+          "observation": "app_operation",
+          "operation": "connect",
+          "source_event": null,
+          "data_fields": [],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "request",
+          "status": "sent",
+          "observation": "app_operation",
+          "operation": "session.update",
+          "source_event": null,
+          "data_fields": [
+            "input_audio_format",
+            "input_audio_sampling_rate",
+            "input_audio_transcription",
+            "output_audio_format",
+            "turn_detection",
+            "voice"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "session",
+          "status": "created",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "session.created",
+          "data_fields": [
+            "input_audio_format",
+            "input_audio_sampling_rate",
+            "input_audio_transcription",
+            "model_scope",
+            "output_audio_format",
+            "service_model",
+            "service_session_id",
+            "turn_detection",
+            "voice"
+          ],
+          "model_scope": "voice_live_session",
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "session",
+          "status": "updated",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "session.updated",
+          "data_fields": [
+            "input_audio_format",
+            "input_audio_sampling_rate",
+            "input_audio_transcription",
+            "model_scope",
+            "output_audio_format",
+            "service_model",
+            "service_session_id",
+            "turn_detection",
+            "voice"
+          ],
+          "model_scope": "voice_live_session",
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "request",
+          "status": "sent",
+          "observation": "app_operation",
+          "operation": "conversation.item.create",
+          "source_event": null,
+          "data_fields": [
+            "content_omitted",
+            "purpose",
+            "role"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "input",
+          "status": "received",
+          "observation": "app_operation",
+          "operation": "browser.text",
+          "source_event": null,
+          "data_fields": [
+            "input_mode",
+            "text"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "request",
+          "status": "sent",
+          "observation": "app_operation",
+          "operation": "conversation.item.create",
+          "source_event": null,
+          "data_fields": [
+            "input_mode",
+            "purpose",
+            "role",
+            "text"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "response",
+          "status": "requested",
+          "observation": "app_operation",
+          "operation": "response.create",
+          "source_event": null,
+          "data_fields": [],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "input",
+          "status": "accepted",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "conversation.item.created",
+          "data_fields": [
+            "role"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": false,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "response",
+          "status": "created",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.created",
+          "data_fields": [
+            "status"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": false,
+          "response_id_provided": true,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "audio",
+          "status": "started",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.audio.delta",
+          "data_fields": [
+            "scope"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": true,
+          "tool_id_provided": false
+        },
+        {
+          "stage": "audio",
+          "status": "done",
+          "observation": "service_event",
+          "operation": null,
+          "source_event": "response.audio.done",
+          "data_fields": [
+            "scope"
+          ],
+          "model_scope": null,
+          "target_scope": null,
+          "item_id_provided": true,
+          "response_id_provided": true,
+          "tool_id_provided": false
+        }
+      ],
+      "tools": [],
+      "citations": [
+        {
+          "url": "https://markets.hankyung.com/stock/005930",
+          "title": "삼성전자 | 한국경제"
+        }
+      ],
+      "user_transcripts": [
+        {
+          "text": "삼성전자 주식 찾아줘.",
+          "input_mode": "text"
+        }
+      ],
+      "assistant_final": "삼성전자 보통주는 **종목코드 005930**, 코스피 상장 종목입니다. 오늘 9월 21일 장중 주가는 약 **27만 1천 원**, 전일 대비 **약 3.8% 상승**으로 확인됩니다(20분 지연 시세). 【6:4†source】\n\n매수·매도 판단이 아니라 **주가 차트, 실적, 배당, 뉴스** 중 어떤 정보를 찾아드릴까요?",
+      "audio_bytes": 1131000,
+      "completions": [
+        {
+          "status": "completed",
+          "interrupted": false
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 5752,
+          "output_tokens": 651,
+          "total_tokens": 6403
+        }
+      ],
+      "errors": [],
+      "success": true
+    }
+  ],
+  "privacy": "Credentials, capability tokens, raw PCM, hidden prompts and environment-specific target identifiers are not saved. Flow field names and selected public values are retained."
+}

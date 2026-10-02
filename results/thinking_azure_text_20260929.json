@@ -1,0 +1,129 @@
+{
+  "recorded_at_utc": "2026-09-29T03:07:51.606Z",
+  "evidence_scope": "Real comparison page in an isolated headless Chrome against the real services. One question sent to both engines at once; the page was sampled every 150 ms to record what each engine column showed while it worked. Not physical microphone/speaker, answer accuracy or latency benchmarking.",
+  "input": "text",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "question": "삼성전자 주식 찾아줘.",
+  "thinking_seen": true,
+  "timeline": [
+    {
+      "t_ms": 385,
+      "provider": "webiq",
+      "phase": "waiting",
+      "header": "연결 중…",
+      "bubble": "엔진에 연결하는 중…"
+    },
+    {
+      "t_ms": 385,
+      "provider": "bing",
+      "phase": "waiting",
+      "header": "연결 중…",
+      "bubble": "엔진에 연결하는 중…"
+    },
+    {
+      "t_ms": 6910,
+      "provider": "webiq",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Agent가 질문을 이해하고 무엇을 검색할지 생각하는 중…"
+    },
+    {
+      "t_ms": 6910,
+      "provider": "bing",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Agent가 생각하며 Bing으로 검색하는 중…"
+    },
+    {
+      "t_ms": 9566,
+      "provider": "webiq",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "WebIQ로 금융 조회 중…"
+    },
+    {
+      "t_ms": 11001,
+      "provider": "webiq",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 11500,
+      "provider": "bing",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 14987,
+      "provider": "webiq",
+      "phase": "done",
+      "header": "응답 4.1초",
+      "bubble": ""
+    },
+    {
+      "t_ms": 17009,
+      "provider": "bing",
+      "phase": "done",
+      "header": "응답 4.6초",
+      "bubble": ""
+    }
+  ],
+  "final": {
+    "question": "“삼성전자 주식 찾아줘.”",
+    "cells": [
+      {
+        "provider": "webiq",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 4.1초",
+        "activity": "",
+        "steps": [
+          "input:done:텍스트",
+          "think:done:2.7초",
+          "search:done:금융 조회 · 1.4초",
+          "results:done:1건",
+          "answer:done:완료"
+        ],
+        "calls": [
+          "금융 조회완료 · 1.4초 | 검색어 “삼성전자 주가”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "삼성전자(005930) 현재 주가는 273,000원입니다. 전일 대비 3,000원(약 1.11%) 상승했으며, 2026년 9월 29일 오전 11시 47분 기준입니다.",
+        "timing": "응답 시작 4.1초 · 완료 8.1초",
+        "notice": ""
+      },
+      {
+        "provider": "bing",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 4.6초",
+        "activity": "",
+        "steps": [
+          "input:done:텍스트",
+          "think:done:검색 포함 4.6초",
+          "search:hidden:Bing 내부 · 비공개",
+          "results:done:출처 1개",
+          "answer:done:완료"
+        ],
+        "calls": [],
+        "note": "Bing은 검색 결과 원문을 공개하지 않아요. 답변에 사용한 출처 링크만 받을 수 있어요.",
+        "sources": 1,
+        "answer": "삼성전자 (종목코드 005930, KOSPI)를 찾았어요. 2026년 9월 29일 기준 현재가는 약 27만 3천 원이며, 장중 시세는 제공처에 따라 지연될 수 있습니다. \n\n관심종목에 추가하거나 주가·차트·뉴스 중 무엇을 볼까요?",
+        "timing": "응답 시작 4.6초 · 완료 10.2초",
+        "notice": ""
+      }
+    ],
+    "compare": "응답 시작 · WebIQ 4.1초 · Grounding with Bing 4.6초",
+    "error": "",
+    "overflow": false
+  },
+  "mobile": {
+    "overflow": false,
+    "width": 390
+  },
+  "errors": []
+}

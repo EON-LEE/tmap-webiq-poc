@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tmap-webiq-poc"
+version = "0.1.0"
+description = "TMAP voice search comparison demo: WebIQ vs Grounding with Bing on Azure Voice Live"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "azure-ai-agents==1.1.0",
+    "azure-ai-projects==2.5.0",
+    "azure-ai-voicelive[aiohttp]==1.3.0",
+    "azure-identity>=1.25,<2",
+    "azure-core-tracing-opentelemetry==1.0.0b13",
+    "fastapi>=0.141,<0.142",
+    "openai==3.7.0",
+    "opentelemetry-api>=1.44,<2",
+    "opentelemetry-sdk>=1.44,<2",
+    "requests>=2.34,<3",
+    "uvicorn>=0.52,<0.53",
+    "websockets>=15,<17",
+]
+
+[project.optional-dependencies]
+azure-tracing = ["azure-monitor-opentelemetry-exporter==1.0.0b57"]
+
+[project.scripts]
+tmap = "tmap_poc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+tmap_poc = ["static/*.html", "static/*.js", "static/*.css"]

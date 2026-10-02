@@ -1,0 +1,10 @@
+{
+  "id": "B1-webiq_optimized-2",
+  "url": "https://botanicpark.seoul.go.kr/front/board/newsView.do?sn=12483&searchKeyword=2일%20(화)%2013시%2012분예약하기내%20클래스%20바로가기필독상단공지묶음%20사진%20관리%20(0장)문서%20첨부주간학습계획자주%20쓰는%20문구호루라기&pageIndex=1",
+  "fetched_at": "2026-09-08T09:03:51.680428+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "error": "'ascii' codec can't encode character '\\uc77c' in position 53: ordinal not in range(128)",
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

@@ -1,0 +1,122 @@
+{
+  "recorded_at_utc": "2026-09-29T02:39:04.147531+00:00",
+  "evidence_scope": "Real Voice Live sessions through the local app WebSocket. Spoken question audio (Voice Live TTS) streamed in real time in 100 ms frames; times are seconds after the last loud sample of the speech. Single runs, not a benchmark; network jitter applies.",
+  "provider": "webiq",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "results": [
+    {
+      "label": "default_semantic_vad",
+      "options": {},
+      "speech_audio": {
+        "start_s": 1.0,
+        "end_s": 3.165
+      },
+      "seconds_after_speech_end": {
+        "vad_start": -1.831,
+        "vad_stop": 0.741,
+        "committed": 0.741,
+        "stt_final": 1.437,
+        "response_created": 1.438,
+        "first_tool_event": 4.421,
+        "first_answer_text": 6.0,
+        "first_answer_audio": 6.414
+      },
+      "service_turn_detection": {
+        "type": "azure_semantic_vad_multilingual",
+        "create_response": true,
+        "interrupt_response": true
+      },
+      "audio_start_ms": 736,
+      "audio_end_ms": 3744,
+      "recognized": "서울역 근처 충전소 찾아줘."
+    },
+    {
+      "label": "semantic_vad_silence_300",
+      "options": {
+        "silence_duration_ms": 300
+      },
+      "speech_audio": {
+        "start_s": 1.0,
+        "end_s": 3.165
+      },
+      "seconds_after_speech_end": {
+        "vad_start": -1.845,
+        "vad_stop": 0.626,
+        "committed": 0.626,
+        "stt_final": 1.317,
+        "response_created": 1.318,
+        "first_tool_event": 3.349,
+        "first_answer_text": 5.39,
+        "first_answer_audio": 5.616
+      },
+      "service_turn_detection": {
+        "type": "azure_semantic_vad_multilingual",
+        "create_response": true,
+        "interrupt_response": true,
+        "silence_duration_ms": 300
+      },
+      "audio_start_ms": 736,
+      "audio_end_ms": 3552,
+      "recognized": "서울역 근처 충전소 찾아줘."
+    },
+    {
+      "label": "server_vad_default",
+      "options": {
+        "turn_detection": "server_vad"
+      },
+      "speech_audio": {
+        "start_s": 1.0,
+        "end_s": 3.165
+      },
+      "seconds_after_speech_end": {
+        "vad_start": -1.779,
+        "vad_stop": 0.725,
+        "committed": 0.725,
+        "stt_final": 1.396,
+        "response_created": 1.398,
+        "first_tool_event": 3.475,
+        "first_answer_text": 5.548,
+        "first_answer_audio": 5.964
+      },
+      "service_turn_detection": {
+        "type": "server_vad",
+        "create_response": true,
+        "interrupt_response": true
+      },
+      "audio_start_ms": 640,
+      "audio_end_ms": 3744,
+      "recognized": "서울역 근처 충전소 찾아줘."
+    },
+    {
+      "label": "server_vad_silence_300",
+      "options": {
+        "turn_detection": "server_vad",
+        "silence_duration_ms": 300
+      },
+      "speech_audio": {
+        "start_s": 1.0,
+        "end_s": 3.165
+      },
+      "seconds_after_speech_end": {
+        "vad_start": -1.766,
+        "vad_stop": 0.637,
+        "committed": 0.637,
+        "stt_final": 1.338,
+        "response_created": 1.339,
+        "first_tool_event": 3.439,
+        "first_answer_text": 4.956,
+        "first_answer_audio": 5.391
+      },
+      "service_turn_detection": {
+        "type": "server_vad",
+        "create_response": true,
+        "interrupt_response": true,
+        "silence_duration_ms": 300
+      },
+      "audio_start_ms": 640,
+      "audio_end_ms": 3552,
+      "recognized": "서울역 근처 충전소 찾아줘."
+    }
+  ]
+}

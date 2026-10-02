@@ -1,0 +1,22 @@
+{
+  "id": "B2-old",
+  "url": "https://smart.sciencecenter.go.kr/gcsci/info/info_parking.php",
+  "fetched_at": "2026-09-08T08:48:59.460614+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://smart.sciencecenter.go.kr/gcsci/info/info_parking.php",
+  "content_sha256": "73e599b2c8e6920194ff799eb56332fe330f03672613cdfc85ffab2594736239",
+  "content_bytes": 6647,
+  "text": "국립과천과학관\n주차 안내\n국립과천과학관\n주차장 수용가능 차량\n총 1,112대\n승용차 주차구역 총 1,016대\n중앙주차장 : 412대\n동주차장 : 86대\n서주차장 : 518대\n대형 주차구역 총 40대 대형차량은 제 2출입구를 이용하시기 바랍니다.\n장애인 주차구역 총 44대\n중앙주차장 : 17대\n동주차장 : 3대\n서주차장 : 24대\n구분\n요금(일일기준)\n일반차량\n5,000원\n대형(25인승 이상)\n10,000원\n경차(1000cc 이하) 및 친환경차(하이브리드) 다자녀 카드 소지 차량\n정산금액의 50% 할인\n유료 과학교육 프로그램 수강생(교육당일에 한함, 단체수업 제외)\n평일 무료, 주말 또는 공휴일 50% 할인\n장애인 차량\n주차요금 면제\n장애인 복지카드 및 장애등록 차량으로 확인\n· 이용시간\n입차 - 9:00 ~ 20:30\n출차 - 9:00 ~ 22:30\n· 야간개방 시 주차장 운영시간 - 09:00 ~22:00\n· 16:00시 이후 입차시 50% 할인(전차종)\n단, 기존 할인율 적용차량 제외\n· 신용카드, 교통카드 결제 가능\n홈페이지\n사이버과학관\n설정",
+  "links": [
+    "../css/jquery.bxslider.css",
+    "../css/front-base.css",
+    "../css/front-style.css",
+    "#"
+  ],
+  "short_review_excerpts": [
+    " 44대\n중앙주차장 : 17대\n동주차장 : 3대\n서주차장 : 24대\n구분\n요금(일일기준)\n일반차량\n5,000원\n대형(25인승 이상)\n10,000원\n경차(1000cc 이하) 및 친환경차(하이브리드) 다자녀 카드 소지 차량\n정산금액의 50% 할인\n유료 과학교육 프로그램 수강생(교육당일에 한함, 단체수업 제외)\n평일 무료, 주말 또는 공휴일 50% 할인\n장애인 차량\n주차요금 면제\n장애인 복지카드 및 장애등록 차량으로 확인\n· 이용시간\n입차 - 9:00 ~ 20:30\n출차 - 9:00 ~ 22:30\n· 야간개방 시 주차장"
+  ],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}

@@ -1,0 +1,157 @@
+{
+  "recorded_at_utc": "2026-09-29T06:53:49.051Z",
+  "evidence_scope": "Real comparison page in an isolated headless Chrome against the real services. One question sent to both engines at once; the page was sampled every 150 ms to record what each engine column showed while it worked. Not physical microphone/speaker, answer accuracy or latency benchmarking.",
+  "input": "voice",
+  "connection_mode": "realtime_agent_tool",
+  "created_cloud_resources": false,
+  "credentials_recorded": false,
+  "question": "하이닉스 주식 종가 알려줘.",
+  "thinking_seen": true,
+  "timeline": [
+    {
+      "t_ms": 15532,
+      "provider": "webiq",
+      "phase": "listening",
+      "header": "듣는 중…",
+      "bubble": "말씀을 듣는 중…"
+    },
+    {
+      "t_ms": 15532,
+      "provider": "bing",
+      "phase": "waiting",
+      "header": "대기",
+      "bubble": ""
+    },
+    {
+      "t_ms": 15695,
+      "provider": "bing",
+      "phase": "listening",
+      "header": "듣는 중…",
+      "bubble": "말씀을 듣는 중…"
+    },
+    {
+      "t_ms": 17597,
+      "provider": "webiq",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Realtime 모델이 음성을 직접 듣고 생각하는 중…"
+    },
+    {
+      "t_ms": 17597,
+      "provider": "bing",
+      "phase": "thinking",
+      "header": "생각 중…",
+      "bubble": "Realtime 모델이 음성을 직접 듣고 생각하는 중…"
+    },
+    {
+      "t_ms": 17847,
+      "provider": "webiq",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "WebIQ로 금융 조회 중…"
+    },
+    {
+      "t_ms": 18004,
+      "provider": "bing",
+      "phase": "searching",
+      "header": "검색 중…",
+      "bubble": "Grounding with Bing Agent에게 검색을 맡기는 중…"
+    },
+    {
+      "t_ms": 18477,
+      "provider": "webiq",
+      "phase": "writing",
+      "header": "답변 작성 중…",
+      "bubble": "찾은 결과를 읽고 답변을 준비하는 중…"
+    },
+    {
+      "t_ms": 18631,
+      "provider": "webiq",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 20976,
+      "provider": "webiq",
+      "phase": "done",
+      "header": "응답 1.0초",
+      "bubble": ""
+    },
+    {
+      "t_ms": 21914,
+      "provider": "bing",
+      "phase": "answering",
+      "header": "답변 중…",
+      "bubble": ""
+    },
+    {
+      "t_ms": 27090,
+      "provider": "bing",
+      "phase": "done",
+      "header": "응답 4.2초",
+      "bubble": ""
+    }
+  ],
+  "final": {
+    "question": "“하이닉스 주식 종가 알려줘.”",
+    "cells": [
+      {
+        "provider": "webiq",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 1.0초",
+        "activity": "",
+        "steps": [
+          "input:done:음성 그대로 전달",
+          "think:done:0.2초",
+          "search:done:금융 조회 · 0.7초",
+          "results:done:1건",
+          "answer:done:작성 0.1초"
+        ],
+        "recognized": "자막 “하이닉스 주식 종가 알려줘.” · 모델은 자막이 아니라 음성을 직접 듣습니다",
+        "filler": "",
+        "calls": [
+          "금융 조회완료 · 0.7초 | 검색어 “SK하이닉스 주가”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "현재 SK하이닉스 주가는 약 1,765,000원입니다. 전일 대비 약 3,000원 하락했고, 변동률은 약 -0.17% 정도입니다.",
+        "timing": "응답 시작 1.0초 · 완료 3.4초",
+        "notice": ""
+      },
+      {
+        "provider": "bing",
+        "status": "done",
+        "phase": "done",
+        "state": "응답 4.2초",
+        "activity": "",
+        "steps": [
+          "input:done:음성 그대로 전달",
+          "think:done:0.4초",
+          "search:done:Grounding with Bing Agent 호출 · 5.0초",
+          "results:done:Agent 답변",
+          "answer:done:완료"
+        ],
+        "recognized": "자막 “테이닉스 주식 종가 알려줘.” · 모델은 자막이 아니라 음성을 직접 듣습니다",
+        "filler": "",
+        "calls": [
+          "Grounding with Bing Agent 호출완료 · 5.0초 | Agent에 보낸 요청 “파이닉스 주식 종가”"
+        ],
+        "note": "",
+        "sources": 0,
+        "answer": "혹시 SK하이닉스(000660)를 말씀하신 거라면, 2026년 9월 28일 종가는 176만 8,000원입니다. 전일 대비 5.05% 하락했습니다. \n\n다른 종목인 프리닉스라면 상장 주식이 아니며, 최근 거래가 없어 종가가 제공되지 않습니다.",
+        "timing": "응답 시작 4.2초 · 완료 9.4초",
+        "notice": ""
+      }
+    ],
+    "compare": "응답 시작 · WebIQ 1.0초 · Grounding with Bing 4.2초",
+    "error": "",
+    "overflow": false
+  },
+  "mobile": {
+    "overflow": false,
+    "width": 390
+  },
+  "errors": []
+}

@@ -1,0 +1,1629 @@
+{
+  "version": "v9",
+  "finalized": true,
+  "classified_at": "2026-09-08T09:06:34.494799+00:00",
+  "accuracy_protocol_sha256": "c69b77aa6e908a2167639a8928af124cc4743bcbfb0ffe9312fc02bc607e6047",
+  "cases": [
+    {
+      "id": "W1",
+      "functional_group": "web",
+      "question": "9월 12일 인천공항 제1터미널 장기주차장에 일반 승용차를 24시간 세우면 얼마야?",
+      "reference": "인천공항 공식 일반요금: 장기주차장 소형 일 최대 9,000원. 일반 승용차 24시간, 할인·주차대행 제외.",
+      "checks": [
+        "2026-09-12 적용",
+        "일반 승용차",
+        "장기주차 24시간 요금"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "공식 장기주차 소형 일최대9,000원과 일치.",
+        "sources": [
+          "W1-airport"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "37886dc0eaa64221ab98cfc8e06493f9d944aac357c0187be78dce699cc7f77d",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "공식 장기주차 소형 일최대9,000원과 일치.",
+        "sources": [
+          "W1-airport"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "12f8c39d91322899a04cb43e383a1bbe20021c28f05f738e5d238558598191e9",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "공식 장기주차 소형 일최대9,000원과 일치.",
+        "sources": [
+          "W1-airport"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "1f92969d60209b6a5a845bb467eff6e6d176eec3da5f45643f8934d7d1a9440d",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "W2",
+      "functional_group": "web",
+      "question": "9월 12일 토요일 김포공항 국내선 주차장에 승용차 하루 세우면 얼마야?",
+      "reference": "김포공항 공식 국내선 소형: 금·토·일 및 법정공휴일 24시간 30,000원. 2026-09-12는 토요일.",
+      "checks": [
+        "토요일 요금",
+        "국내선·소형 승용차",
+        "24시간 기준"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "토요일 국내선 승용차24시간30,000원 공식표와 일치.",
+        "sources": [
+          "W2-official-parking"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "9b0bcf7110fd37b9ae71baaa6747ea14c5f38db5b3f7fa8db7e81ba495a49005",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "토요일 국내선 승용차24시간30,000원 공식표와 일치.",
+        "sources": [
+          "W2-official-parking"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "04b68967f62ef43d5d49b18533782d7c29beb4b2b8634b3d74305aab87bdf73a",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "토요일 국내선 승용차24시간30,000원 공식표와 일치.",
+        "sources": [
+          "W2-official-parking"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "bbfe6c32042a2f85e8d69099bfbcdff3f8d502b6259c1441bd58bfd0f05ec3a0",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "W3",
+      "functional_group": "web",
+      "question": "서울대공원 동물원에 소형견을 이동가방에 넣으면 들어갈 수 있어?",
+      "reference": "동물원 반입 제한은 일반 반려견에 적용. 소형·이동가방 예외를 입증하지 못함. 공원 외부와 동물원 구분; 장애인 보조견은 별도.",
+      "checks": [
+        "동물원과 공원 외곽 구분",
+        "이동가방 예외 여부",
+        "안내견과 일반 반려견 구분"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "동물원 일반 반려견 반입불가이며 이동가방도 예외가 아니라는 핵심과 일치.",
+        "sources": [
+          "W3-grandpark"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "643e78e2fc095e17ffd2aa4dac45a74a721e3255975204bf1dd18ffa3682070f",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "동물원 일반 반려견 반입불가이며 이동가방도 예외가 아니라는 핵심과 일치.",
+        "sources": [
+          "W3-grandpark"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "1c497b8d6b5b6dad9fd5224946362d751a6777d04174a531568e61c21ab725b5",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "동물원 일반 반려견 반입불가이며 이동가방도 예외가 아니라는 핵심과 일치.",
+        "sources": [
+          "W3-grandpark"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "3a54f8871ff90f0a1805f4fcb0757c643ba27bdc4c71999b9225125138c2d816",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "W4",
+      "functional_group": "web",
+      "question": "2026년 9월 기준으로 일반 승용차가 남산 서울타워 정상까지 올라갈 수 있어?",
+      "reference": "공식 교통 안내상 일반 승용차 정상 진입 불가. 허가차·셔틀 예외를 일반화하지 않음.",
+      "checks": [
+        "일반 승용차 제한",
+        "현재 적용",
+        "허가 차량 예외를 일반화하지 않음"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "일반승용차 정상진입 제한을 공식 교통안내로 확인.",
+        "sources": [
+          "W4-namsan"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "7bd8e7874dc42246c6ab16c8b969a05a260f485316435715e39e6b7114f6ba93",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "일반승용차 정상진입 제한을 공식 교통안내로 확인.",
+        "sources": [
+          "W4-namsan"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "96f411bc6d0cdf59ef4565c8b24e5fb275efc985ce9c8d75dc6cb9aad0169fd5",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "일반승용차 정상진입 제한을 공식 교통안내로 확인.",
+        "sources": [
+          "W4-namsan"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "2db16c5a836f4ffd84008482e1954ad81905206f3438eab13394cfaeb6fc163f",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "W5",
+      "functional_group": "web",
+      "question": "9월 12일 서울역에서 인천공항 제1터미널 가는 공항철도 직통열차 성인 요금 얼마야?",
+      "reference": "새 공항철도 공식 도메인 airportrailroad.com의 직통열차 소개: 어른13,000원. 별도 정상운임은 서울~T1 18,500원으로 병기한다. 답변13,000원은 현재 어른 판매운임과 일치하나 정상운임 명칭과는 구분.",
+      "checks": [
+        "직통과 일반열차 구분",
+        "성인 기본 요금",
+        "할인가와 일반가 구분"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "현행 공식 직통열차 어른 판매운임13,000원 일치. 공식표는 별도로 정상운임18,500원을 병기한다.",
+        "sources": [
+          "W5-official-fare"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "454a4b059e6ebcaf926274cdd58653d3a61cf3768c34a40c3dd3f6c954bcca9a",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "현행 공식 직통열차 어른 판매운임13,000원 일치. 정상운임18,500원과 판매운임 구분.",
+        "sources": [
+          "W5-official-fare"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "41b5bace25288a3f170647ff9110393be0137d5e7ecc831959b2098efce0d2e1",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "현행 공식 직통열차 어른 판매운임13,000원 일치.",
+        "sources": [
+          "W5-official-fare"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "8767539053773eeafdfd5cbea65c3476f251cec21b8d8a63d0b4463fa84b5b89",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "P1",
+      "functional_group": "places",
+      "question": "광교호수공원 원천호수 근처에 자체 주차장 있는 카페 한 곳 찾아줘.",
+      "reference": "테이크웨이브 관광정보는 원천호수·법조로25 SK VIEW Lake 2층과 건물 지하2층 주차장을 명시. 슬로·르디투어는 별도 방문기 대조; 공영주차를 자체주차로 인정하지 않음.",
+      "checks": [
+        "원천호수 인근 실제 장소",
+        "자체 주차장 근거",
+        "현재 지점·주소"
+      ],
+      "bing": {
+        "label": "unverifiable",
+        "reason": "르디투어의 실제 주소·전용주차는2025 방문기에서 확인되지만 원천호수 근처의 거리 적합성 및 현재 주말2시간30분 무료조건은 독립 최신근거 부족.",
+        "sources": [
+          "P1-webiq_optimized-0",
+          "P1-webiq_optimized-1",
+          "P1-slo",
+          "P1-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "3b935068fdf870fd543c4af4cf7c93b665d81b38681269c6afc878b499e1f03b",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "unverifiable",
+        "reason": "슬로 광교의 장소·건물상가주차는2025 방문기에서 확인되나 현재 주차등록 조건을 보장할 최신 운영자 근거 부족.",
+        "sources": [
+          "P1-webiq_optimized-0",
+          "P1-webiq_optimized-1",
+          "P1-slo",
+          "P1-bing-0",
+          "P1-webiq_base-4",
+          "P1-webiq_base-5"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "03d964f66a670d5d60ec49c5f77eab24b4eeb7cf6bcb9596d95bba50a3406586",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "관광정보에서 테이크웨이브의 법조로25·호수근처·건물지하2층 주차를 확인. 무료조건은 미확인으로 한정하여 과장하지 않았다.",
+        "sources": [
+          "P1-webiq_optimized-0",
+          "P1-webiq_optimized-1",
+          "P1-slo",
+          "P1-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "ef4431a9cb5380d127c594225efb48c9023777e245b718c1d5a888610991eebd",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "P2",
+      "functional_group": "places",
+      "question": "서울숲역 근처에 강아지가 실내에 들어갈 수 있는 카페 한 곳 찾아줘.",
+      "reference": "어라운드데이 서울숲2길24-1의 반려생활 장소정보와 2026 방문기에서 실내·모든 좌석 동반을 대조. 테라스 전용 체다앤올리는 대체 정답 아님.",
+      "checks": [
+        "실내 동반 조건",
+        "실제 지점·주소",
+        "테라스 전용과 구분"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "반려생활의 현행 장소정보와2026 방문기에 어라운드데이 주소·실내모든좌석 동반·대형견 및 펫메뉴가 일치. 방문전 확인 조건도 명시.",
+        "sources": [
+          "P2-webiq_base-1",
+          "P2-bing-0",
+          "P2-chedda"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "6037061c59600efc2ed61afede41861ceb88a04e6a9c42b459140e285ffd7ffd",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "반려생활의 현행 장소정보와2026 방문기에 어라운드데이 주소·실내모든좌석 동반·펫메뉴 일치.",
+        "sources": [
+          "P2-webiq_base-1",
+          "P2-bing-0",
+          "P2-chedda"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "7d56fb65c950acda6800ea1c6b818e11a33ac6c2ef1dc211774503ccb65c68a3",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "실내모든좌석 동반·주소·펫메뉴·동반카페 펫티켓이 장소 원문과 일치.",
+        "sources": [
+          "P2-webiq_base-1",
+          "P2-bing-0",
+          "P2-chedda"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "e7205807b6ef75b784a832586c9a26930e47f6283ce67f2c4c82b15f4ebe9a75",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "P3",
+      "functional_group": "places",
+      "question": "일산 호수공원 정발산역 쪽에서 아이랑 점심 먹을 주차 가능한 식당 하나 추천해줘.",
+      "reference": "부페파크·포폴로피자는 정발산로43-20 건물주차 최대2시간 지원을 2026년5월 방문기에서 확인. 조선초가한끼는 2023년 방문기만 확보하여 현행 영업·편의시설을 단정할 수 없음.",
+      "checks": [
+        "정발산역·호수공원 인근",
+        "현재 영업 식당",
+        "주차 근거",
+        "없는 편의시설 추측 금지"
+      ],
+      "bing": {
+        "label": "unverifiable",
+        "reason": "조선초가한끼 주소·주차·놀이방·아기의자는2023 방문기만 확인. 현재 영업과 시설을2026년으로 확정할 근거 부족.",
+        "sources": [
+          "P3-webiq_base-0",
+          "P3-webiq_optimized-0",
+          "P3-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "b8bf45eb4708c2ba084825e6d1e8630c662b4d13f1b9fe60511eb462b168b599",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "현행운영자사이트의정발산로43-20주소와2026년5월 직접방문원문의주차2시간·점심12시·평일15~18시휴식이일치.현재현장상황보장은아님.",
+        "sources": [
+          "P3-webiq_base-0",
+          "P3-webiq_optimized-0",
+          "P3-bing-0",
+          "P3-buffet-operator",
+          "P3-webiq_base-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "c170cf7117d799f71fdd9e57830f4c9af389407afe7be0c3c66381d36f6fc0c9",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "운영자2026년9월공지로현재영업정체성을확인하고2026년5월방문원문의건물주차2시간·11:30개점·월요일휴무를대조.대기상황은보장하지않음.",
+        "sources": [
+          "P3-webiq_base-0",
+          "P3-webiq_optimized-0",
+          "P3-bing-0",
+          "P3-popolo-operator",
+          "P3-webiq_optimized-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "56b321afb310df9095c5195a910ce859d3fbd7e8ce70618730b7804b53fbd7f7",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "P4",
+      "functional_group": "places",
+      "question": "성수역 근처에 토요일 오전 9시에 여는 베이커리 카페 있어?",
+      "reference": "토요일 09:00은 평일 개점과 다름. 오로라베이커리 2023 방문기 및 일반 목록만으로 2026 토요일 09:00 보장 불가. 어니언·글로우 등 주말 늦은 개점 구분.",
+      "checks": [
+        "성수역 인근",
+        "토요일 09시 운영",
+        "베이커리 카페 업종·지점"
+      ],
+      "bing": {
+        "label": "unverifiable",
+        "reason": "주추천은09:30으로09:00요청 미해결. 대안 코끼리베이글08:30은 제시하지만 카페 좌석 미확인이고 최신 토요일 조건 증거 부족.",
+        "sources": [
+          "P4-bing-0",
+          "P4-bing-1",
+          "P4-onion"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "09:00 이용조건을 충족하는 확정 추천 없음"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "191907243bce1b80e05d5067b96e6509957f2fd56896f1196d426da53aa10d6b",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "unverifiable",
+        "reason": "스탠다드브레드09:00 주장에 대응하는 독립 원문들이403/404로 접근되지 않았고 운영자 최신시간 확인 불가. 거짓으로 단정하지 않음.",
+        "sources": [
+          "P4-bing-0",
+          "P4-bing-1",
+          "P4-onion",
+          "P4-webiq_base-0",
+          "P4-webiq_base-1",
+          "P4-webiq_base-2"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "c7a0286a72e81c5c05fa696943c26673f963aeb0e042ad57e5ae78d15ede5648",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "no_factual_answer",
+        "reason": "토요일09:00 영업을 확인한 베이커리카페를 제시하지 못했다고 명시. 후보만 제시했으며 지역 전체 부재 주장으로 읽지 않음.",
+        "sources": [
+          "P4-bing-0",
+          "P4-bing-1",
+          "P4-onion",
+          "P4-webiq_optimized-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "요청시간에 이용 가능한 추천 없음"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "0316f7e93fd68ad6b6c4501fa9492d5b2136a35a664d5d577fbe8acc1a4da8b2",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "P5",
+      "functional_group": "places",
+      "question": "판교역 근처에 밤 10시에도 여는 서점 한 곳 알려줘.",
+      "reference": "교보문고 판교점 공식: 월~목20:00, 금~일/공휴일20:30 폐점. 22:00 영업 후보 아님. 다른 지점의 미발견을 지역 서점 전체 부재로 단정하지 않음.",
+      "checks": [
+        "판교역 인근 서점",
+        "22시 영업 가능 여부",
+        "폐점 시각·요일 예외"
+      ],
+      "bing": {
+        "label": "no_factual_answer",
+        "reason": "22:00 이용가능한 서점을 확인하지 못했다고 명시. 대안 영업시간은 핵심요청에 대한 답이 아니며 금~일21시 주장은 공식20:30과 다름.",
+        "sources": [
+          "P5-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "22:00 서점 미제시"
+        ],
+        "ancillary_errors": [
+          "대안 교보판교 금~일21시 폐점은 공식20:30과 불일치"
+        ],
+        "answer_sha256": "139f1c119ffe694e66548122e1ecadb149c57c91d58187f6db13b11eb49d897f",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "no_factual_answer",
+        "reason": "교보판교가22시에 닫는다는 사실은 맞지만 요청한22:00 영업서점은 제시하지 않았다.",
+        "sources": [
+          "P5-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "22:00 서점 미제시"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "e19b9172d183cab8f1013e70218320f6dd2724d26a66eae43b52db8381f24695",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "no_factual_answer",
+        "reason": "공식 폐점20:30은 맞고22:00 대상을 찾지 못했다고 명시. 지역 전체 부재를 단정한 것은 아님.",
+        "sources": [
+          "P5-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "22:00 서점 미제시"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "34c9202b9e634585b7755a2423104ff7db844f48c2e3523b47b96ab82cf63f83",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "F1",
+      "functional_group": "finance",
+      "question": "2026년 9월 7일 삼성전자 보통주 코스피 정규장 종가 얼마였어?",
+      "reference": "Naver 삼성전자005930 일별시세 2026-09-07 종가270,000원, 전일255,500원 대비14,500원(+5.68%). 정규장 역사자료로 대조.",
+      "checks": [
+        "005930",
+        "2026-09-07 KRX 정규장 종가",
+        "시간외·최근가 배제"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "005930 2026-09-07 역사종가270,000원 및전일대비14,500원/+5.68% 일치.",
+        "sources": [
+          "F1-naver"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "831704c84bd9ca3a554ca781df1892647feb50c56eac8ce5612f44bde12583c8",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "005930 2026-09-07 역사종가270,000원 및전일대비14,500원/+5.68% 일치.",
+        "sources": [
+          "F1-naver"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "7b9953a5e36ca67dc75e621e5e66719f9bea80e4bd36f538e344aae054517ad5",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "005930 2026-09-07 역사종가270,000원 및전일대비14,500원/+5.68% 일치.",
+        "sources": [
+          "F1-naver"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "dd02228ca1ca0cacdce9ee4ff76ec40ddce6bcfe4238ef1a26c2b2d50658bce0",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "F2",
+      "functional_group": "finance",
+      "question": "2026년 9월 4일 미국 나스닥 종합지수 종가랑 등락률 알려줘.",
+      "reference": "Nasdaq 공식 COMP 역사자료 2026-09-04 26,506.99; 09-03 26,584.06. 차이 -77.07, 반올림 -0.29%. 26,506 단정은 0.99포인트 정밀도 불일치.",
+      "checks": [
+        "COMP 종합지수",
+        "2026-09-04",
+        "종가·전일 대비 등락"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "Nasdaq 공식26506.99 및-0.29%와 일치.",
+        "sources": [
+          "F2-nasdaq"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "4c9927fdce011ef5a3bdfb5e82c0b395b8315b410bb98c8513aad100e6502521",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "incorrect",
+        "reason": "18203.47/-0.58%는 지정일 공식26506.99/-0.29%와 크게 다름.",
+        "sources": [
+          "F2-nasdaq"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "30d7e1409b3ed6815dda717747abbf184eda7c9645a5883a6e362afb417320dd",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "incorrect",
+        "reason": "26506으로 단정한 종가는 공식26506.99보다0.99포인트 낮다. -77.07/-0.29%는 맞으며 이는 큰 금융오류와 구분하는 minor_numeric 정밀도불일치.",
+        "sources": [
+          "F2-nasdaq"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "minor_numeric: 종가0.99포인트 차이(약0.0037%); 전체결론의 큰 품질차로 해석하지 않음"
+        ],
+        "answer_sha256": "81b16f864be48f9fb31871db8e9c7da546eeae0f6a17facfea48c41020ff787f",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "F3",
+      "functional_group": "finance",
+      "question": "2026년 9월 4일 미국 S&P500 지수는 얼마로 마감했어?",
+      "reference": "Yahoo 공개 역사 일봉 ^GSPC 2026-09-04 7,718.60009765625→7,718.60; 09-03 7,747.7099609375→7,747.71. 정규일봉 종가 -29.11(-0.38%). Nasdaq SPX 경로는 데이터 없음.",
+      "checks": [
+        "S&P500 지수",
+        "2026-09-04 정규장 마감",
+        "ETF 가격과 구분"
+      ],
+      "bing": {
+        "label": "incorrect",
+        "reason": "5847.32/+0.31%는 지정일 역사일봉7718.60/-0.38%와 다름.",
+        "sources": [
+          "F3-yahoo",
+          "F3-sp500"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "cd0fb8470a2b77e8eb0d24713ee5f6afa17c3782417198006fe9bfd72b7e434f",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "지정일 ^GSPC 역사일봉7718.60, 전일7747.71 대비-29.11/-0.38%와 일치.",
+        "sources": [
+          "F3-yahoo",
+          "F3-sp500"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "778cd65c926a8b42c7451c9619b807843d248faee576e31e9b00e815c91b8095",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "incorrect",
+        "reason": "5847.32/+0.31%는 지정일 역사일봉7718.60/-0.38%와 다름.",
+        "sources": [
+          "F3-yahoo",
+          "F3-sp500"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "52ccc7e2d5d0625cb65954db046e3a4f8654bdd6de583f60464b96607c7a9bd4",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "F4",
+      "functional_group": "finance",
+      "question": "2026년 9월 8일 서울외국환중개 기준 원달러 매매기준율 알려줘.",
+      "reference": "서울외국환중개 날짜2026-09-08 페이지 확인. 환율 숫자는 동적 표에서 공개 텍스트로 획득되지 않음. 다른 은행 매매기준율·15:30현물은 지정기관 일일 매매기준율의 증거가 아님.",
+      "checks": [
+        "지정기관·고시일",
+        "USD/KRW 매매기준율",
+        "현찰·실시간 현물과 구분"
+      ],
+      "bing": {
+        "label": "unverifiable",
+        "reason": "1345.50을 지정기관 일일 매매기준율로 확정할 독립 숫자자료 미확보. 해당 인용 기사도1344.80으로 달라 출처일치도에 결함.",
+        "sources": [
+          "F4-http",
+          "F4-smbs",
+          "F4-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "인용 원문 숫자1344.80과 답변1345.50 불일치; 참값 확정은 별개"
+        ],
+        "answer_sha256": "21315dcb8fcc97f750995c92ff59d29fa27c48e311b47c474768130bd48f8a33",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "incorrect",
+        "reason": "1345.60은 연합뉴스가 명시적으로 서울15:30 원달러 환율이라고 구분한 값이다. 일일 매매기준율을 요구한 질문에 다른 시각현물값을 대체한 핵심종류 불일치.",
+        "sources": [
+          "F4-http",
+          "F4-smbs",
+          "F4-webiq_base-2"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "716bedf82ed339a5144805d85d83da4794f51e92b19ea6e6cea74a033b3e4252",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "unverifiable",
+        "reason": "1344.80은 일반 은행성 환율기사에서 확인되지만 서울외국환중개 지정기관의 해당일 일일 매매기준율로 귀속할 근거가 없다.",
+        "sources": [
+          "F4-http",
+          "F4-smbs",
+          "F4-webiq_optimized-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "fa53dbbb1bc79e27b8e2cacd7696c6fa07095cbe58fd77a7946fb8f729d9943f",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "F5",
+      "functional_group": "finance",
+      "question": "2026년 9월 4일 테슬라 나스닥 정규장 종가는 몇 달러였어?",
+      "reference": "Nasdaq 공식 TSLA 역사자료 2026-09-04 Close/Last $354.08. 시간외 가격으로 대체하지 않음.",
+      "checks": [
+        "TSLA USD",
+        "2026-09-04 정규장 종가",
+        "시간외 가격 배제"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "Nasdaq 공식09/04 TSLA종가354.08 일치. 추가 시간외352.87은 핵심종가 검증과 별개.",
+        "sources": [
+          "F5-tsla"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "추가 시간외352.87 독립 확인 안 함"
+        ],
+        "answer_sha256": "434669e9e8b4fa825111ae7c5a542b9ee735c5318d741e18f68f17098dc348c8",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "Nasdaq 공식09/04 TSLA종가354.08 일치.",
+        "sources": [
+          "F5-tsla"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "8d5565a483ddef39ac28f4c4de320aaedb5eb5a7ce31608cd3efb468eddf9c21",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "Nasdaq 공식09/04 TSLA종가354.08 일치.",
+        "sources": [
+          "F5-tsla"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "ae02c495f566cb223aefac7496916028d581f28b2b742343913c61c02b7a0e6a",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "N1",
+      "functional_group": "news",
+      "question": "9월 2일부터 8일 사이에 나온 서울 도로 통제 기사 하나 알려줘. 통제 날짜와 구간도 알려줘.",
+      "reference": "게시일2026-09-02~08과 실제 통제일·도로구간을 각각 검토. 9월1일 기사는 범위 밖. 동일 행사라도 연도·도로구간 다르면 불일치.",
+      "checks": [
+        "보도일 2026-09-02~08",
+        "통제 적용일·구간",
+        "종료·예정 구분"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "9/4 연합뉴스 원문에9/5여의동로15~24시·원효대교09시~익일03시 및9/6마라톤구간이 일치.",
+        "sources": [
+          "N1-korea",
+          "N1-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "303c6d891d163d6280722e65d3c39dc86b23bef734ee62a2ef92236fba664551",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "no_factual_answer",
+        "reason": "기술실패로 최종 사실답변 없음. 시도는 분모 유지.",
+        "sources": [
+          "N1-korea",
+          "N1-bing-0",
+          "N1-webiq_base-0"
+        ],
+        "technical_failure": true,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "no_factual_answer",
+        "reason": "기술실패로 최종 사실답변 없음. 시도는 분모 유지.",
+        "sources": [
+          "N1-korea",
+          "N1-bing-0",
+          "N1-webiq_optimized-0"
+        ],
+        "technical_failure": true,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "N2",
+      "functional_group": "news",
+      "question": "9월 2일부터 8일 사이에 나온 전기차 충전요금 할인 기사 알려줘. 언제 어디에 적용되는지도 알려줘.",
+      "reference": "9/2 초기보도와9/3 확장발표를 구분.9/3 뉴데일리·머니투데이:9/5~10/31주말공휴일11~14시, 기후부공공총충전료최대32%, 한전11~17%, 자가소비전력량50%. 전력량50%를전체충전료50%로 대체하지 않음.",
+      "checks": [
+        "보도 기간",
+        "할인 적용 시간·사업자",
+        "전력량·최종 충전료 구분"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "9/3 기사 원문이9/5~10/31주말공휴일11~14시, 기후부최대32%, 한전11~17%, 자가소비전력량50%를 각각 구분한다.",
+        "sources": [
+          "N2-bing-0",
+          "N2-bing-1",
+          "N2-aju"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "6013551d382ed749121ed9e595b281d97a107c71e33ce648370c592868c85664",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "9/3 보도와9/5~10/31·11~14시·기후부최대32%를 확인. 사업자별 최종요금 차이를 한정했다.",
+        "sources": [
+          "N2-bing-0",
+          "N2-bing-1",
+          "N2-aju",
+          "N2-webiq_base-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "abc5d2709fa1cceb906ca29da6b8676114e70dda2be77a31fb17d9c9a9dd2aa5",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "no_factual_answer",
+        "reason": "기술실패로 최종 사실답변 없음. 시도는 분모 유지.",
+        "sources": [
+          "N2-bing-0",
+          "N2-bing-1",
+          "N2-aju",
+          "N2-webiq_optimized-0"
+        ],
+        "technical_failure": true,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "N3",
+      "functional_group": "news",
+      "question": "9월 12일이나 13일에 서울에서 열리는 축제를 최근 기사에서 하나 찾아줘.",
+      "reference": "서울시 2026-09-02 문화달력: 서울무형문화축제 9/12~13, 남산골한옥마을/남산국악당. 방문일과 기사게시일은 별도 대조.",
+      "checks": [
+        "서울 행사",
+        "2026-09-12 또는 13 개최",
+        "최근 보도와 운영 일정"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "서울무형문화축제9/12~13 남산골한옥마을·31개종목이 공식문화달력과9/6기사 일치.",
+        "sources": [
+          "N3-seoul",
+          "N3-festival",
+          "N3-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "894a324271972b6dadd7bca45dc6a13eea0e117480474b7d78168541e1ab6e42",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "서울무형문화축제9/12~13 남산골한옥마을·31개종목이 공식문화달력과9/6기사 일치.",
+        "sources": [
+          "N3-seoul",
+          "N3-festival",
+          "N3-webiq_base-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "36492386ab405f010bbc7efdb52cc8552049fd31187bb1920112dd64fe0d64e1",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "서울무형문화축제9/12~13 남산골한옥마을·31개종목이 공식문화달력과9/6기사 일치.",
+        "sources": [
+          "N3-seoul",
+          "N3-festival",
+          "N3-webiq_optimized-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "0be0c0df608ff38c39099839f2167456ca3617ab259c7a279ce8d392149430b7",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "N4",
+      "functional_group": "news",
+      "question": "9월 2일부터 8일 사이에 나온 고속도로 전기차 충전소 소식 하나 알려줘.",
+      "reference": "9/4교통뉴스는9/5~10/31공공충전할인을보도. 본문은전력량50%/최종충전료최대32%를구분하며 고속도로라는단어는없다.2023고속도로충전소기사로2026이할인대상관계를보충할경우현행관계불확실.5/28발표는지정게시기간밖.",
+      "checks": [
+        "지정 보도 기간",
+        "고속도로 충전 관련성",
+        "운영 중·선정·예정 구분"
+      ],
+      "bing": {
+        "label": "no_factual_answer",
+        "reason": "요청게시기간9/2~8 기사는 찾지 못했다고 명시하고5/28발표로 대체. 범위외임을 숨기지는 않음.",
+        "sources": [
+          "N4-webiq_base-0",
+          "N4-webiq_base-4",
+          "N4-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "지정기간 기사 미제시"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "9fc33df101d591c023657af3745fc9afbd9b1b3f5822de3dc94e41a670aff01d",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "unverifiable",
+        "reason": "9/4교통뉴스 할인기간·공공1만4천기는 확인되나 그 기사 자체의 고속도로 적용 관계를 명확히 입증하지 못함. 후속고속도로기사는2023자료.",
+        "sources": [
+          "N4-webiq_base-0",
+          "N4-webiq_base-4",
+          "N4-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "649f5ced20832548a26244c8f842085ee2d3a7d719658f615490a464aaeebc71",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "incorrect",
+        "reason": "교통뉴스 본문은 전력량50%와 소비자총충전요금최대32%를 구분. 답변은 공공충전요금50%로 혼동했다. 사업자별확인 단서로 이 수치오류가 해소되지는 않음.",
+        "sources": [
+          "N4-webiq_base-0",
+          "N4-webiq_base-4",
+          "N4-bing-0",
+          "N4-webiq_optimized-0",
+          "N2-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "3f42c364efb74ab9a27b8a319b9f5d3b508d75d37057ea41eb0245c12e182147",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "N5",
+      "functional_group": "news",
+      "question": "2026년 추석에 고속도로 통행료 면제하는지 기사에서 확인해줘. 적용 날짜도 알려줘.",
+      "reference": "국제신문2026-09-01:대통령주재국무회의추석민생안정대책을보도하며9/24~27고속도로통행료면제를명시.공감신문9/7도확인.23일/28일경계진출입세부규정은별도확인필요.",
+      "checks": [
+        "2026 추석",
+        "공식 발표 보도",
+        "면제일·차종 또는 미정 상태"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "9/1국무회의 민생대책 보도를 담은 국제신문에서9/24~27면제 확인.23일·28일 경계진출입 세부규정은 아직 별도이므로 부가단정 주의.",
+        "sources": [
+          "N5-webiq_base-2",
+          "N5-webiq_base-0",
+          "N5-bing-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "23일/28일 경계진출입 면제 예외까지 배제한 것으로 일반화하면 안 됨"
+        ],
+        "answer_sha256": "076293163b0e4355eb0ab27fb029faa18db8a3e0bc78e3250e75aaa472c95668",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "국제신문9/1 정부발표 보도와공감신문9/7원문에9/24~27전국고속도로면제 일치.",
+        "sources": [
+          "N5-webiq_base-2",
+          "N5-webiq_base-0"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "3b8c4cc6319a32974dd35bb8c597b4b04c51613546dc8a4bf24cf00f290c6d5a",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "국제신문9/1·공감신문9/7원문에9/24~27면제일정 확인.",
+        "sources": [
+          "N5-webiq_base-2",
+          "N5-webiq_base-0",
+          "N5-webiq_optimized-0",
+          "N5-webiq_optimized-2"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "194552c0369a9920dc491af0421cbc0b9c41396d8f1be5833cd19cb44c9989ab",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "V1",
+      "functional_group": "videos",
+      "question": "아이오닉5 급속충전 방법을 설명하는 현대자동차 공식 영상 찾아줘.",
+      "reference": "https://www.youtube.com/watch?v=p9rftWFaopM 실제 현대자동차(hyundai korea) '취급설명서 | 아이오닉 5 - 완속, 급속 충전',154초. 메타데이터로 확인; 특정 급속챕터 시각은 재생 확인 안 함.",
+      "checks": [
+        "현대자동차 제작",
+        "아이오닉5 급속충전",
+        "실제 보기 URL",
+        "휴대용 충전 대체 금지"
+      ],
+      "bing": {
+        "label": "no_factual_answer",
+        "reason": "공식영상을 못 찾았다고 답하고직접링크를 제공하지 않음. 실제공식영상 존재를 부정한 것으로 확대하지 않음.",
+        "sources": [
+          "V1-reference-watch",
+          "V1-official-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "직접 영상 URL 없음"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "bdc74fc23d055efe23b373dbfa3251f5cd8fe1d940012436d6f72bf63be1f6a2",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "원본메타데이터의 현대자동차·아이오닉5완속급속충전·154초·직접URL 모두일치.",
+        "sources": [
+          "V1-reference-watch",
+          "V1-official-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "급속시작2:11 챕터는 재생으로 독립확인하지 않음"
+        ],
+        "answer_sha256": "5333423d6c8cf527815610cd0f5eed91afa2b6db0dd34550cdf020a6b0d42474",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "원본메타데이터의 현대자동차·아이오닉5완속급속충전·154초·직접URL 모두일치.",
+        "sources": [
+          "V1-reference-watch",
+          "V1-official-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "완속과 동일절차라는 부가설명은 영상재생으로 확인하지 않음"
+        ],
+        "answer_sha256": "419be5ead4d81e68ebd6e9767e599e95a65c58fdfe0a3bb1750aa0ec388c3890",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "V2",
+      "functional_group": "videos",
+      "question": "기아 EV6 급속충전 방법을 설명하는 기아 공식 영상 찾아줘.",
+      "reference": "공식 EV6 사용가이드8iP-ooQPDUI는존재하지만 급속절차위치재생미확인.기본답변i3bqInj3jw0는159초기아공식충전방법이나설명#니로EV.최적화대안_DRQk_DpDss는395초기아멤버스충전서비스소개로EV6절차아님.",
+      "checks": [
+        "기아 공식 제작",
+        "EV6 급속충전",
+        "실제 보기 URL"
+      ],
+      "bing": {
+        "label": "no_factual_answer",
+        "reason": "기아공식 EV6급속충전영상 직접링크 미제시. 검색을 권할 뿐 requested 영상 없음.",
+        "sources": [
+          "V2-official-watch",
+          "V2-charging-watch",
+          "V2-service-watch"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "직접 영상 URL 없음"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "1ad6cdb93536e967d5eeb0ea0c2d00b3e869bd0b683ceda93b0fc40154ffc83c",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "incorrect",
+        "reason": "제시영상은실제기아공식159초이나원본설명은 #니로EV. 명시차종EV6요청을 다른차종으로 대체했다.",
+        "sources": [
+          "V2-official-watch",
+          "V2-charging-watch",
+          "V2-service-watch",
+          "V2-webiq_base-1-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "c587895eac23e9c4001a994f6ecca16af7a357a94aeaf817eef153edf5dc07d6",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "no_factual_answer",
+        "reason": "공식충전서비스 안내라는 대안만제시하고 EV6급속절차영상이아님을 인정.요청한방법영상은미제공.",
+        "sources": [
+          "V2-official-watch",
+          "V2-charging-watch",
+          "V2-service-watch"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "EV6 급속충전 절차 영상 미제공"
+        ],
+        "ancillary_errors": [
+          "기재396초 vs원본395초:1초 메타데이터차이"
+        ],
+        "answer_sha256": "8f34f57f32c1b0c85a24afd2a30f434905d904f28d5d4530d1cf62af6cbecab4",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "V3",
+      "functional_group": "videos",
+      "question": "타이어뱅크에서 만든 타이어 공기압 셀프 주입 방법 영상 찾아줘.",
+      "reference": "https://www.youtube.com/watch?v=tmpb0k1XUXU '타이어 공기압 셀프 주입기 사용법! 완전 easy하다구' 제작자 타이어뱅크 확인. 다른 타이어 유튜버 영상은 타이어뱅크 공식 아님.",
+      "checks": [
+        "타이어뱅크 제작",
+        "공기 주입 주제",
+        "직접 보기 링크"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "인용에 실제 타이어뱅크 공식셀프주입영상 URL이 포함되어 제작자·주제 확인. 길이 미확인을 정직하게 명시.",
+        "sources": [
+          "V3-official-watch",
+          "V3-official-oembed",
+          "V3-bing-0",
+          "V3-bing-0-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "영상길이 미제공",
+          "직접 URL은 인용에만 포함; 영상보기 문구는 완전한 Markdown 링크가 아님"
+        ],
+        "ancillary_errors": [
+          "주입 상세단계는 영상재생으로 별도확인하지 않음"
+        ],
+        "answer_sha256": "b4c1bfed2411ef294bda724eba8d45272f9c532b787da547c1b11ad098e969cd",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "타이어뱅크공식·셀프주입주제·실제직접URL 확인.",
+        "sources": [
+          "V3-official-watch",
+          "V3-official-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "길이78초 vs원본77초:1초 메타데이터차이; 핵심제작자·주제는일치",
+          "부가단계설명은 영상재생으로 별도확인하지 않음"
+        ],
+        "answer_sha256": "85da721d17479c6be556def504843a80213f0b325345fabe62565a32081dcd6d",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "타이어뱅크공식·셀프주입주제·실제직접URL 확인.",
+        "sources": [
+          "V3-official-watch",
+          "V3-official-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "길이78초 vs원본77초:1초 메타데이터차이; 핵심제작자·주제는일치",
+          "부가단계설명은 영상재생으로 별도확인하지 않음"
+        ],
+        "answer_sha256": "4bb21830194f4e62819eddad80fa918f77bcb427f2ce3ad63d0b47f4375d78ce",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "V4",
+      "functional_group": "videos",
+      "question": "현대차 블루링크 앱에 차 등록하는 공식 안내 영상 찾아줘.",
+      "reference": "39lpQhZjQus는74초현대공식마이현대소개영상이며설명에차량등록언급.절차시연까지메타데이터로입증안됨.공식등록문서는별도존재.카베이·오토브라더스·에이원오토는현대공식제작영상아님.",
+      "checks": [
+        "공식 제작자",
+        "앱 차량 등록 주제",
+        "다른 기능 영상과 구분"
+      ],
+      "bing": {
+        "label": "unverifiable",
+        "reason": "74초 공식 마이현대 소개영상 존재·차량등록 언급은 확인. 앱설치부터 등록절차를 설명하는방법영상인지 메타데이터만으로 확인되지 않음.",
+        "sources": [
+          "V4-official-watch",
+          "V4-hyundai-registration"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "명시공식영상링크는 watch가 아닌 검색결과 URL",
+          "영상길이 미제공"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "dd7a4c0af3902e3668cc4104149661615705f57d3363a01d88f74f786fb9185c",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "no_factual_answer",
+        "reason": "공식영상 미확인임을 명시하고 공식문서 및 비공식참고영상만 제공. 공식앱차량등록 영상요청은 미해결.",
+        "sources": [
+          "V4-official-watch",
+          "V4-hyundai-registration",
+          "V4-webiq_base-1",
+          "V4-webiq_base-1-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "공식 차량등록 영상 미제공"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "8eb0d7d97c8a9aba61425202df2dab6d99aaa362615b4a12fc0fe251fa649b24",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "no_factual_answer",
+        "reason": "현대공식영상 미확인임을 명시하고 CARBAY·에이원오토 비공식대안을 제공. 요청제작자의영상은 미제공.",
+        "sources": [
+          "V4-official-watch",
+          "V4-hyundai-registration",
+          "V4-webiq_optimized-0",
+          "V4-webiq_optimized-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "공식 차량등록 영상 미제공"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "69b0909ae122f0b4c04b666f56339c9020d8b41e2ff814c541c26b9d000f49d5",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "V5",
+      "functional_group": "videos",
+      "question": "현대차에서 안드로이드 오토를 유선으로 연결하는 공식 영상 찾아줘.",
+      "reference": "takvJ8H636M는현대공식HyundaiUSA232초이며설명에유선·무선연결및적용차종명시.최적화첫PzG_CJnn1G8도HyundaiUSA159초유무선ccNC공식영상.두번째PeHUcOUCpb8은ProgrammingKnowledge2비공식.",
+      "checks": [
+        "현대 공식 제작",
+        "유선 Android Auto",
+        "차량·인포테인먼트 차이",
+        "영상 실재"
+      ],
+      "bing": {
+        "label": "no_factual_answer",
+        "reason": "공식영상 미확인임을 명시하고 USB매뉴얼만제공. 실제공식영상의 부재를 단정하지는 않음.",
+        "sources": [
+          "V5-hyundaiusa-watch",
+          "V5-webiq_optimized-3",
+          "V5-webiq_optimized-2",
+          "V5-bing-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "공식 영상 직접 URL 미제공"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "6eddc46038bf11b132d1edaf558e8939b438a33ca8703e199a30a865ec6f57a5",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "현대공식HyundaiUSA·232초·유무선Android Auto안내가 원본설명에 명시. 유선영상을 찾는핵심조건과 직접URL 충족.",
+        "sources": [
+          "V5-hyundaiusa-watch",
+          "V5-webiq_optimized-3",
+          "V5-webiq_optimized-2",
+          "V5-hyundaiusa-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "13초~1:04 챕터시각은 영상재생으로 독립확인하지 않음"
+        ],
+        "answer_sha256": "5fe0303cb8bd7c99f1283740a42b87573653c078c6c64bae37cbc56d6853a469",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "incorrect",
+        "reason": "첫 ccNC영상은 실제HyundaiUSA공식이며유선포함으로 적합. 그러나 공식영상목록으로함께제시한두번째PeHUcOUCpb8의제작자는ProgrammingKnowledge2로현대공식아님. 유효영상1개와 제작자조건회귀를 함께기록.",
+        "sources": [
+          "V5-hyundaiusa-watch",
+          "V5-webiq_optimized-3",
+          "V5-webiq_optimized-2",
+          "V5-webiq_optimized-3-oembed",
+          "V5-webiq_optimized-2-oembed"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "두번째영상 제작자미표기"
+        ],
+        "ancillary_errors": [
+          "첫영상159초를약3분으로반올림; 핵심오류로계산하지않음"
+        ],
+        "answer_sha256": "f1bebd59ffc44c73fea7ee4604865ebaf09238db12067c5ba7b551a36de5443e",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "B1",
+      "functional_group": "browse",
+      "question": "서울식물원 공식 안내 보고 9월 12일 토요일 온실 입장 마감 시간을 알려줘.",
+      "reference": "서울식물원 공식 주제원 3~10월09:30~18:00, 입장마감17:00. 9월12일 토요일은 해당; 폐장과 입장마감 구분.",
+      "checks": [
+        "계절·방문일",
+        "입장과 폐장 시간",
+        "공식 최신 안내"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "공식주제원3~10월입장마감17:00·폐장18:00에일치.",
+        "sources": [
+          "B1-botanic"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "f7e2c32eaf611294137ed1a99bf8fc04f8251baaad5beca4f5d629c093860eff",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "incorrect",
+        "reason": "입장마감을18시라고단정하고17시는매표만이라고구분했지만공식은17시입장마감이다.",
+        "sources": [
+          "B1-botanic"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "812b4d39553701fb895bae4765f8256359edeefbcd2cf06ae69f2b19c9b113f0",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "공식주제원3~10월입장마감17:00·폐장18:00에일치.",
+        "sources": [
+          "B1-botanic"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "b59d1d1e4f3443963cb01c776942788e0ae56504af58a6b1dc96eaf03323a84e",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "B2",
+      "functional_group": "browse",
+      "question": "국립과천과학관 공식 안내 보고 9월 12일 경차로 두 시간 주차하면 얼마인지 알려줘.",
+      "reference": "과학관협회2026-04-01 공지의 기존·변경안 모두 할인차량 기본2시간1,500원. 4월6일 예정 시행·할인차량 일최대5,000원 변경안과 모바일 구형일일정액5,000원/경차50%=2,500원이 충돌. 정부현행 확인 실패 시 불확실성 명시.",
+      "checks": [
+        "경차·2시간",
+        "현재 적용 요금",
+        "신구 공지 충돌·시행 여부"
+      ],
+      "bing": {
+        "label": "unverifiable",
+        "reason": "모바일공식구형표는경차하루2500원이나2026년4월정부공지의기존·변경안모두2시간1500원으로충돌.9/12실제시행현행표를확정하지못해오답으로단정하지않음.",
+        "sources": [
+          "B2-notice",
+          "B2-old",
+          "B2-government",
+          "B2-webiq_base-2",
+          "B2-webiq_base-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "시간단위요금이별도안내되지않았다는표현은4월공지의시간표존재와충돌"
+        ],
+        "answer_sha256": "c6c84e42a26ec29404114cd1ae8e50b15f7d92d0709987548acabceabdff2f83",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "unverifiable",
+        "reason": "2026년4월정부공지의할인차량2시간1500원과일치하나그원문은4/6시행예정·변경안이라고명시.구형공식모바일/7월재인용과충돌하여이미시행확정이라는단정은독립검증불충분.",
+        "sources": [
+          "B2-notice",
+          "B2-old",
+          "B2-government",
+          "B2-webiq_base-2",
+          "B2-webiq_base-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "4/6실제시행확정 및초과250원 현행적용은미확인"
+        ],
+        "answer_sha256": "77a67ac5b13bd21d7275b3f308151da90c0a9f07d22c07979a6ae79c6785fbb4",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "no_factual_answer",
+        "reason": "기술실패로최종사실답변없음.시도는분모유지.",
+        "sources": [
+          "B2-notice",
+          "B2-old",
+          "B2-government",
+          "B2-webiq_optimized-0"
+        ],
+        "technical_failure": true,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "B3",
+      "functional_group": "browse",
+      "question": "국립중앙박물관 공식 안내 보고 9월 12일 승용차로 세 시간 주차하면 얼마인지 알려줘.",
+      "reference": "국립중앙박물관 공식 현행표 승용차 기본60분1,000원+초과10분당500원. 3시간=1,000+12×500=7,000원. 공연4,000원·경차감면과 구분.",
+      "checks": [
+        "승용차·3시간 계산",
+        "초과요금 단위",
+        "공식 현행 표"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "공식현행승용차60분1000원+초과120분/10×500원=7000원계산일치.",
+        "sources": [
+          "B3-museum"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "8dcc03c42efc9ea0bbeb2663bc431d4a9412f77679f8be646f032c5a6544cb1a",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "no_factual_answer",
+        "reason": "기술실패로최종사실답변없음.시도는분모유지.",
+        "sources": [
+          "B3-museum",
+          "B3-webiq_base-0"
+        ],
+        "technical_failure": true,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "공식현행승용차60분1000원+초과120분/10×500원=7000원계산일치.",
+        "sources": [
+          "B3-museum"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "3f49951a49ef8d9241f55931bb0e68ebba98451a3d5fedeaed0d9a442f94d67d",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "B4",
+      "functional_group": "browse",
+      "question": "서울랜드 공식 안내 보고 당일 이용권이 있으면 정문 주차장이 무료인지 알려줘.",
+      "reference": "서울랜드 공식 동문주차장은 당일이용 후 사전정산 확인시무료. 질문은 정문주차장으로, 동문무료를 정문무료로 일반화하지 않음. 정문·서울대공원 주차장 관계 추가 대조.",
+      "checks": [
+        "정문 주차장 특정",
+        "이용권·정산 조건",
+        "다른 주차장 정책과 구분"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "핵심정문방향대공원주차장유료/동문이용객무료구분은공식FAQ와대공원요금표에부합.추가후문·쌈이맛명칭의현재운영은독립확인안됨.",
+        "sources": [
+          "B4-official-parking",
+          "B4-webiq_base-0",
+          "B4-grandpark-current"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [
+          "후문·쌈이맛 무료주차장 명칭/현행운영은 추가확인안됨"
+        ],
+        "answer_sha256": "517dcc1ea3013605c5fc6f26f2db43a1e34491efe6f1771f0999765d815b77b8",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "incorrect",
+        "reason": "정문주차장이무료인지라는질문에'네'라고긍정한뒤동문무료로대상을바꿨다.동문조건자체는맞지만정문/대공원은별도유료이며핵심장소조건을혼동시킨다.",
+        "sources": [
+          "B4-official-parking",
+          "B4-webiq_base-0",
+          "B4-grandpark-current"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "정문 질문에 동문으로 대상변경"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "f9f7f52c77c9c231e40637c638e194b4b24eaf175de2071f877082a911cdb3fb",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "incorrect",
+        "reason": "정문주차장이무료인지라는질문에'네'라고긍정한뒤동문무료로대상을바꿨다.동문조건자체는맞지만정문/대공원은별도유료이며핵심장소조건을혼동시킨다.",
+        "sources": [
+          "B4-official-parking",
+          "B4-webiq_base-0",
+          "B4-grandpark-current"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [
+          "정문 질문에 동문으로 대상변경"
+        ],
+        "ancillary_errors": [],
+        "answer_sha256": "88613c8938c06d558b3ba5cbd0509515c62232ae12530427d9213732404e74f3",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    },
+    {
+      "id": "B5",
+      "functional_group": "browse",
+      "question": "광릉 국립수목원 공식 안내 보고 9월 12일 승용차로 가려면 주차도 예약해야 하는지 알려줘.",
+      "reference": "국립수목원 공식 예약안내: 사전예약한 차량에 한하여 주차 가능. 일반승용차 이용자는 차량예약 필요. 9월12일 잔여자리/예약성공은 확인하지 않음.",
+      "checks": [
+        "광릉 국립수목원",
+        "2026-09-12",
+        "입장·차량 예약 구분",
+        "예약 가능 잔여량 꾸미지 않음"
+      ],
+      "bing": {
+        "label": "correct",
+        "reason": "국립수목원공식예약안내의사전예약차량만주차가능조건과일치.잔여예약가능성은주장하지않음.",
+        "sources": [
+          "B5-official-reservation",
+          "B5-webiq_optimized-0",
+          "B5-webiq_optimized-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "b683c22da0af45c9f68d2a51cd0251f105401df4c1d026bc206c770a78b56593",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_base": {
+        "label": "correct",
+        "reason": "국립수목원공식예약안내의사전예약차량만주차가능조건과일치.잔여예약가능성은주장하지않음.",
+        "sources": [
+          "B5-official-reservation",
+          "B5-webiq_optimized-0",
+          "B5-webiq_optimized-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "1a26c0762e20c690d4dcf2fe180297916f7857ddab9bf9269633ad427a80c880",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      },
+      "webiq_optimized": {
+        "label": "correct",
+        "reason": "공식사전차량예약필수·오전오후예약·입장당일주차료결제안내와일치.잔여자리확보는주장하지않음.",
+        "sources": [
+          "B5-official-reservation",
+          "B5-webiq_optimized-0",
+          "B5-webiq_optimized-1"
+        ],
+        "technical_failure": false,
+        "delivery_defects": [],
+        "ancillary_errors": [],
+        "answer_sha256": "e31d06d9d5f37397377fcd21fcefb24f8c4092d614af75443049e533e033be4c",
+        "review_type": "explicit manual non-blinded AI classification; no judge-model call"
+      }
+    }
+  ],
+  "criteria_changed_after_freeze": false,
+  "all_trials_reviewed": true
+}

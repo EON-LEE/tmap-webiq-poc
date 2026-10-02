@@ -1,0 +1,5184 @@
+{
+  "version": "v9",
+  "trials": 90,
+  "questions": 30,
+  "retries": 0,
+  "quality": {
+    "bing": {
+      "correct": 18,
+      "incorrect": 1,
+      "unverifiable": 6,
+      "no_factual_answer": 5
+    },
+    "webiq_base": {
+      "correct": 17,
+      "incorrect": 5,
+      "unverifiable": 4,
+      "no_factual_answer": 4
+    },
+    "webiq_optimized": {
+      "correct": 17,
+      "incorrect": 5,
+      "unverifiable": 1,
+      "no_factual_answer": 7
+    }
+  },
+  "all_reported": {
+    "bing": {
+      "n": 30,
+      "completed": 30,
+      "tokens_total": {
+        "input": 204204,
+        "output": 20190,
+        "cached_input": 14510,
+        "input_text": 204204,
+        "input_audio": 0,
+        "output_text": 7026,
+        "output_audio": 13164,
+        "reasoning": 2027
+      },
+      "tokens_mean": {
+        "input": 6806.8,
+        "output": 673.0,
+        "cached_input": 483.6666666666667,
+        "input_text": 6806.8,
+        "input_audio": 0.0,
+        "output_text": 234.2,
+        "output_audio": 438.8,
+        "reasoning": 67.56666666666666
+      },
+      "timing_median_seconds": {
+        "setup_ms": 3.1110813045015675,
+        "first_text_ms": 5.922056941999472,
+        "first_audio_ms": 6.399198511004215,
+        "completion_ms": 9.421138363497448
+      },
+      "timing_denominators": {
+        "setup_ms": 30,
+        "first_text_ms": 30,
+        "first_audio_ms": 30,
+        "completion_ms": 30
+      },
+      "failed_reported_zero_input": 0,
+      "missing_usage": 0,
+      "observed_tool_calls": {}
+    },
+    "webiq_base": {
+      "n": 30,
+      "completed": 28,
+      "tokens_total": {
+        "input": 448481,
+        "output": 18163,
+        "cached_input": 62370,
+        "input_text": 448481,
+        "input_audio": 0,
+        "output_text": 6206,
+        "output_audio": 11957,
+        "reasoning": 1074
+      },
+      "tokens_mean": {
+        "input": 14949.366666666667,
+        "output": 605.4333333333333,
+        "cached_input": 2079.0,
+        "input_text": 14949.366666666667,
+        "input_audio": 0.0,
+        "output_text": 206.86666666666667,
+        "output_audio": 398.56666666666666,
+        "reasoning": 35.8
+      },
+      "timing_median_seconds": {
+        "setup_ms": 2.8655305369975395,
+        "first_text_ms": 4.647372804007318,
+        "first_audio_ms": 5.305523458504467,
+        "completion_ms": 9.00967483450222
+      },
+      "timing_denominators": {
+        "setup_ms": 30,
+        "first_text_ms": 28,
+        "first_audio_ms": 28,
+        "completion_ms": 28
+      },
+      "failed_reported_zero_input": 2,
+      "missing_usage": 0,
+      "observed_tool_calls": {
+        "web": 28,
+        "places": 2,
+        "finance": 4,
+        "news": 5,
+        "browse": 2,
+        "videos": 5
+      }
+    },
+    "webiq_optimized": {
+      "n": 30,
+      "completed": 27,
+      "tokens_total": {
+        "input": 269004,
+        "output": 17609,
+        "cached_input": 60034,
+        "input_text": 269004,
+        "input_audio": 0,
+        "output_text": 5874,
+        "output_audio": 11735,
+        "reasoning": 943
+      },
+      "tokens_mean": {
+        "input": 8966.8,
+        "output": 586.9666666666667,
+        "cached_input": 2001.1333333333334,
+        "input_text": 8966.8,
+        "input_audio": 0.0,
+        "output_text": 195.8,
+        "output_audio": 391.1666666666667,
+        "reasoning": 31.433333333333334
+      },
+      "timing_median_seconds": {
+        "setup_ms": 2.8817332020043978,
+        "first_text_ms": 6.066659689997323,
+        "first_audio_ms": 6.4808912689914,
+        "completion_ms": 9.805965342995478
+      },
+      "timing_denominators": {
+        "setup_ms": 30,
+        "first_text_ms": 27,
+        "first_audio_ms": 27,
+        "completion_ms": 27
+      },
+      "failed_reported_zero_input": 3,
+      "missing_usage": 0,
+      "observed_tool_calls": {
+        "web": 24,
+        "places": 5,
+        "finance": 4,
+        "news": 6,
+        "browse": 3,
+        "videos": 6
+      }
+    }
+  },
+  "paired_optimized_vs": {
+    "webiq_base": {
+      "web": {
+        "paired_ids": [
+          "W1",
+          "W2",
+          "W3",
+          "W4",
+          "W5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 91416,
+        "optimized_input_text": 55985,
+        "input_reduction_percent": 38.757985473002535,
+        "quality_correct_delta_all": 0,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 91416,
+            "output": 2574,
+            "cached_input": 9240,
+            "input_text": 91416,
+            "input_audio": 0,
+            "output_text": 936,
+            "output_audio": 1638,
+            "reasoning": 117
+          },
+          "tokens_mean": {
+            "input": 18283.2,
+            "output": 514.8,
+            "cached_input": 1848.0,
+            "input_text": 18283.2,
+            "input_audio": 0.0,
+            "output_text": 187.2,
+            "output_audio": 327.6,
+            "reasoning": 23.4
+          },
+          "timing_median_seconds": {
+            "setup_ms": 3.2537095610023243,
+            "first_text_ms": 4.3907992629974615,
+            "first_audio_ms": 4.681838363001589,
+            "completion_ms": 7.284546871000202
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 6
+          }
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 55985,
+            "output": 2715,
+            "cached_input": 9236,
+            "input_text": 55985,
+            "input_audio": 0,
+            "output_text": 942,
+            "output_audio": 1773,
+            "reasoning": 125
+          },
+          "tokens_mean": {
+            "input": 11197.0,
+            "output": 543.0,
+            "cached_input": 1847.2,
+            "input_text": 11197.0,
+            "input_audio": 0.0,
+            "output_text": 188.4,
+            "output_audio": 354.6,
+            "reasoning": 25.0
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.9708112179941963,
+            "first_text_ms": 4.697563980007544,
+            "first_audio_ms": 5.281735780998133,
+            "completion_ms": 7.981620193997514
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 6
+          }
+        }
+      },
+      "places": {
+        "paired_ids": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 107031,
+        "optimized_input_text": 64324,
+        "input_reduction_percent": 39.90152385757397,
+        "quality_correct_delta_all": 1,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 107031,
+            "output": 3278,
+            "cached_input": 11550,
+            "input_text": 107031,
+            "input_audio": 0,
+            "output_text": 1151,
+            "output_audio": 2127,
+            "reasoning": 183
+          },
+          "tokens_mean": {
+            "input": 21406.2,
+            "output": 655.6,
+            "cached_input": 2310.0,
+            "input_text": 21406.2,
+            "input_audio": 0.0,
+            "output_text": 230.2,
+            "output_audio": 425.4,
+            "reasoning": 36.6
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.8044899350061314,
+            "first_text_ms": 4.602882531005889,
+            "first_audio_ms": 5.645262438993086,
+            "completion_ms": 11.879402609003591
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "places": 2,
+            "web": 6
+          }
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 64324,
+            "output": 3378,
+            "cached_input": 11545,
+            "input_text": 64324,
+            "input_audio": 0,
+            "output_text": 1246,
+            "output_audio": 2132,
+            "reasoning": 191
+          },
+          "tokens_mean": {
+            "input": 12864.8,
+            "output": 675.6,
+            "cached_input": 2309.0,
+            "input_text": 12864.8,
+            "input_audio": 0.0,
+            "output_text": 249.2,
+            "output_audio": 426.4,
+            "reasoning": 38.2
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.839896328005125,
+            "first_text_ms": 6.2649980779970065,
+            "first_audio_ms": 6.5969424700015225,
+            "completion_ms": 10.42423304800468
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "places": 5,
+            "web": 5
+          }
+        }
+      },
+      "finance": {
+        "paired_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 65687,
+        "optimized_input_text": 37815,
+        "input_reduction_percent": 42.431531353235805,
+        "quality_correct_delta_all": -1,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 65687,
+            "output": 2842,
+            "cached_input": 11550,
+            "input_text": 65687,
+            "input_audio": 0,
+            "output_text": 1387,
+            "output_audio": 1455,
+            "reasoning": 373
+          },
+          "tokens_mean": {
+            "input": 13137.4,
+            "output": 568.4,
+            "cached_input": 2310.0,
+            "input_text": 13137.4,
+            "input_audio": 0.0,
+            "output_text": 277.4,
+            "output_audio": 291.0,
+            "reasoning": 74.6
+          },
+          "timing_median_seconds": {
+            "setup_ms": 3.5660095540079055,
+            "first_text_ms": 7.195775346990558,
+            "first_audio_ms": 7.789996720995987,
+            "completion_ms": 10.36844077699061
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "finance": 4,
+            "web": 8
+          }
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 37815,
+            "output": 2332,
+            "cached_input": 11545,
+            "input_text": 37815,
+            "input_audio": 0,
+            "output_text": 1067,
+            "output_audio": 1265,
+            "reasoning": 264
+          },
+          "tokens_mean": {
+            "input": 7563.0,
+            "output": 466.4,
+            "cached_input": 2309.0,
+            "input_text": 7563.0,
+            "input_audio": 0.0,
+            "output_text": 213.4,
+            "output_audio": 253.0,
+            "reasoning": 52.8
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.8296026929892832,
+            "first_text_ms": 6.360010970005533,
+            "first_audio_ms": 7.011999405993265,
+            "completion_ms": 9.478315621992806
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "finance": 4,
+            "web": 6
+          }
+        }
+      },
+      "news": {
+        "paired_ids": [
+          "N3",
+          "N4",
+          "N5"
+        ],
+        "paired_n": 3,
+        "all_n": 5,
+        "reference_input_text": 27872,
+        "optimized_input_text": 26375,
+        "input_reduction_percent": 5.370981630309989,
+        "quality_correct_delta_all": -1,
+        "reference": {
+          "n": 3,
+          "completed": 3,
+          "tokens_total": {
+            "input": 27872,
+            "output": 1669,
+            "cached_input": 6930,
+            "input_text": 27872,
+            "input_audio": 0,
+            "output_text": 539,
+            "output_audio": 1130,
+            "reasoning": 80
+          },
+          "tokens_mean": {
+            "input": 9290.666666666666,
+            "output": 556.3333333333334,
+            "cached_input": 2310.0,
+            "input_text": 9290.666666666666,
+            "input_audio": 0.0,
+            "output_text": 179.66666666666666,
+            "output_audio": 376.6666666666667,
+            "reasoning": 26.666666666666668
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.7566749719990185,
+            "first_text_ms": 4.270767755995621,
+            "first_audio_ms": 4.731168622995028,
+            "completion_ms": 8.538664024003083
+          },
+          "timing_denominators": {
+            "setup_ms": 3,
+            "first_text_ms": 3,
+            "first_audio_ms": 3,
+            "completion_ms": 3
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "news": 3
+          }
+        },
+        "optimized": {
+          "n": 3,
+          "completed": 3,
+          "tokens_total": {
+            "input": 26375,
+            "output": 1979,
+            "cached_input": 6927,
+            "input_text": 26375,
+            "input_audio": 0,
+            "output_text": 697,
+            "output_audio": 1282,
+            "reasoning": 112
+          },
+          "tokens_mean": {
+            "input": 8791.666666666666,
+            "output": 659.6666666666666,
+            "cached_input": 2309.0,
+            "input_text": 8791.666666666666,
+            "input_audio": 0.0,
+            "output_text": 232.33333333333334,
+            "output_audio": 427.3333333333333,
+            "reasoning": 37.333333333333336
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.9078269230085425,
+            "first_text_ms": 4.020128616000875,
+            "first_audio_ms": 4.7746457989997,
+            "completion_ms": 9.427029472994036
+          },
+          "timing_denominators": {
+            "setup_ms": 3,
+            "first_text_ms": 3,
+            "first_audio_ms": 3,
+            "completion_ms": 3
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "news": 4
+          }
+        }
+      },
+      "videos": {
+        "paired_ids": [
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 60181,
+        "optimized_input_text": 40168,
+        "input_reduction_percent": 33.2546817101743,
+        "quality_correct_delta_all": -1,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 60181,
+            "output": 4240,
+            "cached_input": 11550,
+            "input_text": 60181,
+            "input_audio": 0,
+            "output_text": 958,
+            "output_audio": 3282,
+            "reasoning": 96
+          },
+          "tokens_mean": {
+            "input": 12036.2,
+            "output": 848.0,
+            "cached_input": 2310.0,
+            "input_text": 12036.2,
+            "input_audio": 0.0,
+            "output_text": 191.6,
+            "output_audio": 656.4,
+            "reasoning": 19.2
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.8629493030020967,
+            "first_text_ms": 3.9801982740027597,
+            "first_audio_ms": 4.359557490999578,
+            "completion_ms": 8.701782014992204
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "videos": 5,
+            "web": 1
+          }
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 40168,
+            "output": 4898,
+            "cached_input": 11545,
+            "input_text": 40168,
+            "input_audio": 0,
+            "output_text": 1097,
+            "output_audio": 3801,
+            "reasoning": 101
+          },
+          "tokens_mean": {
+            "input": 8033.6,
+            "output": 979.6,
+            "cached_input": 2309.0,
+            "input_text": 8033.6,
+            "input_audio": 0.0,
+            "output_text": 219.4,
+            "output_audio": 760.2,
+            "reasoning": 20.2
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.8084280449984362,
+            "first_text_ms": 5.8741269479942275,
+            "first_audio_ms": 6.044627420997131,
+            "completion_ms": 11.57194434000121
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "videos": 6,
+            "web": 1
+          }
+        }
+      },
+      "browse": {
+        "paired_ids": [
+          "B1",
+          "B4",
+          "B5"
+        ],
+        "paired_n": 3,
+        "all_n": 5,
+        "reference_input_text": 59953,
+        "optimized_input_text": 35189,
+        "input_reduction_percent": 41.30568945674111,
+        "quality_correct_delta_all": 2,
+        "reference": {
+          "n": 3,
+          "completed": 3,
+          "tokens_total": {
+            "input": 59953,
+            "output": 1647,
+            "cached_input": 6930,
+            "input_text": 59953,
+            "input_audio": 0,
+            "output_text": 573,
+            "output_audio": 1074,
+            "reasoning": 69
+          },
+          "tokens_mean": {
+            "input": 19984.333333333332,
+            "output": 549.0,
+            "cached_input": 2310.0,
+            "input_text": 19984.333333333332,
+            "input_audio": 0.0,
+            "output_text": 191.0,
+            "output_audio": 358.0,
+            "reasoning": 23.0
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.792183710000245,
+            "first_text_ms": 4.4605974159931066,
+            "first_audio_ms": 4.825569220993202,
+            "completion_ms": 8.72272840399819
+          },
+          "timing_denominators": {
+            "setup_ms": 3,
+            "first_text_ms": 3,
+            "first_audio_ms": 3,
+            "completion_ms": 3
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 4
+          }
+        },
+        "optimized": {
+          "n": 3,
+          "completed": 3,
+          "tokens_total": {
+            "input": 35189,
+            "output": 1661,
+            "cached_input": 6927,
+            "input_text": 35189,
+            "input_audio": 0,
+            "output_text": 575,
+            "output_audio": 1086,
+            "reasoning": 64
+          },
+          "tokens_mean": {
+            "input": 11729.666666666666,
+            "output": 553.6666666666666,
+            "cached_input": 2309.0,
+            "input_text": 11729.666666666666,
+            "input_audio": 0.0,
+            "output_text": 191.66666666666666,
+            "output_audio": 362.0,
+            "reasoning": 21.333333333333332
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.9338571409898577,
+            "first_text_ms": 4.541575998999178,
+            "first_audio_ms": 5.2327976649976335,
+            "completion_ms": 7.9769266250077635
+          },
+          "timing_denominators": {
+            "setup_ms": 3,
+            "first_text_ms": 3,
+            "first_audio_ms": 3,
+            "completion_ms": 3
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 4
+          }
+        }
+      },
+      "all": {
+        "paired_ids": [
+          "W1",
+          "W2",
+          "W3",
+          "W4",
+          "W5",
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5",
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5",
+          "N3",
+          "N4",
+          "N5",
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "B1",
+          "B4",
+          "B5"
+        ],
+        "paired_n": 26,
+        "all_n": 30,
+        "reference_input_text": 412140,
+        "optimized_input_text": 259856,
+        "input_reduction_percent": 36.94958023972437,
+        "quality_correct_delta_all": 0,
+        "reference": {
+          "n": 26,
+          "completed": 26,
+          "tokens_total": {
+            "input": 412140,
+            "output": 16250,
+            "cached_input": 57750,
+            "input_text": 412140,
+            "input_audio": 0,
+            "output_text": 5544,
+            "output_audio": 10706,
+            "reasoning": 918
+          },
+          "tokens_mean": {
+            "input": 15851.538461538461,
+            "output": 625.0,
+            "cached_input": 2221.153846153846,
+            "input_text": 15851.538461538461,
+            "input_audio": 0.0,
+            "output_text": 213.23076923076923,
+            "output_audio": 411.7692307692308,
+            "reasoning": 35.30769230769231
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.953803585493006,
+            "first_text_ms": 4.531739973499498,
+            "first_audio_ms": 4.9264492405054625,
+            "completion_ms": 8.733364047999203
+          },
+          "timing_denominators": {
+            "setup_ms": 26,
+            "first_text_ms": 26,
+            "first_audio_ms": 26,
+            "completion_ms": 26
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 25,
+            "places": 2,
+            "finance": 4,
+            "news": 3,
+            "videos": 5
+          }
+        },
+        "optimized": {
+          "n": 26,
+          "completed": 26,
+          "tokens_total": {
+            "input": 259856,
+            "output": 16963,
+            "cached_input": 57725,
+            "input_text": 259856,
+            "input_audio": 0,
+            "output_text": 5624,
+            "output_audio": 11339,
+            "reasoning": 857
+          },
+          "tokens_mean": {
+            "input": 9994.461538461539,
+            "output": 652.4230769230769,
+            "cached_input": 2220.1923076923076,
+            "input_text": 9994.461538461539,
+            "input_audio": 0.0,
+            "output_text": 216.30769230769232,
+            "output_audio": 436.11538461538464,
+            "reasoning": 32.96153846153846
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.8912309455045033,
+            "first_text_ms": 6.034554626494355,
+            "first_audio_ms": 6.296607915493951,
+            "completion_ms": 9.971593803995347
+          },
+          "timing_denominators": {
+            "setup_ms": 26,
+            "first_text_ms": 26,
+            "first_audio_ms": 26,
+            "completion_ms": 26
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 22,
+            "places": 5,
+            "finance": 4,
+            "news": 4,
+            "videos": 6
+          }
+        }
+      }
+    },
+    "bing": {
+      "web": {
+        "paired_ids": [
+          "W1",
+          "W2",
+          "W3",
+          "W4",
+          "W5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 30041,
+        "optimized_input_text": 55985,
+        "input_reduction_percent": -86.36197197163877,
+        "quality_correct_delta_all": 0,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 30041,
+            "output": 2589,
+            "cached_input": 1451,
+            "input_text": 30041,
+            "input_audio": 0,
+            "output_text": 879,
+            "output_audio": 1710,
+            "reasoning": 168
+          },
+          "tokens_mean": {
+            "input": 6008.2,
+            "output": 517.8,
+            "cached_input": 290.2,
+            "input_text": 6008.2,
+            "input_audio": 0.0,
+            "output_text": 175.8,
+            "output_audio": 342.0,
+            "reasoning": 33.6
+          },
+          "timing_median_seconds": {
+            "setup_ms": 3.3154025840049144,
+            "first_text_ms": 4.525444789993344,
+            "first_audio_ms": 5.109886468999321,
+            "completion_ms": 8.279098718994646
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {}
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 55985,
+            "output": 2715,
+            "cached_input": 9236,
+            "input_text": 55985,
+            "input_audio": 0,
+            "output_text": 942,
+            "output_audio": 1773,
+            "reasoning": 125
+          },
+          "tokens_mean": {
+            "input": 11197.0,
+            "output": 543.0,
+            "cached_input": 1847.2,
+            "input_text": 11197.0,
+            "input_audio": 0.0,
+            "output_text": 188.4,
+            "output_audio": 354.6,
+            "reasoning": 25.0
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.9708112179941963,
+            "first_text_ms": 4.697563980007544,
+            "first_audio_ms": 5.281735780998133,
+            "completion_ms": 7.981620193997514
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 6
+          }
+        }
+      },
+      "places": {
+        "paired_ids": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 48467,
+        "optimized_input_text": 64324,
+        "input_reduction_percent": -32.717106484824725,
+        "quality_correct_delta_all": 2,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 48467,
+            "output": 3285,
+            "cached_input": 2902,
+            "input_text": 48467,
+            "input_audio": 0,
+            "output_text": 1156,
+            "output_audio": 2129,
+            "reasoning": 249
+          },
+          "tokens_mean": {
+            "input": 9693.4,
+            "output": 657.0,
+            "cached_input": 580.4,
+            "input_text": 9693.4,
+            "input_audio": 0.0,
+            "output_text": 231.2,
+            "output_audio": 425.8,
+            "reasoning": 49.8
+          },
+          "timing_median_seconds": {
+            "setup_ms": 3.1267581909924047,
+            "first_text_ms": 4.931232542003272,
+            "first_audio_ms": 5.275593703001505,
+            "completion_ms": 9.031845429999521
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {}
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 64324,
+            "output": 3378,
+            "cached_input": 11545,
+            "input_text": 64324,
+            "input_audio": 0,
+            "output_text": 1246,
+            "output_audio": 2132,
+            "reasoning": 191
+          },
+          "tokens_mean": {
+            "input": 12864.8,
+            "output": 675.6,
+            "cached_input": 2309.0,
+            "input_text": 12864.8,
+            "input_audio": 0.0,
+            "output_text": 249.2,
+            "output_audio": 426.4,
+            "reasoning": 38.2
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.839896328005125,
+            "first_text_ms": 6.2649980779970065,
+            "first_audio_ms": 6.5969424700015225,
+            "completion_ms": 10.42423304800468
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "places": 5,
+            "web": 5
+          }
+        }
+      },
+      "finance": {
+        "paired_ids": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 24343,
+        "optimized_input_text": 37815,
+        "input_reduction_percent": -55.34239822536253,
+        "quality_correct_delta_all": -1,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 24343,
+            "output": 2213,
+            "cached_input": 2902,
+            "input_text": 24343,
+            "input_audio": 0,
+            "output_text": 892,
+            "output_audio": 1321,
+            "reasoning": 306
+          },
+          "tokens_mean": {
+            "input": 4868.6,
+            "output": 442.6,
+            "cached_input": 580.4,
+            "input_text": 4868.6,
+            "input_audio": 0.0,
+            "output_text": 178.4,
+            "output_audio": 264.2,
+            "reasoning": 61.2
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.957251372994506,
+            "first_text_ms": 6.050925887990161,
+            "first_audio_ms": 6.89332890699734,
+            "completion_ms": 8.758321348999743
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {}
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 37815,
+            "output": 2332,
+            "cached_input": 11545,
+            "input_text": 37815,
+            "input_audio": 0,
+            "output_text": 1067,
+            "output_audio": 1265,
+            "reasoning": 264
+          },
+          "tokens_mean": {
+            "input": 7563.0,
+            "output": 466.4,
+            "cached_input": 2309.0,
+            "input_text": 7563.0,
+            "input_audio": 0.0,
+            "output_text": 213.4,
+            "output_audio": 253.0,
+            "reasoning": 52.8
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.8296026929892832,
+            "first_text_ms": 6.360010970005533,
+            "first_audio_ms": 7.011999405993265,
+            "completion_ms": 9.478315621992806
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "finance": 4,
+            "web": 6
+          }
+        }
+      },
+      "news": {
+        "paired_ids": [
+          "N3",
+          "N4",
+          "N5"
+        ],
+        "paired_n": 3,
+        "all_n": 5,
+        "reference_input_text": 36823,
+        "optimized_input_text": 26375,
+        "input_reduction_percent": 28.373570866034814,
+        "quality_correct_delta_all": -2,
+        "reference": {
+          "n": 3,
+          "completed": 3,
+          "tokens_total": {
+            "input": 36823,
+            "output": 1902,
+            "cached_input": 1451,
+            "input_text": 36823,
+            "input_audio": 0,
+            "output_text": 757,
+            "output_audio": 1145,
+            "reasoning": 222
+          },
+          "tokens_mean": {
+            "input": 12274.333333333334,
+            "output": 634.0,
+            "cached_input": 483.6666666666667,
+            "input_text": 12274.333333333334,
+            "input_audio": 0.0,
+            "output_text": 252.33333333333334,
+            "output_audio": 381.6666666666667,
+            "reasoning": 74.0
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.847211199987214,
+            "first_text_ms": 6.110819057008484,
+            "first_audio_ms": 6.930401694000466,
+            "completion_ms": 9.800547195001855
+          },
+          "timing_denominators": {
+            "setup_ms": 3,
+            "first_text_ms": 3,
+            "first_audio_ms": 3,
+            "completion_ms": 3
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {}
+        },
+        "optimized": {
+          "n": 3,
+          "completed": 3,
+          "tokens_total": {
+            "input": 26375,
+            "output": 1979,
+            "cached_input": 6927,
+            "input_text": 26375,
+            "input_audio": 0,
+            "output_text": 697,
+            "output_audio": 1282,
+            "reasoning": 112
+          },
+          "tokens_mean": {
+            "input": 8791.666666666666,
+            "output": 659.6666666666666,
+            "cached_input": 2309.0,
+            "input_text": 8791.666666666666,
+            "input_audio": 0.0,
+            "output_text": 232.33333333333334,
+            "output_audio": 427.3333333333333,
+            "reasoning": 37.333333333333336
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.9078269230085425,
+            "first_text_ms": 4.020128616000875,
+            "first_audio_ms": 4.7746457989997,
+            "completion_ms": 9.427029472994036
+          },
+          "timing_denominators": {
+            "setup_ms": 3,
+            "first_text_ms": 3,
+            "first_audio_ms": 3,
+            "completion_ms": 3
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "news": 4
+          }
+        }
+      },
+      "videos": {
+        "paired_ids": [
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5"
+        ],
+        "paired_n": 5,
+        "all_n": 5,
+        "reference_input_text": 18485,
+        "optimized_input_text": 40168,
+        "input_reduction_percent": -117.30051393021368,
+        "quality_correct_delta_all": 1,
+        "reference": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 18485,
+            "output": 5115,
+            "cached_input": 2902,
+            "input_text": 18485,
+            "input_audio": 0,
+            "output_text": 1650,
+            "output_audio": 3465,
+            "reasoning": 743
+          },
+          "tokens_mean": {
+            "input": 3697.0,
+            "output": 1023.0,
+            "cached_input": 580.4,
+            "input_text": 3697.0,
+            "input_audio": 0.0,
+            "output_text": 330.0,
+            "output_audio": 693.0,
+            "reasoning": 148.6
+          },
+          "timing_median_seconds": {
+            "setup_ms": 3.100087266997434,
+            "first_text_ms": 6.012869660000433,
+            "first_audio_ms": 6.43316186600714,
+            "completion_ms": 12.300947939002072
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {}
+        },
+        "optimized": {
+          "n": 5,
+          "completed": 5,
+          "tokens_total": {
+            "input": 40168,
+            "output": 4898,
+            "cached_input": 11545,
+            "input_text": 40168,
+            "input_audio": 0,
+            "output_text": 1097,
+            "output_audio": 3801,
+            "reasoning": 101
+          },
+          "tokens_mean": {
+            "input": 8033.6,
+            "output": 979.6,
+            "cached_input": 2309.0,
+            "input_text": 8033.6,
+            "input_audio": 0.0,
+            "output_text": 219.4,
+            "output_audio": 760.2,
+            "reasoning": 20.2
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.8084280449984362,
+            "first_text_ms": 5.8741269479942275,
+            "first_audio_ms": 6.044627420997131,
+            "completion_ms": 11.57194434000121
+          },
+          "timing_denominators": {
+            "setup_ms": 5,
+            "first_text_ms": 5,
+            "first_audio_ms": 5,
+            "completion_ms": 5
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "videos": 6,
+            "web": 1
+          }
+        }
+      },
+      "browse": {
+        "paired_ids": [
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "paired_n": 4,
+        "all_n": 5,
+        "reference_input_text": 25193,
+        "optimized_input_text": 44337,
+        "input_reduction_percent": -75.98936212439963,
+        "quality_correct_delta_all": -1,
+        "reference": {
+          "n": 4,
+          "completed": 4,
+          "tokens_total": {
+            "input": 25193,
+            "output": 2282,
+            "cached_input": 2902,
+            "input_text": 25193,
+            "input_audio": 0,
+            "output_text": 891,
+            "output_audio": 1391,
+            "reasoning": 244
+          },
+          "tokens_mean": {
+            "input": 6298.25,
+            "output": 570.5,
+            "cached_input": 725.5,
+            "input_text": 6298.25,
+            "input_audio": 0.0,
+            "output_text": 222.75,
+            "output_audio": 347.75,
+            "reasoning": 61.0
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.831107323509059,
+            "first_text_ms": 7.41179476850084,
+            "first_audio_ms": 7.98783523599559,
+            "completion_ms": 10.72141202200146
+          },
+          "timing_denominators": {
+            "setup_ms": 4,
+            "first_text_ms": 4,
+            "first_audio_ms": 4,
+            "completion_ms": 4
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {}
+        },
+        "optimized": {
+          "n": 4,
+          "completed": 4,
+          "tokens_total": {
+            "input": 44337,
+            "output": 2307,
+            "cached_input": 9236,
+            "input_text": 44337,
+            "input_audio": 0,
+            "output_text": 825,
+            "output_audio": 1482,
+            "reasoning": 150
+          },
+          "tokens_mean": {
+            "input": 11084.25,
+            "output": 576.75,
+            "cached_input": 2309.0,
+            "input_text": 11084.25,
+            "input_audio": 0.0,
+            "output_text": 206.25,
+            "output_audio": 370.5,
+            "reasoning": 37.5
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.956946999998763,
+            "first_text_ms": 5.459199516997614,
+            "first_audio_ms": 6.148256014501385,
+            "completion_ms": 8.884392093503266
+          },
+          "timing_denominators": {
+            "setup_ms": 4,
+            "first_text_ms": 4,
+            "first_audio_ms": 4,
+            "completion_ms": 4
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 5
+          }
+        }
+      },
+      "all": {
+        "paired_ids": [
+          "W1",
+          "W2",
+          "W3",
+          "W4",
+          "W5",
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5",
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5",
+          "N3",
+          "N4",
+          "N5",
+          "V1",
+          "V2",
+          "V3",
+          "V4",
+          "V5",
+          "B1",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "paired_n": 27,
+        "all_n": 30,
+        "reference_input_text": 183352,
+        "optimized_input_text": 269004,
+        "input_reduction_percent": -46.714516340154454,
+        "quality_correct_delta_all": -1,
+        "reference": {
+          "n": 27,
+          "completed": 27,
+          "tokens_total": {
+            "input": 183352,
+            "output": 17386,
+            "cached_input": 14510,
+            "input_text": 183352,
+            "input_audio": 0,
+            "output_text": 6225,
+            "output_audio": 11161,
+            "reasoning": 1932
+          },
+          "tokens_mean": {
+            "input": 6790.814814814815,
+            "output": 643.925925925926,
+            "cached_input": 537.4074074074074,
+            "input_text": 6790.814814814815,
+            "input_audio": 0.0,
+            "output_text": 230.55555555555554,
+            "output_audio": 413.3703703703704,
+            "reasoning": 71.55555555555556
+          },
+          "timing_median_seconds": {
+            "setup_ms": 3.122075342005701,
+            "first_text_ms": 5.992012709000846,
+            "first_audio_ms": 6.43316186600714,
+            "completion_ms": 9.255778227001429
+          },
+          "timing_denominators": {
+            "setup_ms": 27,
+            "first_text_ms": 27,
+            "first_audio_ms": 27,
+            "completion_ms": 27
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {}
+        },
+        "optimized": {
+          "n": 27,
+          "completed": 27,
+          "tokens_total": {
+            "input": 269004,
+            "output": 17609,
+            "cached_input": 60034,
+            "input_text": 269004,
+            "input_audio": 0,
+            "output_text": 5874,
+            "output_audio": 11735,
+            "reasoning": 943
+          },
+          "tokens_mean": {
+            "input": 9963.111111111111,
+            "output": 652.1851851851852,
+            "cached_input": 2223.4814814814813,
+            "input_text": 9963.111111111111,
+            "input_audio": 0.0,
+            "output_text": 217.55555555555554,
+            "output_audio": 434.6296296296296,
+            "reasoning": 34.925925925925924
+          },
+          "timing_median_seconds": {
+            "setup_ms": 2.9078269230085425,
+            "first_text_ms": 6.066659689997323,
+            "first_audio_ms": 6.4808912689914,
+            "completion_ms": 9.805965342995478
+          },
+          "timing_denominators": {
+            "setup_ms": 27,
+            "first_text_ms": 27,
+            "first_audio_ms": 27,
+            "completion_ms": 27
+          },
+          "failed_reported_zero_input": 0,
+          "missing_usage": 0,
+          "observed_tool_calls": {
+            "web": 23,
+            "places": 5,
+            "finance": 4,
+            "news": 4,
+            "videos": 6
+          }
+        }
+      }
+    }
+  },
+  "primary_three_way": {
+    "ids": [
+      "W1",
+      "W2",
+      "W3",
+      "W4",
+      "W5",
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "N3",
+      "N4",
+      "N5",
+      "V1",
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "B1",
+      "B4",
+      "B5"
+    ],
+    "n": 26,
+    "conditions": {
+      "bing": {
+        "n": 26,
+        "completed": 26,
+        "tokens_total": {
+          "input": 176760,
+          "output": 16728,
+          "cached_input": 13059,
+          "input_text": 176760,
+          "input_audio": 0,
+          "output_text": 5947,
+          "output_audio": 10781,
+          "reasoning": 1810
+        },
+        "tokens_mean": {
+          "input": 6798.461538461538,
+          "output": 643.3846153846154,
+          "cached_input": 502.2692307692308,
+          "input_text": 6798.461538461538,
+          "input_audio": 0.0,
+          "output_text": 228.73076923076923,
+          "output_audio": 414.65384615384613,
+          "reasoning": 69.61538461538461
+        },
+        "timing_median_seconds": {
+          "setup_ms": 3.1244167664990528,
+          "first_text_ms": 5.922056941999472,
+          "first_audio_ms": 6.399198511004215,
+          "completion_ms": 9.200764815002913
+        },
+        "timing_denominators": {
+          "setup_ms": 26,
+          "first_text_ms": 26,
+          "first_audio_ms": 26,
+          "completion_ms": 26
+        },
+        "failed_reported_zero_input": 0,
+        "missing_usage": 0,
+        "observed_tool_calls": {}
+      },
+      "webiq_base": {
+        "n": 26,
+        "completed": 26,
+        "tokens_total": {
+          "input": 412140,
+          "output": 16250,
+          "cached_input": 57750,
+          "input_text": 412140,
+          "input_audio": 0,
+          "output_text": 5544,
+          "output_audio": 10706,
+          "reasoning": 918
+        },
+        "tokens_mean": {
+          "input": 15851.538461538461,
+          "output": 625.0,
+          "cached_input": 2221.153846153846,
+          "input_text": 15851.538461538461,
+          "input_audio": 0.0,
+          "output_text": 213.23076923076923,
+          "output_audio": 411.7692307692308,
+          "reasoning": 35.30769230769231
+        },
+        "timing_median_seconds": {
+          "setup_ms": 2.953803585493006,
+          "first_text_ms": 4.531739973499498,
+          "first_audio_ms": 4.9264492405054625,
+          "completion_ms": 8.733364047999203
+        },
+        "timing_denominators": {
+          "setup_ms": 26,
+          "first_text_ms": 26,
+          "first_audio_ms": 26,
+          "completion_ms": 26
+        },
+        "failed_reported_zero_input": 0,
+        "missing_usage": 0,
+        "observed_tool_calls": {
+          "web": 25,
+          "places": 2,
+          "finance": 4,
+          "news": 3,
+          "videos": 5
+        }
+      },
+      "webiq_optimized": {
+        "n": 26,
+        "completed": 26,
+        "tokens_total": {
+          "input": 259856,
+          "output": 16963,
+          "cached_input": 57725,
+          "input_text": 259856,
+          "input_audio": 0,
+          "output_text": 5624,
+          "output_audio": 11339,
+          "reasoning": 857
+        },
+        "tokens_mean": {
+          "input": 9994.461538461539,
+          "output": 652.4230769230769,
+          "cached_input": 2220.1923076923076,
+          "input_text": 9994.461538461539,
+          "input_audio": 0.0,
+          "output_text": 216.30769230769232,
+          "output_audio": 436.11538461538464,
+          "reasoning": 32.96153846153846
+        },
+        "timing_median_seconds": {
+          "setup_ms": 2.8912309455045033,
+          "first_text_ms": 6.034554626494355,
+          "first_audio_ms": 6.296607915493951,
+          "completion_ms": 9.971593803995347
+        },
+        "timing_denominators": {
+          "setup_ms": 26,
+          "first_text_ms": 26,
+          "first_audio_ms": 26,
+          "completion_ms": 26
+        },
+        "failed_reported_zero_input": 0,
+        "missing_usage": 0,
+        "observed_tool_calls": {
+          "web": 22,
+          "places": 5,
+          "finance": 4,
+          "news": 4,
+          "videos": 6
+        }
+      }
+    },
+    "excluded_ids": [
+      "N1",
+      "N2",
+      "B2",
+      "B3"
+    ],
+    "scope": "Same three-condition completed/comparable-usage intersection for primary token and timing comparisons; accuracy remains all 30."
+  },
+  "budget_audit": [
+    {
+      "id": "W1",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "W1",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "인천공항 제1터미널 장기주차장 일반 승용차 24시간 요금 2026 9월 12일",
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1194,
+            1195,
+            1198
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 23583
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W1",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "인천공항 제1여객터미널 장기주차장 일반 승용차 24시간 요금 2026 9월 12일",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            790,
+            784
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11500
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W2",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "김포공항 국내선 주차장 승용차 1일 주차요금 2026년 9월",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1188,
+            1187,
+            1021
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 21513
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:airport.co.kr 김포공항 주차요금 국내선 금 토 일 30,000원",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1191,
+            0,
+            0
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 10385
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W2",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "김포공항 국내선 주차장 승용차 1일 주차요금 2026 토요일",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            797,
+            795
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11705
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W2",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "W3",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울대공원 동물원 반려견 이동가방 입장 가능 소형견 출입 안내",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            790,
+            792
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13010
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:grandpark.seoul.go.kr 서울동물원 반려동물 출입 안내견 애완동물",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            794,
+            793
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11095
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W3",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "W3",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울대공원 동물원 반려견 이동가방 입장 가능 소형견 반려동물 출입 2026",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1194,
+            1190,
+            1197
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 24858
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W4",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "W4",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "남산서울타워 정상 일반 승용차 진입 가능 차량 통제 2026 9월",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1197,
+            1193,
+            1190
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 24457
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W4",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "2026년 9월 남산서울타워 정상 일반 승용차 차량 통행 가능 최신 공지",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            794,
+            793
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12170
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W5",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울역 인천공항 제1터미널 공항철도 직통열차 성인 요금 2026",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1191,
+            1188,
+            1186
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 23760
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W5",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "공항철도 직통열차 서울역 인천공항 1터미널 성인 운임 2026",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            794,
+            797
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11537
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "W5",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "P1",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "places",
+          "requested": {
+            "query": "광교호수공원 원천호수 근처 자체 주차장 있는 카페",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "placeResults": 10
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13787
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "광교호수공원 카페 자체 주차장 테이크웨이브 주차",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            796
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11082
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P1",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "P1",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "places",
+          "requested": {
+            "query": "광교호수공원 원천호수 근처 자체 주차장 카페",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "placeResults": 10
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13700
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "광교호수공원 원천호수 카페 자체 주차장 \"주차\"",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1198,
+            1191,
+            1183
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 25531
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "광교호수공원 카페 슬로 주차 자체 주차장",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1192,
+            1194,
+            1196
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 23541
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P2",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "P2",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울숲역 강아지 동반 실내 카페",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1188,
+            1187,
+            1189
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 22948
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P2",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "places",
+          "requested": {
+            "query": "서울숲역 근처 강아지 실내 동반 가능한 카페",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "placeResults": 10
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13471
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울숲역 강아지 동반 실내 카페 어라운드데이 반려견",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            790
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11326
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P3",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "places",
+          "requested": {
+            "query": "일산 호수공원 정발산역 아이와 점심 주차 가능한 식당",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "placeResults": 10
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13799
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "부페파크 일산점 주차 아이 점심 영업시간",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1188,
+            1188,
+            1194
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 22490
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P3",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "places",
+          "requested": {
+            "query": "일산 호수공원 정발산역 아이와 점심 주차 가능한 식당",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "placeResults": 10
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13799
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "포폴로피자 일산 주차 가능 주차장 영업시간",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            794,
+            795
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11652
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P3",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "P4",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "성수역 근처 베이커리 카페 토요일 오전 9시 영업",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            784,
+            788
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 10141
+        },
+        {
+          "tool": "places",
+          "requested": {
+            "query": "성수역 베이커리 카페",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "placeResults": 10
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12918
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P4",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "P4",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "성수역 베이커리 카페 토요일 오전 9시 영업",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1195,
+            998,
+            1189
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 20552
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P5",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "P5",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "판교역 근처 서점 밤 10시 영업시간",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1188,
+            1194,
+            1188
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 23998
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "P5",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "places",
+          "requested": {
+            "query": "판교역 근처 밤 10시까지 영업하는 서점",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "placeResults": 2
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 3036
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "판교역 서점 영업시간 22:00 교보문고 영풍문고",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            796,
+            796
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 10879
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F1",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "삼성전자 보통주 005930 2026년 9월 7일 코스피 정규장 종가 KRW",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "financeResults": 0
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 177
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "2026년 9월 7일 삼성전자 주가 종가 005930",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1196,
+            1169,
+            1195
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 19080
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F1",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "삼성전자 보통주 2026년 9월 7일 코스피 정규장 종가 KRW 005930"
+          },
+          "returned_lists": {
+            "financeResults": 0
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 177
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "삼성전자 2026년 9월 7일 종가 005930",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            791,
+            794
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8922
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "005930 2026-09-07 270000 종가 삼성전자 KRX",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            798
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 10512
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F1",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "F2",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "Nasdaq Composite September 4 2026 close change percent",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "region": "US",
+            "language": "en"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            797,
+            792
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 6639
+        },
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "Nasdaq Composite IXIC historical close September 4 2026 regular session",
+            "language": "en",
+            "region": "US"
+          },
+          "returned_lists": {
+            "financeResults": 0
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 177
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F2",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "F2",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "NASDAQ Composite 2026-09-04 historical close change percent regular session USD"
+          },
+          "returned_lists": {
+            "financeResults": 0
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 177
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "Nasdaq Composite September 4 2026 close percent change",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1197,
+            1194,
+            1197
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12005
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:nasdaq.com/market-activity/index/comp historical 2026-09-04 Nasdaq Composite 18203.47",
+            "maxResults": 3,
+            "language": "en",
+            "region": "US",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1199,
+            590,
+            1192
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 10639
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F3",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "F3",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "S&P 500 index closing value on September 4, 2026, US regular market, USD",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "financeResults": 1
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 1682
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "S&P 500 September 4 2026 close 2026-09-04 historical data",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1193,
+            1193,
+            1196
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11964
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "\"September 4, 2026\" \"S&P 500\" \"7,718.60\"",
+            "maxResults": 3,
+            "language": "en",
+            "region": "US",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1193,
+            1189,
+            1186
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12131
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F3",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "S&P 500 index closing value September 4, 2026 regular session US dollars"
+          },
+          "returned_lists": {
+            "financeResults": 0
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 177
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "S&P 500 September 4 2026 close 2026-09-04",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            795
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 6590
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F4",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "2026년 9월 8일 서울외국환중개 원달러 매매기준율",
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1194,
+            597,
+            1189
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 17607
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:smbs.co.kr/ExRate 2026.09.08 USD 매매기준율",
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            597,
+            422,
+            1010
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13249
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F4",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "2026년 9월 8일 서울외국환중개 원달러 매매기준율",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            597
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8707
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F4",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "F5",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "Tesla TSLA Nasdaq regular session closing price on September 4, 2026 in USD"
+          },
+          "returned_lists": {
+            "financeResults": 1
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 2617
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "TSLA historical data September 4 2026 close Nasdaq",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            794
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 6501
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "F5",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "F5",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "finance",
+          "requested": {
+            "query": "Tesla (TSLA) Nasdaq regular session closing price on September 4, 2026 in USD",
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "financeResults": 1
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {},
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {},
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 2609
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "TSLA historical data September 4 2026 close Nasdaq regular session USD",
+            "maxResults": 3,
+            "language": "en",
+            "region": "US",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1193,
+            1196,
+            1189
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11998
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N1",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "N1",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "서울 도로 통제 기사 2026년 9월 2일 9월 8일 통제 구간",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "newsResults": 3
+          },
+          "returned_content_character_lengths": [
+            460,
+            473,
+            428
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12906
+        },
+        {
+          "tool": "browse",
+          "requested": {},
+          "returned_lists": {},
+          "requested_budget": {
+            "maxLength": false
+          },
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxLength": 4000
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 0
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N1",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "서울 도로 통제 2026년 9월 2일 9월 8일",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "newsResults": 2
+          },
+          "returned_content_character_lengths": [
+            466,
+            400
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 9030
+        },
+        {
+          "tool": "browse",
+          "requested": {},
+          "returned_lists": {},
+          "requested_budget": {
+            "maxLength": false
+          },
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxLength": 2000
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 0
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N2",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "전기차 충전요금 할인 2026년 9월 2일 9월 8일",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "newsResults": 3
+          },
+          "returned_content_character_lengths": [
+            474,
+            452,
+            463
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13384
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:me.go.kr 전기차 충전요금 9월 5일 10월 31일 오전 11시 오후 2시 2026",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1188,
+            1191,
+            1198
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 20619
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N2",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "전기차 충전요금 할인 2026년 9월 2일 9월 8일",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "newsResults": 2
+          },
+          "returned_content_character_lengths": [
+            468,
+            447
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8889
+        },
+        {
+          "tool": "browse",
+          "requested": {},
+          "returned_lists": {},
+          "requested_budget": {
+            "maxLength": false
+          },
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxLength": 2000
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 0
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N2",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "N3",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "서울 축제 2026년 9월 12일 13일 최근 기사",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "newsResults": 2
+          },
+          "returned_content_character_lengths": [
+            439,
+            460
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8528
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N3",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "N3",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "서울 축제 2026년 9월 12일 13일",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "newsResults": 3
+          },
+          "returned_content_character_lengths": [
+            449,
+            351,
+            470
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11927
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N4",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "N4",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "고속도로 전기차 충전소 2026년 9월 2일 9월 8일",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "newsResults": 3
+          },
+          "returned_content_character_lengths": [
+            447,
+            1032,
+            485
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12754
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N4",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "고속도로 전기차 충전소 2026년 9월 2일 9월 8일",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "newsResults": 2
+          },
+          "returned_content_character_lengths": [
+            443,
+            796
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8370
+        },
+        {
+          "tool": "news",
+          "requested": {
+            "query": "고속도로 휴게소 전기차 충전 2026년 9월 2일 OR 9월 3일 OR 9월 4일 OR 9월 5일 OR 9월 6일 OR 9월 7일 OR 9월 8일",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "newsResults": 2
+          },
+          "returned_content_character_lengths": [
+            402,
+            383
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8782
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N5",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "2026년 추석 고속도로 통행료 면제 적용 날짜",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "newsResults": 3
+          },
+          "returned_content_character_lengths": [
+            413,
+            469,
+            427
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12939
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N5",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "news",
+          "requested": {
+            "query": "2026년 추석 고속도로 통행료 면제 적용 날짜",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "newsResults": 2
+          },
+          "returned_content_character_lengths": [
+            410,
+            466
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8817
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "N5",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "V1",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "아이오닉 5 급속 충전 방법 현대자동차 공식",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 2
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12681
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V1",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "V1",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "현대자동차 공식 아이오닉 5 급속 충전 방법",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 3
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 21293
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V2",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "V2",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "기아 공식 EV6 급속충전 방법",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 3
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 16177
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V2",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "기아 EV6 급속충전 방법 기아 공식",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 2
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 14344
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V3",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "타이어뱅크 타이어 공기압 셀프 주입 방법",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 3
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13556
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V3",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "타이어뱅크 타이어 공기압 셀프 주입 방법",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 2
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 10721
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V3",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "V4",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "현대자동차 공식 블루링크 앱 차량 등록 방법",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 2
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 6286
+        },
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "site:youtube.com 현대자동차 블루링크 차량 등록 앱 공식",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 2
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 6286
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V4",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "V4",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "현대차 블루링크 앱 차량 등록 공식 안내",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 3
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 15469
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "현대자동차 공식 유튜브 블루링크 차량 등록 앱",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1190,
+            1198,
+            1196
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 21918
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V5",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "V5",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "현대자동차 공식 안드로이드 오토 유선 연결 방법",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 3
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 15015
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "V5",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "videos",
+          "requested": {
+            "query": "현대자동차 안드로이드 오토 유선 연결 공식",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "videoResults": 2
+          },
+          "returned_content_character_lengths": [],
+          "content_within_requested_maxLength": null,
+          "requested_budget": {
+            "maxResults": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 5334
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:youtube.com 현대자동차 공식 안드로이드 오토 연결 유선",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            414,
+            443
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 4904
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B1",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울식물원 공식 안내 온실 9월 12일 토요일 입장 마감 시간",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1197,
+            1193,
+            1195
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 25557
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:botanicpark.seoul.go.kr 서울식물원 관람안내 온실 입장마감 3월 10월",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            375,
+            431,
+            382
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12223
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B1",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울식물원 공식 안내 2026년 9월 12일 토요일 온실 입장 마감 시간",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            793,
+            794
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 13177
+        },
+        {
+          "tool": "web",
+          "requested": {
+            "query": "site:botanicpark.seoul.go.kr 온실 관람시간 입장마감 3월 10월 서울식물원",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            375,
+            431
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": false,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 8692
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B1",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "B2",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "국립과천과학관 공식 주차요금 경차 2시간 2026 9월 12일",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            738,
+            796
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 10674
+        },
+        {
+          "tool": "browse",
+          "requested": {},
+          "returned_lists": {},
+          "requested_budget": {
+            "maxLength": false
+          },
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxLength": 2000
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 0
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B2",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "B2",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "국립과천과학관 공식 주차요금 경차 2026 9월",
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1198,
+            1195,
+            745
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 20641
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B3",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "B3",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "국립중앙박물관 공식 주차 요금 승용차 3시간 2026 9월 12일",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1191,
+            1197,
+            934
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 21253
+        },
+        {
+          "tool": "browse",
+          "requested": {},
+          "returned_lists": {},
+          "requested_budget": {
+            "maxLength": false
+          },
+          "returned_count_within_request": null,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxLength": 4000
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 0
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B3",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "국립중앙박물관 공식 주차요금 승용차 3시간 9월 12일",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            794
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11122
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B4",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울랜드 공식 안내 당일 이용권 정문 주차장 무료 주차",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1191,
+            1195,
+            1194
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 24032
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B4",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "서울랜드 공식 안내 당일 이용권 정문 주차장 무료",
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800,
+            "language": "ko",
+            "region": "KR"
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            791,
+            790
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 12047
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B4",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "B5",
+      "condition": "webiq_optimized",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "국립수목원 광릉 주차 예약 승용차 2026년 9월 12일 공식 안내",
+            "maxResults": 2,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "returned_lists": {
+            "webResults": 2
+          },
+          "returned_content_character_lengths": [
+            795,
+            795
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 2,
+            "contentFormat": "passage",
+            "maxLength": 800
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 11496
+        }
+      ],
+      "bing_inner_payload": null
+    },
+    {
+      "id": "B5",
+      "condition": "bing",
+      "calls": [],
+      "bing_inner_payload": "not exposed"
+    },
+    {
+      "id": "B5",
+      "condition": "webiq_base",
+      "calls": [
+        {
+          "tool": "web",
+          "requested": {
+            "query": "광릉 국립수목원 공식 안내 9월 12일 승용차 주차 예약",
+            "maxResults": 3,
+            "language": "ko",
+            "region": "KR",
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "returned_lists": {
+            "webResults": 3
+          },
+          "returned_content_character_lengths": [
+            1194,
+            1193,
+            1190
+          ],
+          "content_within_requested_maxLength": true,
+          "requested_budget": {
+            "maxResults": true,
+            "contentFormat": true,
+            "maxLength": true
+          },
+          "returned_count_within_request": true,
+          "body_length_enforcement": "Observed content character lengths, not a token estimate; wrapper left intact.",
+          "policy_expected_initial_arguments": {
+            "maxResults": 3,
+            "contentFormat": "passage",
+            "maxLength": 1200
+          },
+          "initial_for_this_operation": true,
+          "policy_is_hard_limit": false,
+          "output_string_character_length": 22961
+        }
+      ],
+      "bing_inner_payload": null
+    }
+  ],
+  "unknown_usage_is_zero": false,
+  "failed_zero_usage_means_free": false,
+  "cost": {
+    "bing_usd_per_1000_transactions": 14,
+    "webiq_usd_per_1000_covered_calls": 12.5,
+    "covered_operations": [
+      "web",
+      "news",
+      "videos",
+      "browse"
+    ],
+    "observed_covered_mcp_calls": {
+      "webiq_base": 40,
+      "webiq_optimized": 39
+    },
+    "webiq_tariff_source": "config/webiq_pricing_review_20260907.json (user-provided)",
+    "unknown": [
+      "Places and Finance tariffs",
+      "Bing internal transactions",
+      "billable-operation mapping",
+      "full Voice Live/model billing"
+    ],
+    "total_cost": null
+  },
+  "raw_sha256": "503c0e9433e7f53f16abff5b05091c4b484fbbc9bd3a2b1177f9a2fec4aed3af"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "N2-chosun",
+  "url": "https://biz.chosun.com/policy/policy_sub/2026/09/03/SSCK34OXG5A45FNZI2RLYT77LU/",
+  "fetched_at": "2026-09-08T08:48:59.281574+00:00",
+  "method": "Independent unauthenticated public HTTP GET",
+  "images_used": false,
+  "http_status": 200,
+  "final_url": "https://biz.chosun.com/policy/policy_sub/2026/09/03/SSCK34OXG5A45FNZI2RLYT77LU/",
+  "content_sha256": "c6fe74fed46c2e11b71a48f99cb5b5a8836274a2a9064ee5a3ee348f229d2fda",
+  "content_bytes": 306133,
+  "text": "5일부터 주말 낮 전기차 충전요금 최대 32% 할인… 정부, 태양광 여유전력 활용 - 조선비즈",
+  "links": [
+    "https://biz.chosun.com/policy/policy_sub/2026/09/03/SSCK34OXG5A45FNZI2RLYT77LU/",
+    "https://biz.chosun.com/policy/policy_sub/2026/09/03/SSCK34OXG5A45FNZI2RLYT77LU/?outputType=amp",
+    "https://biz.chosun.com/resizer/v2/UCTA3WMYU5JRBBHIVG56D5RY3M.JPG?auth=975ffca57de2a60e4b839a71cc423df87052143d79a7de16af0a8aced0469988&amp;width=616",
+    "/pf/resources/dist/chosunbiz/css/style.css?d=467",
+    "/pf/resources/icons/favicon_chosun.png?d=467",
+    "https://securepubads.g.doubleclick.net/",
+    "https://pagead2.googlesyndication.com",
+    "https://s.go-mpulse.net/",
+    "https://www.googletagservices.com/",
+    "https://tpc.googlesyndication.com/",
+    "/pf/resources/dist/chosunbiz/css/style.css?d=467"
+  ],
+  "short_review_excerpts": [],
+  "validity_note": "Original retrieved at fetched_at. Excerpts support only identified claims, not every statement on the page. Historical/implementation/currentness limitations and source conflicts are recorded per question in accuracy_review.json. HTTP 200 is not itself factual verification. Video metadata is not playback or chapter verification."
+}
