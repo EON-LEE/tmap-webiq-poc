@@ -27,6 +27,21 @@ export const shortText = (value, limit = 280) => {
   return text.length > limit ? `${text.slice(0, limit)}…` : text;
 };
 
+// Tool outputs (notably WebIQ search results) can be large enough that a full JSON.stringify blocks the
+// main thread for seconds, which starves the audio worklet's postMessage queue and makes the outgoing
+// WebSocket buffer look stuck even though nothing is actually wrong with the network. Truncating long
+// strings/arrays before recursing keeps the rendered preview equivalent while bounding the work.
+export function compactStringify(value, { maxString = 2000, maxItems = 50 } = {}) {
+  const replacer = (key, nested) => {
+    if (typeof nested === "string" && nested.length > maxString) return `${nested.slice(0, maxString)}…`;
+    if (Array.isArray(nested) && nested.length > maxItems) {
+      return [...nested.slice(0, maxItems), `…그리고 ${nested.length - maxItems}건 더`];
+    }
+    return nested;
+  };
+  return typeof value === "string" ? value : JSON.stringify(value, replacer, 2);
+}
+
 export function readableValue(value, depth = 0) {
   if (value === null) return "없음";
   if (typeof value !== "object") return shortText(value);

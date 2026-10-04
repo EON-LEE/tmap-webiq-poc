@@ -313,6 +313,25 @@ Bing은 인용 1개·TTS 889,200바이트와 각각 `response_done.status=comple
 한 차례 직접 텍스트 확인의 API 입력 토큰은 Bing 3,534 / WebIQ 71,201이었다.
 도구 설명·문맥 등을 포함한 단일 실행 관측값이며 순수 검색 토큰, 성능 우열 또는 질문당 총비용이 아니다.
 
+**근본 원인 재검토 (후속 수정).** 관측된 피크(48,000 / 62,400 / 72,000 / 24,000바이트)가 모두
+한 프레임(4,800바이트) 단위였고, 62,400바이트 사례에서 `observed_largest_send_scheduling_gap_ms = 1468.8`가
+함께 기록된 점에 근거해 **"가드가 네트워크 역압이 아니라 브라우저 메인 스레드 정지를 측정하고 있었다"**는
+가설을 세웠다: 메인 스레드가 큰 도구 결과를 `JSON.stringify`로 직렬화하는 동안 AudioWorklet의
+`port.onmessage` 프레임이 큐에 쌓이고, 스레드가 풀리면 한꺼번에 처리되며 `socket.send()`가
+연속 호출돼 `bufferedAmount`가 순간적으로 치솟는다 — 실제 전송 지연이 아니라 그 직전의 렌더링 정지가 원인이다.
+WebIQ 입력 토큰(71,201)이 Bing(3,534)보다 훨씬 커서 `compare-view.js`의 원본 데이터 렌더링이
+WebIQ 쪽에서 더 큰 정지를 유발했을 가능성이 높다. **이 인과관계는 자동화된 장시간-작업(long task)
+측정으로 재현/반증하지 않았으며, 과거 관측값에 들어맞는 가설이다.**
+
+이 가설에 따라 두 가지를 수정했다: (1) `app.js`의 버퍼 가드는 더 이상 `bufferedAmount` 단발
+관측만으로 연결을 끊지 않는다. 96,000바이트를 넘는 상태가 `BACKPRESSURE_SUSTAIN_MS`(1.5초) 동안
+지속될 때만 실제 역압으로 보고 끊으며, 480,000바이트를 넘으면 지속 시간과 무관하게 즉시 끊는
+무조건적 안전장치(`BACKPRESSURE_HARD_LIMIT_BYTES`)를 유지한다. (2) `compare-view.js`의 원본
+데이터 렌더링(`compactStringify`, `search-results.js`)은 직렬화 중 긴 문자열과 긴 배열을 잘라
+재귀 범위를 미리 줄여, 정지의 소스 자체를 완화한다. 두 수정 모두 `96,000바이트 한도를 올려 실패를
+숨기지 않는다`는 원칙을 지킨다. 회귀 테스트는 `tests/frontend.test.cjs`에 추가했다
+(일시적 스파이크는 통과, 지속된 역압과 하드 캡 초과는 여전히 실패 처리).
+
 근거:
 - [`meeting_voice_text_20260920.json`](../results/meeting_voice_text_20260920.json): 실제 서비스 확인 원본
 - [`meeting_browser_chat_20260920.json`](../results/meeting_browser_chat_20260920.json): 실제 텍스트 UI 관측 요약
