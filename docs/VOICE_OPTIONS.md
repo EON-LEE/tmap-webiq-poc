@@ -590,8 +590,11 @@ Installed SDK 1.3.0 typed/generic event behavior is covered by the flow tests.
 
 Both audio-upload and service-receive loops yield cooperatively after each event.
 Buffered async I/O can otherwise complete without yielding and starve peer tasks.
-Content-free slow-relay/event-loop warnings support diagnosis; the PCM format,
-96,000-byte browser backpressure guard and production timeouts are unchanged.
+Content-free slow-relay/event-loop warnings support diagnosis; the PCM format
+and production timeouts are unchanged. The browser backpressure guard now
+requires `bufferedAmount` to stay above 96,000 bytes for 1.5s straight (a
+single post-stall burst no longer trips it) and keeps an unconditional
+480,000-byte hard cap; see docs/VOICE_STATUS.md for the verified root cause.
 
 Submitting a search without a session starts the shared text connection. The
 initial command is sent once, only after the service reports ready. A connection

@@ -6,6 +6,13 @@ import { providerNames, comparedProviders, routeSummary } from "./run-labels.js"
 const $ = (id) => document.getElementById(id);
 const Audio = window.AudioContext || window.webkitAudioContext;
 const IDLE_TIMEOUT_MS = 45000;
+// A single bufferedAmount sample above this can be a burst of frames queued while the main thread was
+// busy (e.g. rendering a large tool result), not real network backpressure: the browser drains it on the
+// very next task once the thread is free. Only treat it as a stuck connection once it stays this high for
+// BACKPRESSURE_SUSTAIN_MS straight. BACKPRESSURE_HARD_LIMIT_BYTES is an unconditional safety net.
+const BACKPRESSURE_LIMIT_BYTES = 96000;
+const BACKPRESSURE_SUSTAIN_MS = 1500;
+const BACKPRESSURE_HARD_LIMIT_BYTES = 480000;
 let config = null;
 let group = null;
 let audio = null;
@@ -373,12 +380,23 @@ function capture(g) {
     if (g.closed) return;
     for (const lane of g.lanes.values()) {
       if (lane.closed || !lane.ready || lane.socket.readyState !== WebSocket.OPEN) continue;
-      if (lane.socket.bufferedAmount > 96000) { failLane(lane, "음성 전송이 지연되어 이 엔진의 연결을 중단했습니다."); continue; }
+      if (backpressured(lane)) { failLane(lane, "음성 전송이 지연되어 이 엔진의 연결을 중단했습니다."); continue; }
       try { lane.socket.send(data); } catch { failLane(lane, "음성을 서버로 보내지 못했습니다."); }
     }
   };
   g.source.connect(g.worklet).connect(g.mute).connect(audio.destination);
   g.capturing = true;
+}
+// A brief main-thread stall (e.g. rendering a large tool result) queues worklet frames; once the thread
+// frees up they are sent in one burst and bufferedAmount spikes even though the socket drains it right
+// after. Require the spike to persist across BACKPRESSURE_SUSTAIN_MS of real elapsed time before treating
+// it as a stuck connection, with a hard cap as an unconditional safety net.
+function backpressured(lane) {
+  const amount = lane.socket.bufferedAmount;
+  if (amount > BACKPRESSURE_HARD_LIMIT_BYTES) return true;
+  if (amount <= BACKPRESSURE_LIMIT_BYTES) { lane.backpressureSince = null; return false; }
+  lane.backpressureSince ??= Date.now();
+  return Date.now() - lane.backpressureSince >= BACKPRESSURE_SUSTAIN_MS;
 }
 function watch(lane) {
   clearTimeout(lane.idleTimer);

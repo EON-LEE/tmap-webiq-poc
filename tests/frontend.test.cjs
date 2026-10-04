@@ -1111,7 +1111,12 @@ test("voice mode shares microphone/worklet and broadcasts only to ready lanes", 
   assert.notEqual(bing.sent.at(-1), frame);
 
   bing.event({ type: "status", state: "ready" });
+  // A single spike right after a main-thread stall is not real backpressure: the browser drains it on the
+  // very next task, so the lane must only fail once the spike is sustained for BACKPRESSURE_SUSTAIN_MS.
   bing.bufferedAmount = 96001;
+  env.worklets[0].port.onmessage({ data: frame });
+  assert.notEqual(env.elements["lane-bing-dot"].dataset.state, "error");
+  await env.advance(1500);
   env.worklets[0].port.onmessage({ data: frame });
   assert.equal(env.elements["lane-bing-dot"].dataset.state, "error");
 
@@ -1123,6 +1128,36 @@ test("voice mode shares microphone/worklet and broadcasts only to ready lanes", 
 
   env.track.listeners.ended();
   assert.match(env.elements.error.textContent, /마이크 연결/);
+});
+test("a transient bufferedAmount spike that drains before the sustain window clears the lane", async () => {
+  const env = await createHarness();
+  await env.click("start");
+  for (const socket of env.sockets) socket.open();
+  const webiq = readyProviderLane(env, "webiq");
+  const bing = env.sockets.find((socket) => socket !== webiq);
+  bing.event({ type: "status", state: "ready" });
+  const frame = new ArrayBuffer(4800);
+
+  bing.bufferedAmount = 96001;
+  env.worklets[0].port.onmessage({ data: frame });
+  await env.advance(500);
+  // The browser caught up and drained the burst well within the sustain window.
+  bing.bufferedAmount = 0;
+  env.worklets[0].port.onmessage({ data: frame });
+  await env.advance(2000);
+  env.worklets[0].port.onmessage({ data: frame });
+  assert.notEqual(env.elements["lane-bing-dot"].dataset.state, "error");
+});
+test("bufferedAmount above the hard cap fails the lane immediately", async () => {
+  const env = await createHarness();
+  await env.click("start");
+  for (const socket of env.sockets) socket.open();
+  const webiq = readyProviderLane(env, "webiq");
+  const bing = env.sockets.find((socket) => socket !== webiq);
+  bing.event({ type: "status", state: "ready" });
+  bing.bufferedAmount = 480001;
+  env.worklets[0].port.onmessage({ data: new ArrayBuffer(4800) });
+  assert.equal(env.elements["lane-bing-dot"].dataset.state, "error");
 });
 test("permission denial starts no sockets", async () => {
   const env = await createHarness({ permissionError: "NotAllowedError" });

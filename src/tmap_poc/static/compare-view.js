@@ -1,4 +1,4 @@
-import { textNode, safeSourceUrl, sourceLink, isRecord, shortText, toolOutput } from "./search-results.js";
+import { textNode, safeSourceUrl, sourceLink, isRecord, shortText, toolOutput, compactStringify } from "./search-results.js";
 import { projectFlowEvent } from "./flow-observations.js";
 import { providerNames, comparedProviders } from "./run-labels.js";
 
@@ -309,7 +309,7 @@ export function createCompareView({ onReplay, onLive }) {
     if (query) item.append(textNode("p", `${query.label} “${shortText(query.value, 200)}”`, "call-query"));
     if (entry.output === undefined) return;
     if (entry.kind === "foundry_agent_call") {
-      item.append(textNode("p", `Agent 답변 “${shortText(withoutMarks(plain(typeof entry.output === "string" ? entry.output : JSON.stringify(entry.output))), 220)}”`, "call-answer"));
+      item.append(textNode("p", `Agent 답변 “${shortText(withoutMarks(plain(typeof entry.output === "string" ? entry.output : compactStringify(entry.output))), 220)}”`, "call-answer"));
     } else if (isWebSearch(entry)) {
       // Web Search returns a grounded summary with source links, not a list of results.
       const answer = searchAnswer(entry.output);
@@ -343,7 +343,7 @@ export function createCompareView({ onReplay, onLive }) {
       }
     }
     const raw = textNode("details", "", "raw");
-    const body = typeof entry.output === "string" ? entry.output : JSON.stringify(entry.output, null, 2);
+    const body = typeof entry.output === "string" ? entry.output : compactStringify(entry.output);
     raw.append(textNode("summary", "원본 데이터"), textNode("pre", body.length > 6000 ? `${body.slice(0, 6000)}…` : body));
     item.append(raw);
   }
