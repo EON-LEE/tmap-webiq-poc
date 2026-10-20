@@ -90,6 +90,16 @@ node --test tests/frontend.test.cjs           # 화면
 python scripts/scan_secrets.py                # 커밋 전 비밀값 검사
 ```
 
+## GitHub 인증
+
+앱과 `gh`의 기본 계정은 `eonlee_MSDEMO`로 유지한다. `EON-LEE/*` 저장소의 fetch와 push에는
+이미 로드된 EON-LEE Git 자격 증명을 사용한다. `~/.gitconfig-eonlee-auth`를 명령별
+`include.path`로 다시 포함하지 않는다. 중복 `Authorization` 헤더가 생기면 HTTP 400 오류가 발생할 수 있다.
+
+`gh`로 `EON-LEE/*` 저장소에 쓰기 작업을 할 때만 `gh auth token --user EON-LEE`로 토큰을 가져와
+현재 프로세스 또는 명령의 `GH_TOKEN`에 설정한다. 작업이 끝나면 `GH_TOKEN`을 제거한다. 전역
+`gh auth login`, `gh auth switch`, 공유 자격 증명 설정 변경은 사용하지 않는다.
+
 ## 저장소 구조
 
 | 위치 | 내용 |
