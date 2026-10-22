@@ -16,12 +16,6 @@ from azure.ai.voicelive.models import (
     ServerVad,
 )
 
-from tmap_poc.navigation import NAVIGATION_INSTRUCTIONS, navigation_tools
-
-MODEL_MODE = "model_tools"
-SEARCH_MODE = "model_search"
-MODEL_CHOICES = ("gpt-4.1-mini", "gpt-4.1", "gpt-4o-mini", "gpt-5-mini", "gpt-5", "gpt-5.6-luna")
-
 
 class VoiceOptionsError(ValueError):
     """A session option is invalid or unavailable with the configured Agent."""
@@ -44,7 +38,7 @@ _VOICES = (
 _SEMANTIC_VAD = "azure_semantic_vad_multilingual"
 _REALTIME_MODE = "realtime_agent_tool"
 _REALTIME_MODELS = ("gpt-realtime", "gpt-realtime-mini")
-CONNECTION_MODES = ("agent", SEARCH_MODE, _REALTIME_MODE, MODEL_MODE)
+CONNECTION_MODES = ("agent", _REALTIME_MODE)
 _OPENAI_VOICES = ("alloy", "coral", "verse", "marin")
 _MODEL_MODE_TRANSCRIPTION = (
     "whisper-1", "gpt-4o-transcribe", "gpt-4o-mini-transcribe",
@@ -52,7 +46,6 @@ _MODEL_MODE_TRANSCRIPTION = (
 )
 _DEFAULTS = {
     "connection_mode": "agent",
-    "llm_model": None,
     "realtime_model": None,
     "return_agent_response_directly": None,
     "transcription_model": "azure-speech",
@@ -71,10 +64,8 @@ _NUMBERS = {
     "vad_threshold": (0.0, 1.0, 0.05),
 }
 _AGENT_LIMITATION = (
-    "직접 Agent 모드는 기존 Foundry Agent를 연결합니다. 감독 모드는 별도 realtime 모델이 "
-    "기존 Agent를 도구로 호출하며 LLM 비용과 실행 구조가 달라집니다. model과 Agent 연결 "
-    "쿼리를 동시에 보내는 미검증 조합은 사용하지 않습니다. 모델 + 앱 도구 모드는 "
-    "선택한 LLM에 직접 연결하고 이 앱의 내비게이션 명령을 실행합니다."
+    "Agent 연결은 기존 Foundry Agent를 그대로 사용합니다. End-to-end는 별도 Realtime 모델 비용이 들고 "
+    "실행 구조가 다릅니다. model과 Agent 연결 쿼리를 함께 보내는 조합은 사용하지 않습니다."
 )
 _AGENT_TOOL_DESCRIPTION = (
     "A Korean navigation information assistant. Use it for web searches, current facts, "
@@ -150,14 +141,6 @@ def _mode_defaults(default_voice, mode):
             transcription_model="gpt-4o-mini-transcribe",
             return_agent_response_directly=True,
         )
-    elif mode == SEARCH_MODE:
-        defaults.update(
-            connection_mode=mode,
-            llm_model=MODEL_CHOICES[0],
-            return_agent_response_directly=True,
-        )
-    elif mode == MODEL_MODE:
-        defaults.update(connection_mode=mode, llm_model=MODEL_CHOICES[0])
     return defaults
 
 
@@ -190,34 +173,10 @@ def option_schema(default_voice):
                     "help": "STT → 기존 Foundry Agent(검색 도구 포함) → TTS. 답변 모델은 Agent에 지정된 모델입니다.",
                 },
                 {
-                    "value": SEARCH_MODE, "label": "STT → LLM → TTS",
-                    "help": "Azure STT → 선택한 텍스트 LLM → Azure TTS. WebIQ는 선택한 모델이 직접 검색하고, Bing은 Bing Agent를 도구로 호출합니다.",
-                },
-                {
                     "value": _REALTIME_MODE, "label": "End-to-end",
-                    "help": "Realtime 모델이 음성을 직접 듣고 말합니다. WebIQ는 모델이 직접 검색하고, Bing은 Bing Agent를 도구로 호출합니다. 별도 Realtime 비용이 발생합니다.",
-                },
-                {
-                    "value": MODEL_MODE, "label": "앱 조작 데모",
-                    "help": "STT → 선택한 텍스트 LLM → 앱 도구 실행 → Azure TTS. 시연 화면을 조작하며 별도 Foundry 검색 Agent는 사용하지 않습니다.",
+                    "help": "Realtime 모델이 음성을 직접 듣고 말합니다. WebIQ는 모델이 MCP로 직접 검색하고, Bing은 Foundry Toolbox 웹 검색(없으면 Bing Agent)을 사용합니다. 별도 Realtime 비용이 발생합니다.",
                 },
             ],
-            "help": "앱 조작은 모델 + 앱 도구 모드에서 지원합니다. 기존 검색 Agent 모드들은 검색 답변용이며 앱 실행 도구를 추가하지 않습니다.",
-        },
-        {
-            "key": "llm_model", "label": "텍스트 LLM", "type": "select",
-            "nullable": True, "requires": {"connection_mode": [SEARCH_MODE, MODEL_MODE]},
-            "options": [
-                {
-                    "value": None, "label": "기존 Agent 모드에서 선택하지 않음",
-                    "requires": {"connection_mode": ["agent", _REALTIME_MODE]},
-                },
-                *[
-                    {"value": model, "label": model, "requires": {"connection_mode": [SEARCH_MODE, MODEL_MODE]}}
-                    for model in MODEL_CHOICES
-                ],
-            ],
-            "help": "실제 Voice Live model 연결 쿼리에 적용합니다. model_search에서는 검색 답변 LLM, model_tools에서는 앱 조작 LLM입니다. 리소스별 모델 제공 여부는 서비스가 확인합니다.",
         },
         {
             "key": "realtime_model", "label": "Realtime 감독 모델", "type": "select",
@@ -225,7 +184,7 @@ def option_schema(default_voice):
             "options": [
                 {
                     "value": None, "label": "직접 Agent 모드: 추가 모델 없음",
-                    "requires": {"connection_mode": ["agent", SEARCH_MODE, MODEL_MODE]},
+                    "requires": {"connection_mode": ["agent"]},
                 },
                 *[
                     {
@@ -239,16 +198,16 @@ def option_schema(default_voice):
         },
         {
             "key": "return_agent_response_directly", "label": "Agent 답변 전달 방식",
-            "type": "select", "nullable": True, "requires": {"connection_mode": [SEARCH_MODE, _REALTIME_MODE]},
+            "type": "select", "nullable": True, "requires": {"connection_mode": [_REALTIME_MODE]},
             "options": [
-                {"value": None, "label": "감독 모드 외에는 사용하지 않음", "requires": {"connection_mode": ["agent", MODEL_MODE]}},
+                {"value": None, "label": "감독 모드 외에는 사용하지 않음", "requires": {"connection_mode": ["agent"]}},
                 {
                     "value": True, "label": "Agent 답변 직접 사용 · Azure TTS",
-                    "requires": {"connection_mode": [SEARCH_MODE, _REALTIME_MODE], "voice_name": azure_voice_names},
+                    "requires": {"connection_mode": [_REALTIME_MODE], "voice_name": azure_voice_names},
                 },
                 {
                     "value": False, "label": "선택한 모델이 답변 구성 · OpenAI 음성 사용 가능",
-                    "requires": {"connection_mode": [SEARCH_MODE, _REALTIME_MODE]},
+                    "requires": {"connection_mode": [_REALTIME_MODE]},
                 },
             ],
             "help": "Bing Agent 도구에만 적용됩니다. WebIQ 직접 검색 답변은 항상 선택한 모델이 작성합니다. OpenAI native 음성은 직접 반환과 함께 사용할 수 없습니다.",
@@ -258,7 +217,7 @@ def option_schema(default_voice):
             "options": [
                 {
                     "value": "azure-speech", "label": "Azure Speech · 한국어",
-                    "requires": {"connection_mode": ["agent", SEARCH_MODE, MODEL_MODE]},
+                    "requires": {"connection_mode": ["agent"]},
                 },
                 {"value": "mai-transcribe", "label": "MAI Transcribe · 한국어 (preview)"},
                 *[
@@ -269,7 +228,7 @@ def option_schema(default_voice):
                     for model in _MODEL_MODE_TRANSCRIPTION
                 ],
             ],
-            "help": "텍스트 모델 모드와 직접 Agent 모드에서는 LLM에 전달하는 STT입니다. Realtime에서는 모델이 음성을 직접 이해하며 별도 전사 모델을 선택하는 것입니다.",
+            "help": "직접 Agent 모드에서는 LLM에 전달하는 STT입니다. Realtime에서는 모델이 음성을 직접 이해하며 별도 전사 모델을 선택하는 것입니다.",
         },
         {
             "key": "voice_name", "label": "TTS 모델 계열 / 음성", "type": "select",
@@ -359,26 +318,12 @@ def option_schema(default_voice):
         },
         "fixed_by_mode": {
             "agent": {"tool_executor": "Foundry Agent", "agent_model": "기존 Agent에 설정된 모델"},
-            SEARCH_MODE: {"tool_executor": "WebIQ MCP 또는 Bing Agent", "model": "선택한 텍스트 LLM"},
-            _REALTIME_MODE: {"tool_executor": "WebIQ MCP 또는 Bing Agent", "model": "선택한 Realtime 모델"},
-            MODEL_MODE: {"tool_executor": "앱 내비게이션 명령 처리기", "data_source": "demo_fixture"},
+            _REALTIME_MODE: {"tool_executor": "WebIQ MCP와 Bing 웹 검색", "model": "선택한 Realtime 모델"},
         },
-        "unavailable_options": [{
-            "key": "speech_model", "label": "직접 Agent + model 동시 연결 쿼리",
-            "type": "select", "disabled": True,
-            "requires": {"connection_mode": "agent"},
-            "availability": "unverified_for_fixed_agent",
-            "options": [
-                {"value": name, "label": f"{name} · 고정 Agent 조합 미검증"}
-                for name in ("gpt-realtime", "gpt-realtime-mini", "azure-realtime")
-            ],
-            "help": "SDK는 동시 쿼리를 허용하지만 서버 우선순위는 문서화되지 않았습니다. 지원되는 감독 모드는 별도 실행 구조 선택으로 사용하세요.",
-        }],
         "limitations": [
             _AGENT_LIMITATION,
-            "모델 + 앱 도구는 실제 함수 호출로 브라우저 화면을 조작합니다. 지도·장소·경로는 시연 데이터이며 외부 TMAP 앱이나 GPS를 제어하지 않습니다.",
-            "Whisper / GPT 전사와 OpenAI native 음성은 감독 모드에서만 선택합니다. 모델 + 앱 도구와 직접 Agent 모드는 Azure Speech / MAI와 Azure 음성을 사용합니다.",
-            "감독 모델은 인사 등 기본 대화에 직접 답할 수 있습니다. 정보 질문은 기존 Foundry Agent 도구로 위임하도록 지시하며 별도 검색 도구는 추가하지 않습니다.",
+            "Whisper / GPT 전사와 OpenAI native 음성은 End-to-end에서만 선택합니다. Agent 연결은 Azure Speech / MAI와 Azure 음성을 사용합니다.",
+            "End-to-end 모델은 인사 등에는 직접 답하고, 정보 질문은 WebIQ MCP 검색과 Bing 웹 검색으로 처리합니다.",
             "OpenAI native 음성을 고르면 Bing Agent 답변 전달이 '선택한 모델이 답변 구성'으로 함께 바뀝니다. 서비스가 직접 반환 조합을 거부하는 것을 실제 초기화에서 확인했습니다.",
             "TTS 모델 계열은 음성 이름에 포함됩니다. 별도의 tts_model / model 배포 입력은 없습니다.",
             "MAI Transcribe는 preview, DragonHD는 지역 제한이 있습니다. 문서화된 선택이지 모든 리소스에서의 실행 보장은 아닙니다.",
@@ -408,12 +353,6 @@ def validate_options(mapping, default_voice):
     if not isinstance(mode, str) or mode not in CONNECTION_MODES:
         raise VoiceOptionsError("지원하지 않는 connection_mode입니다.")
     result = {**_mode_defaults(default_voice, mode), **mapping}
-    llm = result["llm_model"]
-    if mode in (MODEL_MODE, SEARCH_MODE):
-        if not isinstance(llm, str) or llm not in MODEL_CHOICES:
-            raise VoiceOptionsError("llm_model은 서버에서 제공한 모델 목록에서 선택하세요.")
-    elif llm is not None:
-        raise VoiceOptionsError("llm_model은 model_tools 또는 model_search 모드에서만 지정할 수 있습니다.")
     realtime_model = result["realtime_model"]
     if mode != _REALTIME_MODE:
         if realtime_model is not None:
@@ -421,9 +360,9 @@ def validate_options(mapping, default_voice):
     elif not isinstance(realtime_model, str) or realtime_model not in _REALTIME_MODELS:
         raise VoiceOptionsError("감독 모드의 realtime_model은 gpt-realtime 또는 gpt-realtime-mini여야 합니다.")
     direct_return = result["return_agent_response_directly"]
-    if mode not in (SEARCH_MODE, _REALTIME_MODE):
+    if mode != _REALTIME_MODE:
         if direct_return is not None:
-            raise VoiceOptionsError("Agent 답변 전달 방식은 model_search 또는 realtime_agent_tool 모드 전용입니다.")
+            raise VoiceOptionsError("Agent 답변 전달 방식은 realtime_agent_tool 모드 전용입니다.")
     elif type(direct_return) is not bool:
         raise VoiceOptionsError("return_agent_response_directly는 true 또는 false여야 합니다.")
     stt = result["transcription_model"]
@@ -547,18 +486,6 @@ def build_session_options(normalized):
     return _speech_session(options)
 
 
-def build_model_session(normalized):
-    """Use one text LLM as the app agent, with the shared navigation tool contract."""
-    options = _builder_options(normalized)
-    if options["connection_mode"] != MODEL_MODE:
-        raise VoiceOptionsError("build_model_session은 model_tools 모드 전용입니다.")
-    session = _speech_session(options)
-    session.instructions = NAVIGATION_INSTRUCTIONS
-    session.tools = navigation_tools()
-    session.tool_choice = "auto"
-    return session
-
-
 def _validated_agent_target(agent_config):
     """Return a trusted foundry_agent tool target supplied by the server."""
     allowed = {
@@ -620,10 +547,10 @@ def build_web_search_session(normalized):
 
 
 def build_search_session(normalized, target):
-    """Build model_search or realtime_agent_tool settings with a foundry_agent or MCP target."""
+    """Build realtime_agent_tool settings with a foundry_agent or MCP target."""
     options = _builder_options(normalized)
-    if options["connection_mode"] not in (SEARCH_MODE, _REALTIME_MODE):
-        raise VoiceOptionsError("build_search_session은 model_search 또는 realtime_agent_tool 모드 전용입니다.")
+    if options["connection_mode"] != _REALTIME_MODE:
+        raise VoiceOptionsError("build_search_session은 realtime_agent_tool 모드 전용입니다.")
     # SDK 1.3 lacks this class; the documented API tool mapping is preserved losslessly.
     if isinstance(target, Mapping) and "server_url" in target:
         mcp = _validated_mcp_target(target)

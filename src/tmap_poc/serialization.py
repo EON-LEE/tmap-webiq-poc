@@ -1,6 +1,5 @@
-"""Shared parsing of the historical JSON answer contract."""
+"""Safe citation links from service annotations."""
 
-import json
 import logging
 from urllib.parse import urlparse
 
@@ -28,23 +27,3 @@ def citation_links(annotations):
         links.append({"url": value, "title": title if isinstance(title, str) and title else parsed.hostname})
         seen.add(value)
     return links
-
-
-def parse_answer(content):
-    if not content:
-        return None, "empty content"
-    text = content.strip()
-    if text.startswith("```"):
-        parts = text.split("```")
-        if len(parts) > 1:
-            text = parts[1]
-            if text.lstrip().lower().startswith("json"):
-                text = text.lstrip()[4:]
-    text = text.strip()
-    start, end = text.find("{"), text.rfind("}")
-    if start == -1 or end == -1:
-        return None, "no JSON object found"
-    try:
-        return json.loads(text[start:end + 1]), None
-    except json.JSONDecodeError as exc:
-        return None, f"json decode error: {exc}"

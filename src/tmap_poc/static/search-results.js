@@ -51,11 +51,6 @@ export function readableValue(value, depth = 0) {
   return shortText(values.join(" · "));
 }
 
-export function field(list, label, value) {
-  if (value === undefined || value === null || value === "") return;
-  list.append(textNode("dt", label), textNode("dd", shortText(value, 600)));
-}
-
 function outputObjects(value) {
   if (isRecord(value)) return [value];
   if (typeof value !== "string") return null;
@@ -94,11 +89,10 @@ export function resultKey(value) {
 
 export function toolOutput(value) {
   const objects = outputObjects(value);
-  const results = [], traceIds = new Set(), seen = new Set();
+  const results = [], seen = new Set();
   let unreadable = !objects;
   function visit(object, depth = 0) {
     if (depth > 8) { unreadable = true; return false; }
-    if (typeof object.traceId === "string" && object.traceId.trim()) traceIds.add(object.traceId);
     let recognized = false;
     for (const [key, items] of Object.entries(object)) {
       if (!/results$/i.test(key)) continue;
@@ -123,25 +117,5 @@ export function toolOutput(value) {
     return recognized;
   }
   for (const object of objects || []) if (!visit(object)) unreadable = true;
-  return { results, traceIds, unreadable };
-}
-
-export function resultSummary({ item }) {
-  if (!isRecord(item)) return null;
-  const data = isRecord(item.data) ? item.data : {};
-  const instrument = isRecord(data.instrument) ? data.instrument : {};
-  const firstText = (...values) => values.find((value) => typeof value === "string" && value.trim());
-  const url = safeSourceUrl(item.url);
-  const title = firstText(instrument.displayName, item.title, item.name, data.name, url?.hostname);
-  const excerpt = firstText(item.snippet, item.excerpt, item.description, data.description, data.address, item.content);
-  const facts = [];
-  if (instrument.price != null) {
-    facts.push(`${instrument.price}${instrument.currency ? ` ${instrument.currency}` : ""}`);
-  }
-  if (instrument.lastTradedAt) facts.push(String(instrument.lastTradedAt));
-  if (!title && !excerpt && !facts.length) return null;
-  return {
-    title: title || "검색 결과", url, excerpt: excerpt || facts.join(" · "),
-    symbol: instrument.symbol ? String(instrument.symbol) : "",
-  };
+  return { results, unreadable };
 }

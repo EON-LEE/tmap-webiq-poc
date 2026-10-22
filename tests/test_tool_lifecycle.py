@@ -1,5 +1,6 @@
 import asyncio
 from contextlib import asynccontextmanager
+import json
 from types import SimpleNamespace
 import unittest
 from unittest.mock import AsyncMock, patch
@@ -15,9 +16,50 @@ from starlette.websockets import WebSocketDisconnect
 
 from tmap_poc import telemetry
 from tmap_poc.profiles import AgentReference
-from tmap_poc.tool_spans import ToolLifecycle
+from tmap_poc.tool_spans import ToolLifecycle, public_call
 from tmap_poc.voice import VoiceSession
 from tests.test_voice_app import settings
+
+
+class SDKValue(SimpleNamespace):
+    def model_dump(self, **kwargs):
+        return vars(self).copy()
+
+
+class PublicCallTests(unittest.TestCase):
+    def test_invalid_arguments_are_dropped(self):
+        for arguments in ("not json", "[]", None):
+            self.assertEqual(public_call(SDKValue(type="mcp_call", arguments=arguments))["arguments"], {})
+
+    def test_public_call_accepts_dict_and_both_sdk_model_shapes(self):
+        class AzureValue(SimpleNamespace):
+            def as_dict(self):
+                return vars(self).copy()
+
+        safe_args = {"query": "안내", "contentFormat": "passage", "maxLength": 1200,
+                     "location": "lat:37.0;long:127.0"}
+        private = {"headers": {"Authorization": "private-header"},
+                   "project_connection_id": "private-connection"}
+        output = {"webResults": [{"url": "https://example.invalid", "content": "source"}]}
+        expected = {"id": "call", "kind": "mcp_call", "name": "web",
+                    "arguments": safe_args, "output": output, "status": "completed"}
+        for arguments in ({**safe_args, **private}, json.dumps({**safe_args, **private})):
+            data = {"id": "call", "type": "mcp_call", "name": "web",
+                    "arguments": arguments, "output": output, "status": "completed", **private}
+            for item in (data, SDKValue(**data), AzureValue(**data)):
+                with self.subTest(item_type=type(item).__name__, arguments_type=type(arguments).__name__):
+                    result = public_call(item)
+                    self.assertEqual(result, expected)
+                    self.assertNotIn("private-header", json.dumps(result))
+                    self.assertNotIn("private-connection", json.dumps(result))
+            self.assertIn("headers", data)
+            if isinstance(arguments, dict):
+                self.assertIn("headers", arguments)
+
+    def test_public_call_rejects_unsupported_serialization(self):
+        for item in (object(), SimpleNamespace(as_dict=lambda: [])):
+            with self.subTest(item_type=type(item).__name__), self.assertRaises(TypeError):
+                public_call(item)
 
 
 class ToolLifecycleTests(unittest.TestCase):

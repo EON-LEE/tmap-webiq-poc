@@ -8,6 +8,7 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
+import azure.ai.projects  # noqa: F401 - load once; FoundryTracingTests restores sys.modules after each test
 from azure.core.exceptions import HttpResponseError, ResourceNotFoundError
 
 from opentelemetry.sdk.trace import TracerProvider
@@ -17,7 +18,6 @@ from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanE
 from opentelemetry.trace import Link, Status, StatusCode
 
 from tmap_poc import telemetry
-from tmap_poc.arms import WebIQMCP
 from tmap_poc.config import ConfigError
 
 
@@ -48,31 +48,6 @@ class TelemetryTests(unittest.TestCase):
         self.assertNotIn("private question", serialized)
         self.assertNotIn("private result", serialized)
 
-    def test_actual_client_execution_gets_child_span(self):
-        with telemetry.span("request") as parent:
-            with telemetry.tool_execution("webiq.web"):
-                pass
-        child, root = self.exporter.get_finished_spans()
-        self.assertEqual(child.name, "execute_tool webiq.web")
-        self.assertEqual(child.parent.span_id, parent.get_span_context().span_id)
-        self.assertEqual(child.attributes["app.execution.location"], "client")
-        self.assertGreaterEqual(child.end_time, child.start_time)
-        self.assertEqual(root.name, "request")
-
-    def test_http_tool_failure_is_not_a_successful_trace(self):
-        client = WebIQMCP(api_key="offline-test-key")
-        client._session.post = Mock(return_value=SimpleNamespace(
-            status_code=401, text='{"message":"unauthorized"}',
-        ))
-        try:
-            payload, _, error = client.call("web", {"query": "offline"})
-        finally:
-            client._session.close()
-        self.assertIsNone(payload)
-        self.assertEqual(error, "HTTP 401")
-        recorded = self.exporter.get_finished_spans()[0]
-        self.assertEqual(recorded.status.status_code.name, "ERROR")
-
     def test_exception_messages_are_not_exported_by_application_span(self):
         with self.assertRaises(ValueError):
             with telemetry.span("request"):
@@ -84,7 +59,6 @@ class TelemetryTests(unittest.TestCase):
     def test_trace_context_contains_no_baggage_or_token(self):
         with telemetry.span("request"):
             headers = telemetry.trace_headers()
-            self.assertEqual(len(telemetry.trace_id()), 32)
             self.assertEqual(set(headers), {"traceparent"})
 
     def test_voice_and_foundry_ids_remain_distinct(self):

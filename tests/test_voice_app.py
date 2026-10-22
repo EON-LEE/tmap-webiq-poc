@@ -1,5 +1,6 @@
 import asyncio
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, redirect_stdout
+import io
 import json
 import os
 from types import SimpleNamespace
@@ -12,9 +13,9 @@ from starlette.websockets import WebSocketDisconnect
 
 from tmap_poc.api import create_app
 from tmap_poc.app_settings import AppSettings
-from tmap_poc.cli import prepare_agents, verified_profiles
+from tmap_poc.cli import prepare_agents
 from tmap_poc.config import ConfigError
-from tmap_poc.profiles import AgentReference, NAVIGATION_INSTRUCTIONS, agent_definition
+from tmap_poc.profiles import AgentReference, SEARCH_AGENT_INSTRUCTIONS, agent_definition
 from tmap_poc.voice_options import VoiceOptionsError
 from tmap_poc.voice import (
     VoiceProtocolError, VoiceServiceError, VoiceSession, connection_url, parse_control,
@@ -68,24 +69,33 @@ class SettingsTests(unittest.TestCase):
                 prepare_agents(settings(), "example", False)
                 client.assert_not_called()
 
-    def test_profiles_share_instructions_not_tools(self):
+    def test_prepare_apply_registers_each_provider_with_its_connection(self):
         with patch.dict(os.environ, {"GWB_CONNECTION_ID": "bing-test", "WEBIQ_CONNECTION_ID": "webiq-test"}):
-            bing = agent_definition("bing", "test-model")
-            webiq = agent_definition("webiq", "test-model")
+            with patch("azure.ai.projects.AIProjectClient") as client, redirect_stdout(io.StringIO()):
+                prepare_agents(settings(), "example", True)
+        create = client.return_value.__enter__.return_value.agents.create_version
+        self.assertEqual([call.kwargs for call in create.call_args_list], [
+            {"agent_name": "example-bing", "definition": agent_definition("bing", "test-model", "bing-test")},
+            {"agent_name": "example-webiq", "definition": agent_definition("webiq", "test-model", "webiq-test")},
+        ])
+
+    def test_profiles_share_instructions_not_tools(self):
+        bing = agent_definition("bing", "test-model", "bing-test")
+        webiq = agent_definition("webiq", "test-model", "webiq-test")
         for field in ("instructions", "model", "reasoning", "kind"):
             self.assertEqual(bing[field], webiq[field])
-        self.assertEqual(bing["tools"][0]["type"], "bing_grounding")
-        self.assertEqual(webiq["tools"][0]["type"], "mcp")
-        self.assertNotIn('{"answer":', NAVIGATION_INSTRUCTIONS)
-
-    def test_comparison_rejects_unmatched_agent_instructions(self):
-        project = SimpleNamespace(agents=SimpleNamespace(
-            get_version=lambda *_: SimpleNamespace(definition=SimpleNamespace(as_dict=lambda: {
-                "model": "test-model", "instructions": "different", "tools": [],
-            }))
-        ))
-        with self.assertRaises(ConfigError):
-            verified_profiles(project, settings())
+        self.assertEqual(json.dumps(bing["tools"]), json.dumps([{
+            "type": "bing_grounding", "bing_grounding": {"search_configurations": [{
+                "project_connection_id": "bing-test", "market": "ko-KR", "set_lang": "ko", "count": 5,
+            }]},
+        }]))
+        self.assertEqual(json.dumps(webiq["tools"]), json.dumps([{
+            "type": "mcp", "server_label": "webiq", "server_url": "https://api.microsoft.ai/v3/mcp",
+            "project_connection_id": "webiq-test", "require_approval": "never",
+        }]))
+        self.assertNotIn('{"answer":', SEARCH_AGENT_INSTRUCTIONS)
+        with self.assertRaises(ValueError):
+            agent_definition("other", "test-model", "connection")
 
     def test_voice_url_pins_agent_not_direct_model(self):
         config = settings()

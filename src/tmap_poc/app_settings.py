@@ -7,7 +7,6 @@ from urllib.parse import urlparse
 
 from tmap_poc.config import ConfigError
 from tmap_poc.profiles import AgentReference, PROVIDER_LABELS
-from tmap_poc.voice_options import CONNECTION_MODES, MODEL_MODE
 
 
 def _value(name, default=""):
@@ -133,12 +132,9 @@ class AppSettings:
             ),
         }
 
-    def problems(self, provider=None, *, voice=True, connection_mode="agent"):
-        if connection_mode not in CONNECTION_MODES:
-            raise ConfigError("Unknown voice connection mode")
-        needs_agent = connection_mode != MODEL_MODE
+    def problems(self, provider=None, *, voice=True):
         errors = []
-        if needs_agent and not self.project_name:
+        if not self.project_name:
             errors.append("GWB_PROJECT_ENDPOINT must identify a Foundry project.")
         if self.auth_mode == "cli" and not self.subscription:
             errors.append("TMAP_POC_AZ_SUBSCRIPTION is required for local CLI authentication.")
@@ -148,14 +144,14 @@ class AppSettings:
             errors.append("TMAP_VOICE_NAME must identify the server's default voice.")
         if not voice and not self.model:
             errors.append("TMAP_POC_MODEL_DEPLOYMENT is required.")
-        if needs_agent and provider is not None and provider not in self.agents:
+        if provider is not None and provider not in self.agents:
             errors.append(f"Configure TMAP_{provider.upper()}_AGENT_NAME first.")
         return errors
 
-    def require(self, provider=None, *, voice=True, connection_mode="agent"):
+    def require(self, provider=None, *, voice=True):
         if provider is not None and provider not in PROVIDER_LABELS:
             raise ConfigError("Unknown search provider")
-        errors = self.problems(provider, voice=voice, connection_mode=connection_mode)
+        errors = self.problems(provider, voice=voice)
         if errors:
             raise ConfigError(" ".join(errors))
 

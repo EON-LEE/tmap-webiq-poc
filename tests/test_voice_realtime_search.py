@@ -4,19 +4,17 @@ import json
 from types import SimpleNamespace
 import unittest
 from unittest.mock import AsyncMock, MagicMock, patch
-from urllib.parse import parse_qs, urlparse
 
 from tmap_poc.app_settings import AppSettings
 from tmap_poc.config import ConfigError
 from tmap_poc.profiles import AgentReference
-from tmap_poc.voice import VoiceServiceError, VoiceSession, connection_url
-from tmap_poc.voice_options import (
-    MODEL_CHOICES, SEARCH_MODE, build_search_session, option_schema, validate_options,
-)
+from tmap_poc.voice import VoiceServiceError, VoiceSession
+from tmap_poc.voice_options import build_search_session, option_schema, validate_options
 from tmap_poc.webiq_mcp import WebIQMCPTarget, resolve_webiq_mcp_target
 
 
 DEFAULT_VOICE = "ko-KR-SunHiNeural"
+REALTIME_MODE = "realtime_agent_tool"
 AGENT_TARGET = {"agent_name": "bing-agent", "agent_version": "1", "project_name": "demo"}
 MCP_TARGET = WebIQMCPTarget("https://api.microsoft.ai/v3/mcp", {"x-apikey": "PRIVATE_KEY"})
 
@@ -34,28 +32,21 @@ def settings(**overrides):
     })
 
 
-class ModelSearchOptionsTests(unittest.TestCase):
+class RealtimeSearchOptionsTests(unittest.TestCase):
     def test_schema_declares_public_mode_contract(self):
         schema = option_schema(DEFAULT_VOICE)
         modes = [(option["value"], option["label"], option["help"]) for option in schema["fields"][0]["options"]]
-        self.assertEqual([mode[0] for mode in modes], ["agent", SEARCH_MODE, "realtime_agent_tool", "model_tools"])
+        self.assertEqual([mode[0] for mode in modes], ["agent", REALTIME_MODE])
         self.assertEqual(modes[0][1], "Agent 연결")
-        self.assertEqual(modes[1][1], "STT → LLM → TTS")
-        self.assertEqual(modes[2][1], "End-to-end")
-        self.assertEqual(modes[3][1], "앱 조작 데모")
-        self.assertIn("WebIQ는 선택한 모델이 직접 검색", modes[1][2])
-        self.assertEqual(MODEL_CHOICES, ("gpt-4.1-mini", "gpt-4.1", "gpt-4o-mini", "gpt-5-mini", "gpt-5", "gpt-5.6-luna"))
-
-    def test_model_search_validation_and_url_use_text_model(self):
-        options = validate_options({"connection_mode": SEARCH_MODE, "llm_model": "gpt-5.6-luna"}, DEFAULT_VOICE)
-        self.assertEqual(options["return_agent_response_directly"], True)
-        self.assertEqual(options["transcription_model"], "azure-speech")
-        query = parse_qs(urlparse(connection_url(settings(), settings().agents["webiq"], voice_options=options)).query)
-        self.assertEqual(query["model"], ["gpt-5.6-luna"])
-        self.assertNotIn("agent-name", query)
+        self.assertEqual(modes[1][1], "End-to-end")
+        self.assertIn("WebIQ는 모델이 MCP로 직접 검색", modes[1][2])
+        self.assertIn("Foundry Toolbox 웹 검색(없으면 Bing Agent)", modes[1][2])
+        self.assertEqual(schema["supported_modes"], ["agent", REALTIME_MODE])
+        self.assertEqual(set(schema["defaults_by_mode"]), {"agent", REALTIME_MODE})
+        self.assertNotIn("llm_model", [field["key"] for field in schema["fields"]])
 
     def test_search_builder_supports_mcp_without_exposing_header_in_safe_repr(self):
-        session = build_search_session(validate_options({"connection_mode": SEARCH_MODE}, DEFAULT_VOICE), MCP_TARGET).as_dict()
+        session = build_search_session(validate_options({"connection_mode": REALTIME_MODE}, DEFAULT_VOICE), MCP_TARGET).as_dict()
         self.assertEqual(session["tools"][0], {
             "type": "mcp", "server_label": "webiq", "server_url": MCP_TARGET.server_url,
             "headers": {"x-apikey": "PRIVATE_KEY"},
@@ -67,7 +58,7 @@ class ModelSearchOptionsTests(unittest.TestCase):
 
     def test_search_builder_supports_bing_agent_tool(self):
         session = build_search_session(
-            validate_options({"connection_mode": SEARCH_MODE, "return_agent_response_directly": False}, DEFAULT_VOICE),
+            validate_options({"connection_mode": REALTIME_MODE, "return_agent_response_directly": False}, DEFAULT_VOICE),
             AGENT_TARGET,
         ).as_dict()
         self.assertEqual(session["tools"][0]["type"], "foundry_agent")
@@ -75,7 +66,7 @@ class ModelSearchOptionsTests(unittest.TestCase):
         self.assertIn("Speak the delegated Agent's answer", session["instructions"])
 
 
-class ModelSearchFlowTests(unittest.IsolatedAsyncioTestCase):
+class RealtimeSearchFlowTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         asyncio.get_running_loop().set_debug(False)
         self.socket = SimpleNamespace(send_json=AsyncMock())
@@ -90,7 +81,7 @@ class ModelSearchFlowTests(unittest.IsolatedAsyncioTestCase):
         return [event for event in calls if kind is None or event["type"] == kind]
 
     async def test_webiq_mcp_flow_metadata_is_sanitized_and_gates_ready(self):
-        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": SEARCH_MODE})
+        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": REALTIME_MODE})
         @asynccontextmanager
         async def connector(*_args, **_kwargs):
             yield self.connection
@@ -114,11 +105,11 @@ class ModelSearchFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(session.ready.is_set())
 
     async def test_mcp_failure_and_deadline_are_terminal_errors(self):
-        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": SEARCH_MODE})
+        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": REALTIME_MODE})
         session.mcp_tools_required = True
         with self.assertRaisesRegex(VoiceServiceError, "WebIQ 검색 도구"):
             await session.handle_event({"type": "mcp_list_tools.failed", "item_id": "catalog", "error": {"message": "PRIVATE"}}, self.connection, self.socket)
-        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": SEARCH_MODE})
+        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": REALTIME_MODE})
         session.mcp_tools_required = True
         session.connection_opened.set()
         async def timeout(coro, **_kwargs):
@@ -130,7 +121,7 @@ class ModelSearchFlowTests(unittest.IsolatedAsyncioTestCase):
                 await session._ready_deadline()
 
     async def test_mcp_tool_only_response_requests_capped_followups(self):
-        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": SEARCH_MODE})
+        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": REALTIME_MODE})
         session.mcp_tools_required = True
         session.connection = self.connection
         current = "r0"
@@ -215,7 +206,7 @@ class ModelSearchFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.connection.response.create.await_count, 2, "a search that already returned is answered at once")
 
     async def test_no_mcp_followup_after_interruption_or_active_response(self):
-        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": SEARCH_MODE})
+        session = VoiceSession(settings(), "webiq", voice_options={"connection_mode": REALTIME_MODE})
         session.mcp_tools_required = True
         session.connection = self.connection
         session.interrupted.add("old")

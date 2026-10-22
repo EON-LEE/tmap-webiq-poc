@@ -2,6 +2,7 @@
 
 from collections import OrderedDict
 from dataclasses import dataclass, field
+import json
 from time import monotonic
 
 from opentelemetry import trace
@@ -9,7 +10,39 @@ from opentelemetry.context import Context
 from opentelemetry.trace import Status, StatusCode
 
 from tmap_poc import telemetry
-from tmap_poc.runtime import public_call
+
+
+def public_call(item):
+    if isinstance(item, dict):
+        data = item
+    elif hasattr(item, "model_dump"):
+        data = item.model_dump(mode="json", exclude_none=True)
+    elif hasattr(item, "as_dict"):
+        data = item.as_dict()
+    else:
+        raise TypeError("Expected a dict or SDK tool-call model")
+    if not isinstance(data, dict):
+        raise TypeError("Tool-call model must serialize to a dict")
+    arguments = data.get("arguments", {})
+    if isinstance(arguments, str):
+        try:
+            arguments = json.loads(arguments)
+        except json.JSONDecodeError:
+            arguments = {"unparsed": arguments}
+    if not isinstance(arguments, dict):
+        arguments = {}
+    allowed = (
+        "query", "q", "url", "language", "region", "vertical", "maxResults",
+        "contentFormat", "maxLength", "location", "input",
+    )
+    return {
+        "id": data.get("id"),
+        "kind": data.get("type"),
+        "name": data.get("name"),
+        "arguments": {k: v for k, v in arguments.items() if k in allowed},
+        "output": data.get("output"),
+        "status": data.get("status"),
+    }
 
 
 @dataclass
