@@ -1,75 +1,52 @@
-"""Create the Foundry project connection that lets the MCP tool carry the key.
+"""Store or rotate the WebIQ key in a Foundry project connection. Plan only by default.
 
-The agent service rejects an MCP tool that passes ``x-apikey`` inline, and
-directs callers to reference a project connection instead. So the Web IQ key
-is stored once as a CustomKeys connection on the project and the tool refers
-to it by id -- which is also why no key ever needs to reach the agent
-definition or the results files.
+    python scripts/setup_webiq_connection.py --connection-id <WEBIQ_CONNECTION_ID> --apply
 
-Creating this is a metadata operation on the project that already exists; it
-provisions no billable resource.
+The key comes from WEBIQ_API_KEY or a hidden prompt, is checked against WebIQ before it is
+stored, and travels only in the HTTPS request body. Running apps use a new key within 10 minutes.
+New environments get this connection from scripts/provision.py.
 """
 
-import json
-import os
-import pathlib
+import argparse
+from pathlib import Path
 import re
-import subprocess
 import sys
 
-sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from tmap_poc.config import load_dotenv
+from provision import Azure, ProvisionError, check_webiq_key, put_webiq_connection, webiq_key  # noqa: E402
 
-load_dotenv()
-
-CONNECTION_NAME = "webiq-mcp"
-KEY = os.environ["WEBIQ_API_KEY"]
-SUB = os.environ["TMAP_POC_AZ_SUBSCRIPTION"]
-
-#: The Bing connection id already encodes account and project, so the new
-#: connection is placed beside it rather than asking for more configuration.
-existing = os.environ["GWB_CONNECTION_ID"]
-m = re.match(
-    r"/subscriptions/(?P<sub>[^/]+)/resourceGroups/(?P<rg>[^/]+)"
-    r"/providers/Microsoft\.CognitiveServices/accounts/(?P<account>[^/]+)"
-    r"/projects/(?P<project>[^/]+)/connections/",
-    existing,
+CONNECTION_ID = re.compile(
+    r"/subscriptions/(?P<subscription>[^/]+)/resourceGroups/[^/]+/providers/Microsoft\.CognitiveServices"
+    r"/accounts/[^/]+/projects/[^/]+/connections/[^/]+",
+    re.IGNORECASE,
 )
-if not m:
-    sys.exit(f"could not parse GWB_CONNECTION_ID (shape: {existing[:60]}...)")
-sub_id, rg, account, project = (m["sub"], m["rg"], m["account"], m["project"])
-print(f"account={account} project={project} rg={rg}")
 
-url = (
-    f"https://management.azure.com/subscriptions/{sub_id}"
-    f"/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/"
-    f"{account}/projects/{project}/connections/{CONNECTION_NAME}"
-    f"?api-version=2025-04-01-preview"
-)
-body = {
-    "properties": {
-        "category": "CustomKeys",
-        "target": "https://api.microsoft.ai/v3/mcp",
-        "authType": "CustomKeys",
-        "isSharedToAll": False,
-        "credentials": {"keys": {"x-apikey": KEY}},
-        "metadata": {"purpose": "Web IQ MCP server for the TMAP PoC"},
-    }
-}
 
-proc = subprocess.run(
-    ["az", "rest", "--method", "put", "--url", url,
-     "--subscription", SUB, "--body", json.dumps(body)],
-    capture_output=True, text=True,
-)
-out = (proc.stdout + proc.stderr).replace(KEY, "<redacted>")
-if proc.returncode != 0:
-    sys.exit(f"failed:\n{out[:1500]}")
+def main(argv=None, *, azure=None, out=print):
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--connection-id", required=True, help="Project connection resource ID (WEBIQ_CONNECTION_ID).")
+    parser.add_argument("--apply", action="store_true", help="Check and store the key. Without it nothing is read or changed.")
+    args = parser.parse_args(argv)
+    match = CONNECTION_ID.fullmatch(args.connection_id)
+    if not match:
+        parser.error("--connection-id must be a Foundry project connection resource ID.")
+    name = args.connection_id.rsplit("/", 1)[-1]
+    if not args.apply:
+        out(f"Plan only: check the WebIQ key, then store it in connection '{name}'. Add --apply.")
+        return
+    key = webiq_key(prompt=True)
+    if not key:
+        parser.error("Set WEBIQ_API_KEY or run in a terminal to type the key.")
+    azure = azure or Azure(match["subscription"])
+    azure.secret(key)
+    try:
+        check_webiq_key(azure, key)
+        put_webiq_connection(azure, args.connection_id, key)
+    except ProvisionError as error:
+        parser.exit(1, f"error: {error}\n")
+    out(f"WebIQ key stored in connection '{name}'. Running apps use it within 10 minutes.")
 
-created = json.loads(proc.stdout)
-print(f"connection id: .../connections/{created['name']}")
-print(f"target: {created['properties']['target']}")
-print(f"authType: {created['properties']['authType']}")
-print("\nAdd to .env:")
-print(f"WEBIQ_CONNECTION_ID={created['id']}")
+
+if __name__ == "__main__":
+    main()

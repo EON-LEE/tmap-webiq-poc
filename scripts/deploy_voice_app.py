@@ -5,10 +5,12 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
-
-from tmap_poc.auth import _az_binary
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from tmap_poc.auth import _az_binary  # noqa: E402
 
 
 class DeploymentError(RuntimeError):
