@@ -1,12 +1,11 @@
-"""Shared Foundry agent definitions for text experiments and voice sessions."""
+"""Shared Foundry search Agent definitions for the voice comparison."""
 
 from dataclasses import dataclass
 
-from tmap_poc.arms import tools_for
-
 PROVIDER_LABELS = {"bing": "Grounding with Bing", "webiq": "WebIQ"}
+WEBIQ_MCP_URL = "https://api.microsoft.ai/v3/mcp"
 
-NAVIGATION_INSTRUCTIONS = """당신은 차량 내 내비게이션 앱에서 동작하는 한국어 음성 에이전트입니다.
+SEARCH_AGENT_INSTRUCTIONS = """당신은 차량 내 내비게이션 앱에서 동작하는 한국어 음성 에이전트입니다.
 앱이 제공한 위치, 목적지, 도착 예정 시각과 사용자가 말한 조건을 참고하세요.
 장소 영업, 주문 마감, 주차 조건, 행사 일정, 충전 요금 등 변할 수 있는 정보는
 제공된 검색 도구로 확인한 뒤 핵심부터 짧게 두세 문장으로 답하세요.
@@ -36,13 +35,33 @@ class AgentReference:
         return result
 
 
-def agent_definition(provider, model):
+def search_tools(provider: str, connection_id: str) -> list[dict]:
+    if provider == "bing":
+        return [{
+            "type": "bing_grounding",
+            "bing_grounding": {"search_configurations": [{
+                "project_connection_id": connection_id,
+                "market": "ko-KR", "set_lang": "ko", "count": 5,
+            }]},
+        }]
+    if provider == "webiq":
+        return [{
+            "type": "mcp",
+            "server_label": "webiq",
+            "server_url": WEBIQ_MCP_URL,
+            "project_connection_id": connection_id,
+            "require_approval": "never",
+        }]
+    raise ValueError("Unknown search provider")
+
+
+def agent_definition(provider: str, model: str, connection_id: str) -> dict:
     if provider not in PROVIDER_LABELS:
         raise ValueError("Unknown search provider")
     return {
         "kind": "prompt",
         "model": model,
-        "instructions": NAVIGATION_INSTRUCTIONS,
+        "instructions": SEARCH_AGENT_INSTRUCTIONS,
         "reasoning": {"effort": "low"},
-        "tools": tools_for("A" if provider == "bing" else "B"),
+        "tools": search_tools(provider, connection_id),
     }

@@ -35,6 +35,14 @@ class VoiceProbeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result, {"audio_bytes": 2})
         self.assertEqual(socket.messages, {"i": "whole answer"})
 
+    async def test_only_agent_and_end_to_end_modes_are_accepted(self):
+        for mode in ("model_search", "model_tools"):
+            with self.subTest(mode=mode), self.assertRaises(probe.VoiceOptionsError):
+                await probe.check(probe.AppSettings(), "bing", None, 1, voice_options={"connection_mode": mode})
+        for mode in ("agent", "realtime_agent_tool"):
+            with self.subTest(mode=mode):
+                self.assertEqual(probe.validate_options({"connection_mode": mode}, "ko-KR-SunHiNeural")["connection_mode"], mode)
+
 
 if __name__ == "__main__":
     unittest.main()

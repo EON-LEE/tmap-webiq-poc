@@ -184,11 +184,6 @@ def span(name, **attributes):
                 current.set_status(Status(StatusCode.ERROR))
 
 
-def trace_id():
-    context = trace.get_current_span().get_span_context()
-    return f"{context.trace_id:032x}" if context.is_valid else None
-
-
 def trace_headers():
     headers = {}
     TraceContextTextMapPropagator().inject(headers)
@@ -213,19 +208,6 @@ def observed_tool(call, *, parent=None):
     if isinstance(call.get("observed_elapsed_ms"), (int, float)):
         attributes["app.tool.observed_elapsed_ms"] = call["observed_elapsed_ms"]
     current.add_event("tool.call.observed", attributes)
-
-
-@contextmanager
-def tool_execution(name):
-    with span(
-        f"execute_tool {name}",
-        **{
-            "gen_ai.operation.name": "execute_tool",
-            "gen_ai.tool.name": name,
-            "app.execution.location": "client",
-        },
-    ) as current:
-        yield current
 
 
 def foundry_response_link(agent_response_id, *, parent=None):

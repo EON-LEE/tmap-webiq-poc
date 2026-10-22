@@ -16,7 +16,6 @@ from fastapi.testclient import TestClient
 from tmap_poc.api import create_app
 from tmap_poc.app_settings import AppSettings
 from tmap_poc.voice import VoiceServiceError, VoiceSession
-from tmap_poc.voice_options import MODEL_MODE
 from tests.test_voice_conversation import settings
 
 
@@ -131,16 +130,6 @@ class VoiceFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(request["data"]["voice"], sent["voice"])
         self.assertNotIn("instructions", request["data"])
         self.assertNotIn("PRIVATE_IDENTITY", json.dumps(self.flows()))
-
-    async def test_navigation_target_remains_providerless_and_not_a_foundry_agent(self):
-        self.session = VoiceSession(settings(), "bing", voice_options={"connection_mode": MODEL_MODE})
-        self.addCleanup(self.session.tools.close)
-        await self.serve()
-        target = self.flows(stage="connection")[0]
-        self.assertIsNone(target["provider"])
-        self.assertEqual(target["data"]["requested_model"], self.session.options["llm_model"])
-        self.assertNotIn("agent", target["data"])
-        self.assertNotIn("agent_tool", self.flows(operation="session.update")[0]["data"])
 
     async def test_failed_session_update_is_not_reported_as_sent(self):
         self.connection.session.update.side_effect = RuntimeError("test failure")

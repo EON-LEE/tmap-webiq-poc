@@ -13,7 +13,6 @@ const compareSource = readStaticFile("compare-view.js");
 const clientModuleOrder = [
   "search-results.js",
   "run-labels.js",
-  "flow-observations.js",
   "settings-view.js",
   "compare-view.js",
   "app.js",
@@ -228,7 +227,6 @@ function voiceOptionsSchema() {
   });
   const defaults = {
     connection_mode: "agent",
-    llm_model: null,
     realtime_model: null,
     transcription_model: "azure-speech",
     voice_name: "ko-KR-SunHiNeural",
@@ -243,44 +241,26 @@ function voiceOptionsSchema() {
     defaults,
     defaults_by_mode: {
       agent: { ...defaults },
-      model_search: {
-        ...defaults,
-        connection_mode: "model_search",
-        llm_model: "gpt-4.1-mini",
-        return_agent_response_directly: true,
-      },
       realtime_agent_tool: {
         ...defaults,
         connection_mode: "realtime_agent_tool",
         realtime_model: "gpt-realtime-mini",
       },
-      model_tools: {
-        ...defaults,
-        connection_mode: "model_tools",
-        llm_model: "gpt-4.1-mini",
-      },
     },
-    supported_modes: ["agent", "model_search", "realtime_agent_tool", "model_tools"],
+    supported_modes: ["agent", "realtime_agent_tool"],
     fields: [
       selectField("connection_mode", "실행 구조", "agent", [
         option("agent", "Agent"),
-        option("model_search", "STT → LLM → TTS"),
         option("realtime_agent_tool", "Realtime"),
-        option("model_tools", "Model tools"),
       ]),
-      selectField("llm_model", "텍스트 모델", null, [
-        option(null, "Agent", { connection_mode: ["agent", "realtime_agent_tool"] }),
-        option("gpt-4.1-mini", "gpt-4.1-mini", { connection_mode: ["model_search", "model_tools"] }),
-        option("gpt-5-mini", "gpt-5-mini", { connection_mode: ["model_search", "model_tools"] }),
-      ], { nullable: true, requires: { connection_mode: ["model_search", "model_tools"] } }),
       selectField("realtime_model", "Realtime 모델", null, [
-        option(null, "없음", { connection_mode: ["agent", "model_search", "model_tools"] }),
+        option(null, "없음", { connection_mode: ["agent"] }),
         option("gpt-realtime-mini", "gpt-realtime-mini", { connection_mode: "realtime_agent_tool" }),
       ], { nullable: true, requires: { connection_mode: "realtime_agent_tool" } }),
       selectField("return_agent_response_directly", "Bing Agent 답변 전달", true, [
         option(true, "직접", { voice_name: ["ko-KR-SunHiNeural", "ko-KR-SunHi:DragonHDLatestNeural"] }),
         option(false, "재작성"),
-      ], { requires: { connection_mode: ["model_search", "realtime_agent_tool"] } }),
+      ], { requires: { connection_mode: ["realtime_agent_tool"] } }),
       selectField("transcription_model", "STT", "azure-speech", [
         option("azure-speech", "azure-speech"),
         option("mai-transcribe", "mai-transcribe"),
@@ -318,7 +298,6 @@ function voiceOptionsSchema() {
         step: 50,
       },
     ],
-    unavailable_options: [{ label: "모델 도구", help: "숨김", requires: { connection_mode: "model_tools" } }],
     limitations: ["demo"],
   };
 }
@@ -1200,8 +1179,6 @@ test("settings offer only Agent and End-to-end, stay editable while connected an
   const modeSelect = descendants(env.root).find((node) => node.id === "voice-option-connection_mode");
   const offered = modeSelect.children.filter((option) => !option.hidden && !option.disabled).map((option) => option.textContent);
   assert.deepEqual(offered, ["Agent 연결 (기본)", "End-to-end (Realtime)"]);
-  assert.ok(modeSelect.children[1].hidden && modeSelect.children[1].disabled, "STT → LLM → TTS is not offered");
-  assert.ok(modeSelect.children[3].hidden && modeSelect.children[3].disabled, "the app-control scenario is not offered");
 
   await startTextComparison(env, "설정 전");
   readyProviderLane(env, "webiq");

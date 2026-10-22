@@ -6,11 +6,11 @@ export function createSettingsView() {
   const groups = new Map();
   const fields = new Map();
   const fieldGroups = {
-    connection_mode: "pipeline", llm_model: "pipeline", realtime_model: "pipeline", return_agent_response_directly: "pipeline",
+    connection_mode: "pipeline", realtime_model: "pipeline", return_agent_response_directly: "pipeline",
     voice_name: "tts", speech_rate: "tts",
   };
   const labels = {
-    connection_mode: "음성 처리 방식", llm_model: "텍스트 모델", realtime_model: "Realtime 모델",
+    connection_mode: "음성 처리 방식", realtime_model: "Realtime 모델",
     return_agent_response_directly: "Bing Agent 답변 전달",
   };
   return {
@@ -19,8 +19,6 @@ export function createSettingsView() {
     hidden: (key, mode) => mode === "realtime_agent_tool" && ["transcription_model", "return_agent_response_directly"].includes(key),
     optionLabel: (key, option) => key === "connection_mode" && Object.hasOwn(modeNames, option.value)
       ? modeNames[option.value] : option.label,
-    // STT → LLM → TTS and the app-control navigation scenario are not part of the search comparison.
-    excluded: (key, option) => key === "connection_mode" && ["model_search", "model_tools"].includes(option.value),
     reset() {
       get("voice-options-fields").replaceChildren();
       groups.clear();

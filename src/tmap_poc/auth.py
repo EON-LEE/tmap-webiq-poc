@@ -29,8 +29,8 @@ class TokenProvider:
     """Caches an Entra bearer token and refreshes it before expiry."""
 
     #: Refresh this long before the token's real expiry. Entra tokens last
-    #: about an hour, and a matrix run that straddled the boundary died with
-    #: every remaining cell failing to publish, so the margin is generous.
+    #: about an hour, and a long session must not straddle the boundary with
+    #: a token Entra has already stopped honouring, so the margin is generous.
     SKEW_SECONDS = 300
 
     def __init__(self, scope, subscription=None, ttl_seconds=2400):
@@ -40,8 +40,8 @@ class TokenProvider:
         self._token = None
         self._expires_at = 0.0
 
-    def get(self, force=False):
-        if force or self._token is None or time.time() >= self._expires_at:
+    def get(self):
+        if self._token is None or time.time() >= self._expires_at:
             self._token, self._expires_at = self._fetch()
         return self._token
 
@@ -82,9 +82,6 @@ class TokenProvider:
             expiry = time.time() + self.ttl_seconds
         return token, expiry - self.SKEW_SECONDS
 
-    def auth_header(self, force=False):
-        return {"Authorization": f"Bearer {self.get(force=force)}"}
-
 
 class AzTokenCredential:
     """Adapts TokenProvider to the azure-core TokenCredential protocol.
@@ -112,6 +109,5 @@ class AzTokenCredential:
         token = provider.get()
         #: Report the token's real expiry. Reporting a fixed now+ttl on every
         #: call made the SDK hold a token well past the point Entra stopped
-        #: accepting it, which killed a matrix run an hour in: arm A finished,
-        #: then all eight remaining cells failed to publish as unauthorised.
+        #: accepting it, so later calls failed as unauthorised.
         return AccessToken(token, int(provider.expires_at))

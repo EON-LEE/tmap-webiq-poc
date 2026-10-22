@@ -19,13 +19,11 @@ let audio = null;
 let workletReady = false;
 let liveProvider = "webiq";
 let replay = null;
-let groupSequence = 0;
 // Explains why the connection just ended after a settings change, until the next comparison starts.
 let restartNotice = "";
 const settingsView = createSettingsView();
 const compareView = createCompareView({ onReplay: toggleReplay, onLive: setLive });
 const voiceFields = new Map();
-const unavailableVoiceOptions = [];
 const browserError = !window.isSecureContext
   ? "마이크를 사용하려면 보안 연결 또는 로컬 호스트로 접속하세요."
   : !Audio || !window.AudioWorkletNode || !navigator.mediaDevices?.getUserMedia
@@ -106,7 +104,7 @@ function voiceOptionsState() {
     const defaultValue = voiceDefault(key, field, values);
     let eligible = null;
     if (definition.type === "select") {
-      eligible = definition.options.map((option) => !settingsView.excluded(key, option) && matchesVoiceRequirements(option.requires, values));
+      eligible = definition.options.map((option) => matchesVoiceRequirements(option.requires, values));
       const eligibleKey = eligible.map(Number).join("");
       const chosenIndex = definition.options.findIndex((option) => option.value === values[key]);
       if (chosenIndex >= 0 && !eligible[chosenIndex] && eligibleKey !== field.eligibleKey) {
@@ -144,7 +142,6 @@ function voiceOptionsState() {
   }
   if ($("voice-options-error").textContent !== message) $("voice-options-error").textContent = message;
   $("voice-options-error").hidden = !message;
-  for (const item of unavailableVoiceOptions) item.element.hidden = !matchesVoiceRequirements(item.definition.requires, values);
   const summary = voiceFields.has("connection_mode") ? routeSummary(values.connection_mode) : "";
   $("voice-mode-summary").hidden = !summary;
   if ($("voice-mode-summary").textContent !== summary) $("voice-mode-summary").textContent = summary;
@@ -163,9 +160,8 @@ function resetVoiceOptions(mode = null) {
 }
 function configureVoiceOptions(schema) {
   voiceFields.clear();
-  unavailableVoiceOptions.length = 0;
   settingsView.reset();
-  for (const id of ["voice-options-unavailable", "voice-options-limitations"]) $(id).replaceChildren();
+  $("voice-options-limitations").replaceChildren();
   const supported = schema?.mode === "foundry_agent" && Array.isArray(schema.fields);
   $("voice-settings-state").hidden = supported;
   $("voice-settings-state").textContent = supported ? "" : "서버가 선택 가능한 음성 설정을 제공하지 않습니다.";
@@ -200,9 +196,11 @@ function configureVoiceOptions(schema) {
         input.inputMode = "decimal";
       }
     }
-    const help = textNode("p", typeof definition.help === "string" ? definition.help : "", "hint");
-    help.id = `${input.id}-help`;
-    input.setAttribute("aria-describedby", help.id);
+    const help = typeof definition.help === "string" && definition.help ? textNode("p", definition.help, "hint") : null;
+    if (help) {
+      help.id = `${input.id}-help`;
+      input.setAttribute("aria-describedby", help.id);
+    }
     const requirement = textNode("p", "현재 설정 조합에서는 사용하지 않습니다. 기본 설정을 유지합니다.", "hint voice-option-inactive");
     requirement.hidden = true;
     const field = { definition, input, requirement, wrapper };
@@ -224,16 +222,8 @@ function configureVoiceOptions(schema) {
     };
     input.addEventListener("input", changed);
     input.addEventListener("change", changed);
-    wrapper.append(label, input, help, requirement);
+    wrapper.append(label, input, ...(help ? [help] : []), requirement);
     settingsView.addField(definition.key, wrapper);
-  }
-  for (const option of Array.isArray(schema.unavailable_options) ? schema.unavailable_options : []) {
-    if (!option || typeof option.label !== "string") continue;
-    const wrapper = textNode("div", "", "voice-option-unavailable");
-    wrapper.append(textNode("strong", option.label));
-    if (typeof option.help === "string") wrapper.append(textNode("p", option.help, "hint"));
-    unavailableVoiceOptions.push({ definition: option, element: wrapper });
-    $("voice-options-unavailable").append(wrapper);
   }
   for (const limitation of Array.isArray(schema.limitations) ? schema.limitations : []) {
     if (typeof limitation === "string") $("voice-options-limitations").append(textNode("li", limitation));
@@ -296,7 +286,7 @@ async function start(inputMode, pending = null) {
   const voice = voiceOptionsState();
   const providers = configuredProviders();
   if (!config || voice.message || !providers.length || (inputMode === "audio" && browserError)) { controls(); return; }
-  const g = { closed: false, inputMode, sequence: ++groupSequence, lanes: new Map(), voice, capturing: false };
+  const g = { closed: false, inputMode, lanes: new Map(), voice, capturing: false };
   group = g;
   restartNotice = "";
   stopReplay();
@@ -331,8 +321,7 @@ function connectLane(g, provider, pending) {
     provider, group: g, closed: false, ready: false, awaiting: false, failed: false, idleTimer: null,
     nodes: new Set(), nextTime: 0, cancelled: new Set(),
     pending: pending ? { text: pending.text, cell: pending.turn.cells.get(provider) } : null,
-    run: { provider, input_mode: g.inputMode, sequence: g.sequence, connection_mode: g.voice.values.connection_mode || "agent",
-      ...(voiceFields.size ? { voice_options: g.voice.values } : {}) },
+    run: { connection_mode: g.voice.values.connection_mode || "agent" },
   };
   g.lanes.set(provider, lane);
   compareView.laneStatus(provider, "connecting", "연결 중…");
@@ -350,7 +339,6 @@ function connectLane(g, provider, pending) {
   };
   lane.socket.onerror = () => failLane(lane, "서버 연결에 실패했습니다. 서버와 네트워크 설정을 확인하세요.");
   lane.socket.onclose = () => { if (!lane.closed) failLane(lane, "서버 연결이 종료되었습니다."); };
-  return lane;
 }
 function laneReady(lane) {
   if (lane.ready) return;
@@ -431,7 +419,6 @@ function receive(lane, event) {
     case "status":
       if (event.state === "ready") laneReady(lane);
       else if (event.state === "connecting") compareView.laneStatus(lane.provider, "connecting", "음성 서비스 연결 중…");
-      else if (event.state === "stopped") finishLane(lane, "종료", false);
       break;
     case "activity":
       if (event.state === "thinking") {

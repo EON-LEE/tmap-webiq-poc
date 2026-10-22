@@ -11,7 +11,6 @@ from tmap_poc.api import create_app
 from tmap_poc.app_settings import AppSettings
 from tmap_poc.profiles import AgentReference
 from tmap_poc.voice import VoiceServiceError, VoiceSession
-from tmap_poc.voice_options import MODEL_MODE
 
 
 def settings(**overrides):
@@ -65,7 +64,6 @@ class ProviderReadinessTests(unittest.TestCase):
                 config = settings(project_endpoint="https://agent.example.invalid" + path)
                 self.assertEqual(config.project_name, "")
                 self.assertIn("GWB_PROJECT_ENDPOINT", " ".join(config.problems("bing")))
-                self.assertEqual(config.problems(connection_mode=MODEL_MODE), [])
         self.assertEqual(settings().project_name, "demo")
 
     def test_terminal_api_error_preserves_known_response_correlation(self):
@@ -432,11 +430,6 @@ class ConversationEventsTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(event["agent"]["name"], settings().agents[provider].name)
                     self.assertEqual(event["agent"]["version"], settings().agents[provider].version)
                     self.assertTrue(event["agent"]["pinned"])
-
-    async def test_model_tools_does_not_claim_to_be_either_search_provider(self):
-        self.session = VoiceSession(settings(), "bing", voice_options={"connection_mode": MODEL_MODE})
-        await self.event("response.text.done", response_id="answer", item_id="message", text="앱 답변")
-        self.assertIsNone(self.sent("transcript")[0]["provider"])
 
     async def test_ready_keeps_the_session_agent_even_if_available_configuration_changes(self):
         self.session.settings.agents["webiq"] = AgentReference("different-agent", "99")

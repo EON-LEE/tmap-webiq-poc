@@ -1,5 +1,4 @@
 import { textNode, safeSourceUrl, sourceLink, isRecord, shortText, toolOutput, compactStringify } from "./search-results.js";
-import { projectFlowEvent } from "./flow-observations.js";
 import { providerNames, comparedProviders } from "./run-labels.js";
 
 const TOOL_LABELS = {
@@ -133,7 +132,7 @@ export function createCompareView({ onReplay, onLive }) {
       startedAt: null, speechEndedAt: null, inputFinalAt: null, thinkStartAt: null, thinkEndAt: null,
       outputs: [], fillerResponses: new Set(), audioResponses: new Set(), doneAt: null, responseStarted: false, noticeText: "", playing: false,
       input: { mode: turn.kind, text: turn.question, final: turn.kind === "text", claimed: false },
-      calls: new Map(), citations: new Map(), messages: new Map(), audio: { chunks: [], bytes: 0, truncated: false },
+      calls: new Map(), citations: new Map(), messages: new Map(), audio: { chunks: [], bytes: 0 },
     };
     replay.addEventListener("click", () => onReplay(cell));
     if (turn.kind === "voice" && !available.get(provider)) {
@@ -591,9 +590,9 @@ export function createCompareView({ onReplay, onLive }) {
       if (event.role === "user") userTranscript(lane, event);
       else if (event.role === "assistant") assistantTranscript(lane, event);
     },
-    flow(lane, original) {
-      const event = projectFlowEvent(original);
-      const { stage, status, data } = event;
+    flow(lane, event) {
+      const { stage, status } = event;
+      const data = isRecord(event.data) ? event.data : {};
       if ((stage === "speech" && status === "stopped") || (stage === "input" && status === "committed")) {
         const cell = event.item_id ? session(lane).items.get(event.item_id) : null;
         if (cell && cell.speechEndedAt == null) {
@@ -632,7 +631,7 @@ export function createCompareView({ onReplay, onLive }) {
     },
     tool(lane, event) {
       const cell = cellFor(lane, event.response_id);
-      if (!cell || cell.status === "offline" || event.kind === "navigation_action") return;
+      if (!cell || cell.status === "offline") return;
       const entry = call(cell, typeof event.id === "string" && event.id ? event.id : `call-${cell.calls.size}`);
       if (typeof event.kind === "string") entry.kind = event.kind;
       if (typeof event.name === "string" && event.name) entry.name = event.name;
@@ -692,7 +691,7 @@ export function createCompareView({ onReplay, onLive }) {
       if (cell.audio.bytes + bytes.byteLength <= MAX_AUDIO_BYTES) {
         cell.audio.chunks.push(bytes);
         cell.audio.bytes += bytes.byteLength;
-      } else cell.audio.truncated = true;
+      }
       // Each response's first sound counts once; a filler and the answer can come from different responses.
       const response = event.response_id || "audio";
       if (!cell.audioResponses.has(response)) {

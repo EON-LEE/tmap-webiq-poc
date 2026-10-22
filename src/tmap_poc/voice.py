@@ -1,4 +1,4 @@
-"""Voice Live transport for the same Foundry agents used by experiments."""
+"""Voice Live transport for the configured Foundry search agents."""
 
 import asyncio
 import base64
@@ -25,15 +25,13 @@ from azure.ai.voicelive.models import (
 from starlette.websockets import WebSocketDisconnect
 
 from tmap_poc.config import ConfigError
-from tmap_poc.navigation import NavigationError
-from tmap_poc.navigation_voice import NavigationVoice
 from tmap_poc.profiles import PROVIDER_LABELS
 from tmap_poc.serialization import citation_links
-from tmap_poc.telemetry import foundry_response_link, span, trace_headers, trace_id
+from tmap_poc.telemetry import foundry_response_link, span, trace_headers
 from tmap_poc.tool_spans import ToolLifecycle
 from tmap_poc.voice_options import (
-    FOLLOWUP_INSTRUCTIONS, MODEL_MODE, SEARCH_MODE, build_model_session, build_search_session,
-    build_session_options, build_web_search_session, validate_options,
+    FOLLOWUP_INSTRUCTIONS, build_search_session, build_session_options, build_web_search_session,
+    validate_options,
 )
 
 API_VERSION = "2026-07-15"
@@ -41,14 +39,12 @@ SAMPLE_RATE = 24000
 MAX_TEXT = 4000
 MAX_AUDIO_BYTES = 48000
 _SLOW_RELAY_SECONDS = 0.25
-_RESPONSE_TAG = "navigation_request"
 logger = logging.getLogger(__name__)
 _TOOL_ARGUMENT_FIELDS = (
     "query", "q", "search_query", "url", "language", "region", "vertical", "maxResults",
     "contentFormat", "maxLength", "location", "safeSearch",
     "count", "market", "set_lang", "freshness",
     "input",
-    "app", "destination_id", "place_id",
 )
 _TOOL_FLOW_EVENTS = {
     f"response.{tool}.{status}": (tool, status)
@@ -166,7 +162,6 @@ def parse_control(text):
         "start": {"type", "provider", "context", "voice_options"},
         "text": {"type", "text"},
         "stop": {"type"},
-        "navigation_ack": {"type", "action_id", "revision"},
     }
     if not isinstance(kind, str) or kind not in fields or set(data) - fields[kind]:
         raise VoiceProtocolError("지원하지 않는 메시지 형식입니다.")
@@ -182,13 +177,6 @@ def parse_control(text):
         prompt = data.get("text")
         if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > MAX_TEXT:
             raise VoiceProtocolError("질문은 비어 있지 않은 4,000자 이내 문장이어야 합니다.")
-    if kind == "navigation_ack":
-        action_id, revision = data.get("action_id"), data.get("revision")
-        if (
-            not isinstance(action_id, str) or not re.fullmatch(r"[a-zA-Z0-9_-]{1,128}", action_id)
-            or type(revision) is not int or not 0 <= revision <= 256
-        ):
-            raise VoiceProtocolError("앱 화면 반영 확인 메시지가 올바르지 않습니다.")
     return data
 
 
@@ -205,9 +193,7 @@ def connection_url(settings, agent, *, voice_options=None):
     parsed = urlparse(settings.voice_endpoint)
     options = validate_options({} if voice_options is None else voice_options, settings.voice_name)
     params = {"api-version": API_VERSION}
-    if options["connection_mode"] in (MODEL_MODE, SEARCH_MODE):
-        params["model"] = options["llm_model"]
-    elif options["connection_mode"] == "realtime_agent_tool":
+    if options["connection_mode"] == "realtime_agent_tool":
         params["model"] = options["realtime_model"]
     else:
         if agent is None:
@@ -257,16 +243,11 @@ async def open_connection(settings, agent, *, voice_options=None, credential=Non
 class VoiceSession:
     def __init__(self, settings, provider, context="", *, connector=open_connection, voice_options=None):
         self.options = validate_options({} if voice_options is None else voice_options, settings.voice_name)
-        settings.require(provider, connection_mode=self.options["connection_mode"])
+        settings.require(provider)
         self.settings = settings
         self.provider = provider
         self.agent = settings.agents.get(provider)
         self.context = context
-        self.navigation = NavigationVoice() if self.options["connection_mode"] == MODEL_MODE else None
-        self.navigation_queue = asyncio.Queue()
-        self.navigation_responses = set()
-        self.pending_responses = {}
-        self.cancellation_requests = deque(maxlen=256)
         self.response_generation = 0
         self.connector = connector
         self.ready = asyncio.Event()
@@ -292,7 +273,6 @@ class VoiceSession:
         self.context_ready = False
         self.mcp_tools_required = False
         self.mcp_tools_ready = False
-        self.mcp_tools_failed = False
         self.tool_followups = 0
         # MCP calls run after the response that requested them ends, so the answer waits for their results.
         self.mcp_settled = set()
@@ -314,7 +294,7 @@ class VoiceSession:
         await socket.send_json({
             **event,
             "session_id": self.session_id,
-            "provider": None if self.navigation is not None else self.provider,
+            "provider": self.provider,
         })
         elapsed = monotonic() - started
         if elapsed >= _SLOW_RELAY_SECONDS:
@@ -345,17 +325,12 @@ class VoiceSession:
             return
         if self.mcp_tools_required and not self.mcp_tools_ready:
             return
-        if self.navigation is not None:
-            await self.navigation.publish(socket)
         self.ready.set()
         await self._send(socket, {
             "type": "status", "state": "ready",
             "connection_mode": self.options["connection_mode"],
-            "provider_label": None if self.navigation is not None else PROVIDER_LABELS[self.provider],
-            "agent": (
-                {"name": self.agent.name, "version": self.agent.version, "pinned": bool(self.agent.version)}
-                if self.navigation is None else None
-            ),
+            "provider_label": PROVIDER_LABELS[self.provider],
+            "agent": {"name": self.agent.name, "version": self.agent.version, "pinned": bool(self.agent.version)},
         })
 
     async def _tool_flow(self, event, socket, response_id, tool_id, tool):
@@ -477,22 +452,19 @@ class VoiceSession:
     async def run(self, socket):
         attributes = {
             "app.transport": "voice_live",
-            "gen_ai.agent.name": "navigation-app" if self.navigation else self.agent.name,
+            "gen_ai.agent.name": self.agent.name,
             "app.voice.connection_mode": self.options.get("connection_mode", "agent"),
         }
-        model = self.options["llm_model"] or self.options["realtime_model"]
+        model = self.options["realtime_model"]
         if model:
             attributes["gen_ai.request.model"] = model
-        if self.agent is not None and self.agent.version and not self.navigation:
+        if self.agent.version:
             attributes["gen_ai.agent.version"] = self.agent.version
         with span("navigation.voice.session", **attributes) as current:
             self.trace_span = current
             self.tools.parent = current
             status, error = "incomplete", "session_closed"
             try:
-                await self._send(socket, {
-                    "type": "trace", "trace_id": trace_id(), "session_id": self.session_id,
-                })
                 return await self._run(socket)
             except TimeoutError:
                 error = "session_timeout"
@@ -512,8 +484,6 @@ class VoiceSession:
             asyncio.create_task(self._ready_deadline()),
             asyncio.create_task(self._monitor_event_loop()),
         ]
-        if self.navigation is not None:
-            tasks.append(asyncio.create_task(self._navigation_worker(socket)))
         if self.web_search is not None:
             tasks.append(asyncio.create_task(self._web_search_worker(socket)))
         try:
@@ -526,21 +496,17 @@ class VoiceSession:
             for task in tasks:
                 task.cancel()
             await asyncio.gather(*tasks, return_exceptions=True)
-            self.pending_responses.clear()
-            self.cancellation_requests.clear()
         return "stopped" if self.stop_requested else "service_closed"
 
     async def _serve_cloud(self, socket):
         mode = self.options["connection_mode"]
         connector_options = {"voice_options": self.options} if mode != "agent" else {}
         search_attachment = None
-        if mode == MODEL_MODE:
-            session_options = build_model_session(self.options)
-        elif self.web_search is not None:
+        if self.web_search is not None:
             # End-to-end reaches Bing without an Agent: the app runs the Toolbox's Bing-based Web Search.
             session_options = build_web_search_session(self.options)
             search_attachment = "web_search_function"
-        elif mode in (SEARCH_MODE, "realtime_agent_tool"):
+        elif mode == "realtime_agent_tool":
             agent_config = {
                 "agent_name": self.agent.name,
                 "project_name": self.settings.project_name,
@@ -564,15 +530,12 @@ class VoiceSession:
             "api_version": API_VERSION, "connection_mode": mode,
             "target_scope": "configured",
             "endpoint_host": urlparse(self.settings.voice_endpoint).hostname,
+            "agent": {"name": self.agent.name, "version": self.agent.version},
+            "project_name": self.settings.project_name,
         }
-        if self.navigation is None:
-            target.update(
-                agent={"name": self.agent.name, "version": self.agent.version},
-                project_name=self.settings.project_name,
-            )
-            if self.settings.foundry_resource_override:
-                target["foundry_resource_override"] = self.settings.foundry_resource_override
-        requested_model = self.options["llm_model"] or self.options["realtime_model"]
+        if self.settings.foundry_resource_override:
+            target["foundry_resource_override"] = self.settings.foundry_resource_override
+        requested_model = self.options["realtime_model"]
         if requested_model:
             target["requested_model"] = requested_model
         if search_attachment:
@@ -639,7 +602,7 @@ class VoiceSession:
         """Ask for the answer once every search the last response started has returned."""
         if self.followup_after is None:
             return
-        origin, waiting = self.followup_after
+        waiting = self.followup_after
         waiting.difference_update(self.mcp_settled)
         if waiting:
             return
@@ -647,21 +610,14 @@ class VoiceSession:
         connection = self.connection or connection
         if connection is None or self.stop_requested or self.active_response is not None or self.response_pending:
             return
-        await self._request_response(connection, origin, socket, purpose="tool_followup")
+        await self._request_response(connection, socket, purpose="tool_followup")
 
-    async def _request_response(self, connection, origin, socket=None, *, purpose=None):
+    async def _request_response(self, connection, socket=None, *, purpose=None):
         self.response_pending = True
-        if self.navigation is None and purpose == "tool_followup":
+        if purpose == "tool_followup":
             await connection.response.create(response=ResponseCreateParams(instructions=FOLLOWUP_INSTRUCTIONS[self.mcp_search]))
-        elif self.navigation is None:
-            await connection.response.create()
         else:
-            request_id = uuid4().hex
-            # The originating turn must survive the gap before response.created.
-            self.pending_responses[request_id] = origin
-            await connection.response.create(response=ResponseCreateParams(
-                metadata={_RESPONSE_TAG: request_id},
-            ))
+            await connection.response.create()
         if socket is not None:
             await self._flow(
                 socket, "response", "requested", operation="response.create",
@@ -716,29 +672,9 @@ class VoiceSession:
                     response_id not in self.interrupted and generation == self.response_generation
                     and not self.stop_requested and self.active_response is None and not self.response_pending
                 ):
-                    await self._request_response(connection, response_id, socket, purpose="tool_followup")
+                    await self._request_response(connection, socket, purpose="tool_followup")
             finally:
                 self.web_search_queue.task_done()
-
-    async def _navigation_worker(self, socket):
-        await self.connection_opened.wait()
-        while True:
-            response_id, generation, calls = await self.navigation_queue.get()
-            try:
-                connection = self.connection
-                if connection is None:
-                    raise VoiceServiceError("앱 명령 실행 중 음성 연결이 종료되었습니다.")
-                executed = await self.navigation.dispatch(
-                    calls, connection, socket,
-                    cancelled=lambda: self.stop_requested or response_id in self.interrupted,
-                )
-                # Keep receiving speech/interrupts while the browser confirms its state.
-                if executed and response_id not in self.interrupted and generation == self.response_generation:
-                    await self._request_response(connection, response_id, socket)
-                    await self._send(socket, {"type": "activity", "state": "thinking"})
-            finally:
-                self.navigation_responses.discard(response_id)
-                self.navigation_queue.task_done()
 
     async def _from_browser(self, connection, socket):
         while True:
@@ -780,10 +716,6 @@ class VoiceSession:
                 await asyncio.sleep(0)
                 continue
             control = parse_control(message.get("text") or "")
-            if control["type"] == "navigation_ack":
-                if self.navigation is None or not self.navigation.acknowledge(control["action_id"], control["revision"]):
-                    raise VoiceProtocolError("대기 중인 앱 명령과 화면 반영 확인이 일치하지 않습니다.")
-                continue
             if control["type"] == "stop":
                 self.stop_requested = True
                 if active is not None and (self.active_response or self.response_pending):
@@ -795,7 +727,7 @@ class VoiceSession:
                 socket, "input", "received", operation="browser.text",
                 data={"input_mode": "text", "text": control["text"]},
             )
-            if self.active_response or self.response_pending or self.navigation_responses or self.pending_responses:
+            if self.active_response or self.response_pending:
                 await self._send(socket, {
                     "type": "error", "code": "response_busy",
                     "message": "텍스트 질문은 현재 응답이 끝난 뒤 보내세요. 음성으로는 끼어들 수 있습니다.",
@@ -815,7 +747,7 @@ class VoiceSession:
             )
             self.tool_followups = 0
             self.followup_after = None
-            await self._request_response(active, request_id, socket)
+            await self._request_response(active, socket)
 
     async def _from_service(self, connection, socket):
         async for event in connection:
@@ -848,7 +780,7 @@ class VoiceSession:
                 return
             self.item_responses[event_item_id] = reported_response
         observed_response = reported_response or self.item_responses.get(event_item_id)
-        local_call = item.get("type") == "function_call" and (self.navigation is not None or self.web_search is not None)
+        local_call = item.get("type") == "function_call" and self.web_search is not None
         tool = None if local_call else self.tools.observe(event)
         if tool is not None and observed_response not in self.interrupted:
             if "arguments" in tool:
@@ -876,10 +808,6 @@ class VoiceSession:
         if kind == "session.updated" and not self.context_sent:
             self.context_sent = True
             context = context_message(self.context)
-            if self.navigation is not None:
-                context += "\n앱 실행 상태 (서버 제공 시연 데이터):\n" + json.dumps(
-                    self.navigation.state.snapshot(), ensure_ascii=False,
-                )
             await connection.conversation.item.create(item=MessageItem(
                 id=self.context_id, role="user",
                 content=[InputTextContentPart(text=context)],
@@ -900,8 +828,6 @@ class VoiceSession:
             if self.options["interrupt_response"]:
                 if self.active_response:
                     self.interrupted.add(self.active_response)
-                self.interrupted.update(self.navigation_responses)
-                self.interrupted.update(self.pending_responses.values())
                 await self._send(socket, {"type": "interrupt", "response_id": self.active_response})
             await self._send(socket, {"type": "activity", "state": "listening"})
         elif kind == "input_audio_buffer.speech_stopped":
@@ -921,7 +847,6 @@ class VoiceSession:
             await self._user_transcript(event, socket, pending=True)
         elif kind in ("mcp_list_tools.in_progress", "mcp_list_tools.completed", "mcp_list_tools.failed"):
             if self.mcp_tools_required and kind == "mcp_list_tools.failed":
-                self.mcp_tools_failed = True
                 raise VoiceServiceError(
                     self._mcp_tools_error(),
                     event.get("error"), item_id=event_item_id, source_event=kind,
@@ -959,18 +884,7 @@ class VoiceSession:
                 created_id in self.completed_responses or created_id in self.interrupted
             ):
                 return
-            metadata = response.get("metadata")
-            request_id = metadata.get(_RESPONSE_TAG) if isinstance(metadata, dict) else None
-            origin = self.pending_responses.pop(request_id, None) if isinstance(request_id, str) else None
-            self.response_pending = bool(self.pending_responses)
-            if origin is not None and origin in self.interrupted:
-                if not isinstance(created_id, str) or not created_id:
-                    raise VoiceServiceError("중단할 음성 응답의 ID가 없습니다.")
-                self.interrupted.add(created_id)
-                cancellation_id = uuid4().hex
-                self.cancellation_requests.append(cancellation_id)
-                await connection.response.cancel(response_id=created_id, event_id=cancellation_id)
-                return
+            self.response_pending = False
             self.response_generation += 1
             self.active_response = created_id
             await self._flow(
@@ -1117,12 +1031,12 @@ class VoiceSession:
                 self.web_search_queue.put_nowait((done_id, self.response_generation, web_calls, self.tool_followups > 3))
             if should_followup:
                 self.tool_followups += 1
-                self.followup_after = (done_id, {
+                self.followup_after = {
                     item["id"] for item in output_items
                     if isinstance(item, dict) and item.get("type") == "mcp_call" and isinstance(item.get("id"), str)
                     and item.get("output") is None and item.get("error") is None
                     and item.get("status") not in ("completed", "failed")
-                })
+                }
                 await self._maybe_followup(connection, socket)
             if response.get("status") in ("failed", "incomplete") and done_id not in self.interrupted:
                 status_details = response.get("status_details")
@@ -1131,13 +1045,6 @@ class VoiceSession:
                     "Voice Live 응답이 완료되지 않았습니다. 모델·검색 도구 설정과 접근 권한을 확인하세요.",
                     detail, response_id=done_id, source_event=kind,
                 )
-            if self.navigation is not None and response.get("status") == "completed":
-                calls = self.navigation.calls(response)
-                if calls:
-                    if not isinstance(done_id, str) or not done_id:
-                        raise NavigationError("invalid_response", "앱 명령을 요청한 응답 ID가 없습니다.")
-                    self.navigation_responses.add(done_id)
-                    self.navigation_queue.put_nowait((done_id, self.response_generation, calls))
         elif kind == "conversation.item.input_audio_transcription.failed":
             # A realtime model hears the audio itself, so only its unused caption failed and the session goes on.
             if self.options["connection_mode"] != "realtime_agent_tool":
@@ -1153,15 +1060,6 @@ class VoiceSession:
                 if isinstance(value, str) and re.fullmatch(r"[a-zA-Z0-9_.\[\]-]{1,120}", value)
             })
         elif kind == "error":
-            detail = event.get("error")
-            if (
-                kind == "error" and isinstance(detail, dict)
-                and detail.get("code") == "response_cancel_not_active"
-                and detail.get("event_id") in self.cancellation_requests
-            ):
-                self.cancellation_requests.remove(detail["event_id"])
-                logger.info("Interrupted navigation response was already terminal when cancellation arrived.")
-                return
             raise VoiceServiceError(
                 "Voice Live 서비스가 설정을 처리하지 못했습니다. 선택한 모델·지역·설정과 접근 권한을 확인하세요.",
                 event.get("error"), response_id=reported_response, source_event=kind,

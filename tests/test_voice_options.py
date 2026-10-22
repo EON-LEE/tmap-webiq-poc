@@ -15,7 +15,6 @@ from azure.ai.voicelive.models import (
 
 from tmap_poc.voice_options import (
     VoiceOptionsError,
-    build_model_session,
     build_search_session,
     build_session_options,
     option_schema,
@@ -36,10 +35,8 @@ AGENT_CONFIG = {
 class VoiceOptionsTests(unittest.TestCase):
     def session(self, values=None, default_voice=DEFAULT_VOICE):
         chosen = validate_options(values or {}, default_voice)
-        if chosen["connection_mode"] in ("model_search", "realtime_agent_tool"):
+        if chosen["connection_mode"] == "realtime_agent_tool":
             return build_search_session(chosen, AGENT_CONFIG).as_dict()
-        if chosen["connection_mode"] == "model_tools":
-            return build_model_session(chosen).as_dict()
         return build_session_options(chosen).as_dict()
 
     def test_defaults_match_previous_actual_sdk_payload_exactly(self):
@@ -70,9 +67,7 @@ class VoiceOptionsTests(unittest.TestCase):
         self.assertEqual({f["key"]: f["default"] for f in fields}, schema["defaults"])
         self.assertEqual(self.session(schema["defaults"]), self.session())
         self.assertEqual(set(schema["defaults"]), set(validate_options({}, DEFAULT_VOICE)))
-        self.assertTrue(schema["unavailable_options"][0]["disabled"])
-        self.assertEqual(schema["unavailable_options"][0]["requires"], {"connection_mode": "agent"})
-        self.assertEqual(schema["unavailable_options"][0]["availability"], "unverified_for_fixed_agent")
+        self.assertNotIn("unavailable_options", schema)
         self.assertNotIn("speech_model", schema["defaults"])
         self.assertEqual(schema["fixed_by_mode"]["agent"]["tool_executor"], "Foundry Agent")
         self.assertNotIn("voice_type", schema["fixed"])
@@ -105,7 +100,7 @@ class VoiceOptionsTests(unittest.TestCase):
         schema["fields"][0]["options"].clear()
         schema["defaults"]["transcription_model"] = "changed"
         self.assertEqual(validate_options({}, DEFAULT_VOICE)["transcription_model"], "azure-speech")
-        self.assertEqual(len(option_schema(DEFAULT_VOICE)["fields"][0]["options"]), 4)
+        self.assertEqual(len(option_schema(DEFAULT_VOICE)["fields"][0]["options"]), 2)
 
     def test_arbitrary_server_configured_default_voice_is_preserved(self):
         configured = "en-GB-ServerConfiguredNeural"
@@ -206,6 +201,7 @@ class VoiceOptionsTests(unittest.TestCase):
             "input_audio_format", "input_audio_sampling_rate", "channels",
             "reasoning_effort", "interim_response", "temperature", "unknown",
             "agent_config", "agent_version", "project_name", "foundry_resource_override", "client_id",
+            "llm_model",
         ):
             with self.subTest(key=key), self.assertRaises(VoiceOptionsError):
                 validate_options({key: "gpt-realtime"}, DEFAULT_VOICE)
@@ -217,7 +213,7 @@ class VoiceOptionsTests(unittest.TestCase):
 
     def test_invalid_select_and_boolean_types_are_rejected_without_coercion(self):
         cases = {
-            "connection_mode": [None, [], {}, 1, True, "model", "realtime"],
+            "connection_mode": [None, [], {}, 1, True, "model", "realtime", "model_search", "model_tools"],
             "transcription_model": [None, [], True, "mai-transcribe-1", "other"],
             "voice_name": [None, {}, 1, "alloy", "sunhi", "not-allowlisted"],
             "turn_detection": [None, [], 1, "semantic_vad", "azure_semantic_vad"],
