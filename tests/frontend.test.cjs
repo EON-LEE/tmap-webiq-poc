@@ -695,7 +695,6 @@ test("static contract: comparison DOM, examples, settings and no unsafe sinks", 
   const { elements } = staticDocument(htmlSource);
   for (const id of [
     "turns",
-    "compare-empty",
     "command-input",
     "send-command",
     "start",
@@ -1277,7 +1276,6 @@ test("reset confirmation clears only after approval", async () => {
   readyProviderLane(confirmEnv, "bing");
   await confirmEnv.click("reset");
   assert.equal(confirmEnv.elements.turns.children.length, 0);
-  assert.equal(confirmEnv.elements["compare-empty"].hidden, false);
   assert.equal(confirmEnv.sockets.every((socket) => socket.closed), true);
 });
 

@@ -75,7 +75,6 @@ export function createCompareView({ onReplay, onLive }) {
     }
     turns.push(turn);
     get("turns").append(element);
-    get("compare-empty").hidden = true;
     following = true;
     follow();
     return turn;
@@ -757,7 +756,6 @@ export function createCompareView({ onReplay, onLive }) {
       turns.length = 0;
       for (const provider of comparedProviders) cursors.set(provider, -1);
       get("turns").replaceChildren();
-      get("compare-empty").hidden = false;
       following = true;
     },
   };
