@@ -128,6 +128,15 @@ class ProtocolTests(unittest.TestCase):
 
 
 class ApiTests(unittest.TestCase):
+    def test_page_and_modules_are_revalidated_so_old_scripts_are_not_reused(self):
+        with TestClient(create_app(AppSettings())) as client:
+            for path in ("/", "/static/app.js", "/static/compare-view.js"):
+                with self.subTest(path=path):
+                    response = client.get(path)
+                    self.assertEqual(response.status_code, 200)
+                    self.assertEqual(response.headers["cache-control"], "no-cache")
+            self.assertEqual(client.get("/api/config").headers["cache-control"], "no-store")
+
     def test_unconfigured_page_makes_no_cloud_calls(self):
         with TestClient(create_app(AppSettings())) as client:
             self.assertEqual(client.get("/healthz").json(), {"status": "ok"})
