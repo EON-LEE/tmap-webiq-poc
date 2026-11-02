@@ -27,6 +27,15 @@ def create_app(settings=None, *, voice_factory=VoiceSession):
     settings = settings or AppSettings.from_env()
     app = FastAPI(title="Navigation voice agent")
     app.state.active_sessions = 0
+
+    @app.middleware("http")
+    async def revalidate_page(request, call_next):
+        response = await call_next(request)
+        # The page and its modules must change together; a cached older module would leave new buttons dead.
+        if request.url.path == "/" or request.url.path.startswith("/static/"):
+            response.headers["Cache-Control"] = "no-cache"
+        return response
+
     app.mount("/static", StaticFiles(directory=STATIC, check_dir=False), name="static")
 
     @app.get("/")
