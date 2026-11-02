@@ -6,6 +6,7 @@ With --apply it runs, in order: resource providers and resource group, shared re
 the Entra sign-in app, the Container App with sign-in required, and a health check.
 Running it again converges to the same environment. The WebIQ key and the sign-in client
 secret stay in memory and travel only in HTTPS request bodies, never in command lines or output.
+--destroy removes the environment again (plan by default; --apply deletes after a typed confirmation).
 """
 
 from __future__ import annotations
@@ -738,14 +739,115 @@ def apply(azure, ctx, template, args, out):
         out(f"  {line}")
 
 
-def run(args, *, azure=None, out=print):
+def run(args, *, azure=None, out=print, confirm=input):
     azure = azure or Azure(args.subscription)
     ctx = resolve(azure, args)
+    if args.destroy:
+        destroy(azure, ctx, args, out, confirm)
+        return
     template = compile_template(azure)
     if args.apply:
         apply(azure, ctx, template, args, out)
     else:
         plan(azure, ctx, template, out)
+
+
+def _list(azure, path, api_version):
+    _, page, _ = azure.arm("GET", path, api_version)
+    items = list(page.get("value", []))
+    while page.get("nextLink"):
+        _, page, _ = azure.request("GET", page["nextLink"], ARM_RESOURCE)
+        items.extend(page.get("value", []))
+    return items
+
+
+def environment_inventory(azure, ctx):
+    """Everything --destroy removes: the resource group, Foundry accounts to purge and sign-in apps."""
+    resources = _list(azure, f"{ctx.group_path}/resources", API_GROUPS)
+    accounts = [(item["name"], item["location"]) for item in resources
+                if item.get("type", "").lower() == "microsoft.cognitiveservices/accounts"]
+    client_ids = set()
+    for item in resources:
+        if item.get("type", "").lower() != "microsoft.app/containerapps":
+            continue
+        status, auth, _ = azure.arm("GET", f"{item['id']}/authConfigs/current", API_APPS, allow=(404,))
+        client_id = ((((auth.get("properties") or {}).get("identityProviders") or {})
+                      .get("azureActiveDirectory") or {}).get("registration") or {}).get("clientId") if status == 200 else None
+        if client_id:
+            client_ids.add(client_id)
+    _, named, _ = azure.graph(
+        "GET", "/applications?$filter=" + _quote(f"displayName eq '{ctx.names.sign_in}'") + "&$select=appId",
+    )
+    client_ids.update(item["appId"] for item in named.get("value", []))
+    client_ids.discard(AZURE_CLI_APP_ID)
+    apps = []
+    for client_id in sorted(client_ids):
+        _, found, _ = azure.graph(
+            "GET", "/applications?$filter=" + _quote(f"appId eq '{client_id}'") + "&$select=id,appId,displayName",
+        )
+        apps.extend(found.get("value", []))
+    return resources, accounts, apps
+
+
+def wait_until_gone(azure, path, api_version, label, timeout):
+    deadline = azure.clock() + timeout
+    while True:
+        status, _, _ = azure.arm("GET", path, api_version, allow=(404,))
+        if status == 404:
+            return
+        if azure.clock() > deadline:
+            raise ProvisionError(f"{label} is still being deleted after {timeout // 60} minutes; run --destroy again later.")
+        azure.sleep(20)
+
+
+def purge_graph(azure, kind, app_id):
+    _, deleted, _ = azure.graph(
+        "GET", f"/directory/deletedItems/microsoft.graph.{kind}?$filter=" + _quote(f"appId eq '{app_id}'") + "&$select=id",
+        retry=TRANSIENT + (404,), wait=120,
+    )
+    for item in deleted.get("value", []):
+        azure.graph("DELETE", f"/directory/deletedItems/{item['id']}", allow=(404,))
+
+
+def destroy(azure, ctx, args, out, confirm):
+    if not group_exists(azure, ctx):
+        out(f"Resource group {ctx.resource_group} does not exist; nothing to destroy.")
+        return
+    resources, accounts, apps = environment_inventory(azure, ctx)
+    out(("Destroy" if args.apply else "Plan only (destroy): nothing was changed. Add --apply to delete")
+        + f" resource group {ctx.resource_group} in {ctx.subscription_name} ({ctx.subscription_id}):")
+    for item in sorted(resources, key=lambda entry: (entry.get("type", ""), entry.get("name", ""))):
+        out(f"  {item.get('type')}  {item.get('name')}")
+    for name, location in accounts:
+        out(f"  purge Foundry account {name} ({location}) so its name and model quota are freed at once")
+    for app in apps:
+        out(f"  delete Entra sign-in app {app.get('displayName')} ({app['appId']})")
+    if not args.apply:
+        out("The app address changes when the environment is created again. "
+            "Creating it again needs the WebIQ key (WEBIQ_API_KEY or a hidden prompt).")
+        return
+    if not args.yes:
+        if not sys.stdin.isatty():
+            raise ProvisionError("Add --yes to destroy without a terminal prompt.")
+        answer = confirm(f"Type the resource group name ({ctx.resource_group}) to delete everything above: ").strip()
+        if answer != ctx.resource_group:
+            raise ProvisionError("Destroy cancelled; nothing was changed.")
+    out(f"[1/3] Delete resource group {ctx.resource_group} (Container Apps environments take up to 30 minutes)")
+    azure.arm("DELETE", ctx.group_path, API_GROUPS, allow=(404,))
+    wait_until_gone(azure, ctx.group_path, API_GROUPS, f"Resource group {ctx.resource_group}", 3600)
+    out(f"[2/3] Purge {len(accounts)} Foundry account(s)")
+    for name, location in accounts:
+        path = (f"/subscriptions/{ctx.subscription_id}/providers/Microsoft.CognitiveServices/locations/{location}"
+                f"/resourceGroups/{ctx.resource_group}/deletedAccounts/{name}")
+        azure.arm("DELETE", path, API_FOUNDRY, allow=(404,))
+        wait_until_gone(azure, path, API_FOUNDRY, f"Foundry account {name}", 1200)
+    out(f"[3/3] Delete {len(apps)} Entra sign-in app(s)")
+    for app in apps:
+        azure.graph("DELETE", f"/applications/{app['id']}", allow=(404,))
+        purge_graph(azure, "application", app["appId"])
+        purge_graph(azure, "servicePrincipal", app["appId"])
+    out(f"Destroyed. Create it again with: python scripts/provision.py --subscription {ctx.subscription_id} "
+        f"--resource-group {ctx.resource_group} --apply")
 
 
 def parser():
@@ -762,6 +864,10 @@ def parser():
     result.add_argument("--new-sign-in-secret", action="store_true",
                         help="Create a new sign-in client secret (valid one year) instead of reusing the current one.")
     result.add_argument("--apply", action="store_true", help="Create or update resources. Without it only read.")
+    result.add_argument("--destroy", action="store_true",
+                        help="Delete the environment: the resource group, its Foundry accounts (purged) and the "
+                             "Entra sign-in app. Without --apply only lists what would be deleted.")
+    result.add_argument("--yes", action="store_true", help="With --destroy --apply, skip the typed confirmation.")
     return result
 
 

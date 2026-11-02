@@ -22,14 +22,18 @@ Azure Voice Live와 Microsoft Foundry Agent를 사용한다.
 
 ## Azure 배포
 
+Terraform처럼 계획 → 적용으로 올리고 내린다. `--apply`가 없으면 아무것도 바꾸지 않는다.
+
 ```bash
 az login
-python scripts/provision.py --subscription <구독> --resource-group <리소스 그룹>          # 계획(읽기만)
-python scripts/provision.py --subscription <구독> --resource-group <리소스 그룹> --apply  # 생성
+python scripts/provision.py --subscription <구독> --resource-group <RG>                    # 올리기 계획
+python scripts/provision.py --subscription <구독> --resource-group <RG> --apply            # 올리기(약 20분)
+python scripts/provision.py --subscription <구독> --resource-group <RG> --destroy --apply  # 내리기(약 30분)
 ```
 
-Foundry·검색 리소스, 검색 Agent, 이미지, Microsoft Entra 로그인까지 한 번에 만든다.
-WebIQ 키는 `WEBIQ_API_KEY` 또는 실행 중 숨김 입력으로 받는다. 코드 갱신과 키 교체는 [배포](docs/DEPLOYMENT.md)를 본다.
+올리기는 Foundry·검색 리소스, 검색 Agent, 이미지, Microsoft Entra 로그인까지 한 번에 만든다.
+WebIQ 키는 `WEBIQ_API_KEY` 또는 실행 중 숨김 입력으로 받는다. 내리면 비용이 0이 되고, 다시 올리면 주소가 바뀐다.
+코드 갱신과 키 교체는 [배포](docs/DEPLOYMENT.md)를 본다.
 
 ## 로컬 실행
 
@@ -66,16 +70,16 @@ python scripts/scan_secrets.py                # 커밋 전 비밀값 검사
 | `src/tmap_poc/app_settings.py`, `auth.py`, `config.py` | 환경 설정, Azure CLI·Managed Identity 인증 |
 | `src/tmap_poc/telemetry.py`, `tool_spans.py`, `serialization.py` | Trace, 도구 span, 인용 정리 |
 | `src/tmap_poc/static/` | 비교 화면 |
-| `infra/`, `scripts/` | Bicep 템플릿, 배포·키 교체·연결 점검·비밀값 검사 |
-| `docs/`, `results/` | 문서와 근거 결과 |
+| `infra/`, `scripts/` | Bicep 템플릿, 올리기·내리기·코드 갱신·키 교체·연결 점검·비밀값 검사 |
+| `docs/`, `results/` | 문서와 검증 결과 |
 
 ## 문서
 
-- [배포](docs/DEPLOYMENT.md)
-- [음성 설정](docs/VOICE_OPTIONS.md)
+- [배포](docs/DEPLOYMENT.md): 올리기, 내리기, 코드 갱신, 키 교체
+- [음성 설정](docs/VOICE_OPTIONS.md): 화면 설정과 적용 방법, 서비스 제약
 - [Trace](docs/TRACING.md)
 - [검증 기록](docs/VOICE_STATUS.md)
-- [V9 텍스트 검색 벤치마크](docs/REPORT.md): 2026-09-08, 30질문 × 3조건. 실행 코드는 저장소에 없다.
+- [V9 텍스트 검색 벤치마크](docs/REPORT.md): 2026-09-08, 30질문 × 3조건 요약. 원본은 Git 태그 `archive/v9-benchmark-20260908`에 있다.
 
 ## GitHub 인증
 
