@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 import getpass
 import hashlib
+import http.client
 import json
 import os
 from pathlib import Path
@@ -237,7 +238,14 @@ class Azure:
                     delay = min(delay * 2, 30)
                     continue
                 raise ProvisionError(f"{method} {_short(url)} failed: {error.reason}") from None
-
+            except (http.client.HTTPException, ConnectionError, TimeoutError) as error:
+                # The request may have reached Azure, so only repeat requests that are safe to repeat.
+                if method != "POST" and self.clock() < deadline:
+                    self.sleep(delay)
+                    delay = min(delay * 2, 30)
+                    continue
+                raise ProvisionError(f"{method} {_short(url)} lost its connection ({type(error).__name__}); "
+                                     "run the same command again.") from None
     def arm(self, method, path, api_version, body=None, **options):
         separator = "&" if "?" in path else "?"
         return self.request(method, f"{ARM}{path}{separator}api-version={api_version}", ARM_RESOURCE, body, **options)
