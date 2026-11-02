@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager, redirect_stdout
 import io
 import json
 import os
+import re
 from types import SimpleNamespace
 import unittest
 from unittest.mock import AsyncMock, patch
@@ -130,11 +131,17 @@ class ProtocolTests(unittest.TestCase):
 class ApiTests(unittest.TestCase):
     def test_page_and_modules_are_revalidated_so_old_scripts_are_not_reused(self):
         with TestClient(create_app(AppSettings())) as client:
-            for path in ("/", "/static/app.js", "/static/compare-view.js"):
+            page = client.get("/")
+            self.assertEqual(page.headers["cache-control"], "no-cache")
+            assets = re.search(r'src="(/assets/[0-9a-f]{12})/app\.js"', page.text)
+            self.assertIsNotNone(assets, "the page loads versioned module URLs")
+            self.assertIn(f'href="{assets.group(1)}/styles.css"', page.text)
+            for path in ("app.js", "compare-view.js", "pcm-worklet.js"):
                 with self.subTest(path=path):
-                    response = client.get(path)
+                    response = client.get(f"{assets.group(1)}/{path}")
                     self.assertEqual(response.status_code, 200)
-                    self.assertEqual(response.headers["cache-control"], "no-cache")
+                    self.assertIn("immutable", response.headers["cache-control"])
+            self.assertEqual(client.get("/static/app.js").headers["cache-control"], "no-cache")
             self.assertEqual(client.get("/api/config").headers["cache-control"], "no-store")
 
     def test_unconfigured_page_makes_no_cloud_calls(self):
