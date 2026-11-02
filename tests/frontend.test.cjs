@@ -704,6 +704,9 @@ test("static contract: comparison DOM, examples, settings and no unsafe sinks", 
     "connection-settings",
     "voice-options-fields",
     "voice-options-defaults",
+    "voice-options-apply",
+    "voice-options-cancel",
+    "applied-mode",
     "lane-webiq-dot",
     "lane-bing-dot",
     "lane-webiq-live",
@@ -952,6 +955,7 @@ test("places, web and news results render facts and strip HTML; unsafe URLs stay
 test("End-to-end waits on tool-only completion and then settles on follow-up text", async () => {
   const env = await createHarness();
   env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  await env.click("voice-options-apply");
   await startTextComparison(env, "삼성전자");
   const bing = readyProviderLane(env, "bing");
   readyProviderLane(env, "webiq");
@@ -1174,43 +1178,62 @@ test("stop releases sockets tracks worklet and suspends AudioContext", async () 
   assert.equal(env.sockets[0].sent.length, sentCount);
 });
 
-test("settings offer only Agent and End-to-end, stay editable while connected and restart on any change", async () => {
+test("settings offer only Agent and End-to-end and change nothing until Apply", async () => {
   const env = await createHarness();
   const modeSelect = descendants(env.root).find((node) => node.id === "voice-option-connection_mode");
   const offered = modeSelect.children.filter((option) => !option.hidden && !option.disabled).map((option) => option.textContent);
   assert.deepEqual(offered, ["Agent 연결 (기본)", "End-to-end (Realtime)"]);
+  assert.equal(env.elements["voice-options-apply"].disabled, true, "nothing to apply yet");
+  assert.match(env.elements["applied-mode"].textContent, /Agent 연결/);
 
   await startTextComparison(env, "설정 전");
   readyProviderLane(env, "webiq");
   readyProviderLane(env, "bing");
   env.changeVoiceOption("connection_mode", "realtime_agent_tool");
-  assert.equal(env.audioContexts[0].state, "suspended");
-  assert.equal(env.sockets.every((socket) => socket.closed), true);
+  assert.equal(env.sockets.some((socket) => socket.closed), false, "editing alone keeps the comparison running");
+  assert.equal(env.elements["voice-options-apply"].disabled, false);
+  assert.equal(env.elements["voice-options-pending"].hidden, false);
+  assert.equal(env.elements["voice-options-pending-badge"].hidden, false);
+
+  await env.click("voice-options-cancel");
+  assert.equal(env.voiceOptionValue("connection_mode"), "agent", "cancel restores the applied settings");
+  assert.equal(env.elements["voice-options-apply"].disabled, true);
+  assert.equal(env.elements["voice-options-pending-badge"].hidden, true);
+
+  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.elements["connection-settings"].open = true;
+  await env.click("voice-options-apply");
+  assert.equal(env.sockets.every((socket) => socket.closed), true, "Apply ends the running comparison");
+  assert.equal(env.elements["connection-settings"].open, false, "Apply closes the panel");
+  assert.match(env.elements.status.textContent, /설정을 적용했습니다/);
+  assert.match(env.elements["applied-mode"].textContent, /End-to-end.*gpt-realtime-mini/);
 
   await env.submit("설정 후");
   assert.equal(env.sockets.length, 4);
   env.sockets[2].open();
   assert.equal(JSON.parse(env.sockets[2].sent[0]).voice_options.connection_mode, "realtime_agent_tool");
   const sttInput = descendants(env.root).find((node) => node.id === "voice-option-transcription_model");
-  const vadInput = descendants(env.root).find((node) => node.id === "voice-option-turn_detection");
-  assert.equal(vadInput.disabled, false, "every setting stays editable while connected");
-  assert.equal(env.elements["voice-options-defaults"].disabled, false);
+  readyProviderLane(env, "webiq");
   env.changeVoiceOption("turn_detection", "server_vad");
-  assert.equal(env.sockets.every((socket) => socket.closed), true, "a change ends the connection");
-  assert.match(env.elements.status.textContent, /설정을 바꿨습니다/);
-
-  await env.submit("설정 변경 후");
-  assert.equal(env.sockets.length, 6);
-  env.sockets[4].open();
-  assert.equal(JSON.parse(env.sockets[4].sent[0]).voice_options.turn_detection, "server_vad");
   await env.click("voice-options-defaults");
-  assert.equal(env.sockets.every((socket) => socket.closed), true, "restoring defaults also ends the connection");
-  assert.match(env.elements.status.textContent, /기본값으로 되돌렸습니다/);
+  assert.equal(env.sockets.slice(2).some((socket) => socket.closed), false, "Defaults only fills the draft");
   assert.equal(env.voiceOptionValue("connection_mode"), "realtime_agent_tool");
   assert.equal(env.voiceOptionValue("return_agent_response_directly"), true);
   assert.equal(env.voiceOptionValue("realtime_model"), "gpt-realtime-mini");
   assert.equal(env.voiceOptionValue("turn_detection"), "azure_semantic_vad_multilingual");
+  assert.equal(env.elements["voice-options-apply"].disabled, true, "defaults equal to the applied settings leave nothing to apply");
   assert.equal(sttInput.parentNode.hidden, true, "End-to-end has no caption model to choose");
+});
+
+test("an invalid draft cannot be applied and the last applied settings keep working", async () => {
+  const env = await createHarness();
+  env.changeVoiceOption("silence_duration_ms", 50);
+  assert.equal(env.elements["voice-options-error"].hidden, false);
+  assert.equal(env.elements["voice-options-apply"].disabled, true);
+  await env.submit("질문");
+  assert.equal(env.sockets.length, 2, "questions still run with the applied settings");
+  env.sockets[0].open();
+  assert.deepEqual(JSON.parse(env.sockets[0].sent[0]).voice_options, {}, "the invalid draft is not sent");
 });
 
 test("End-to-end offers the model's own voice directly and switches Bing's delivery with it", async () => {
@@ -1226,6 +1249,7 @@ test("End-to-end offers the model's own voice directly and switches Bing's deliv
   env.changeVoiceOption("voice_name", "openai:marin");
   assert.equal(env.voiceOptionValue("return_agent_response_directly"), false);
   assert.equal(env.elements["voice-options-error"].hidden, true);
+  await env.click("voice-options-apply");
   await env.submit("질문");
   env.sockets[0].open();
   const options = JSON.parse(env.sockets[0].sent[0]).voice_options;
@@ -1449,6 +1473,7 @@ test("voice turns show listening, recognition time and thinking before the answe
 test("End-to-end shows no caption, starts thinking at the end of speech and separates a spoken filler", async () => {
   const env = await createHarness();
   env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  await env.click("voice-options-apply");
   await env.click("start");
   for (const socket of env.sockets) socket.open();
   const webiq = readyProviderLane(env, "webiq");
@@ -1506,6 +1531,7 @@ test("End-to-end shows no caption, starts thinking at the end of speech and sepa
 test("a new spoken question ends an earlier answer that was still waiting for its search", async () => {
   const env = await createHarness();
   env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  await env.click("voice-options-apply");
   await env.click("start");
   for (const socket of env.sockets) socket.open();
   const webiq = readyProviderLane(env, "webiq");
@@ -1528,6 +1554,7 @@ test("a new spoken question ends an earlier answer that was still waiting for it
 test("End-to-end Bing shows its web search answer and sources without an Agent", async () => {
   const env = await createHarness();
   env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  await env.click("voice-options-apply");
   const delivery = descendants(env.root).find((node) => node.id === "voice-option-return_agent_response_directly").parentNode;
   assert.equal(delivery.hidden, true, "Bing's Agent delivery setting does not apply without an Agent");
   await startTextComparison(env, "삼성전자 주가 알려줘.");

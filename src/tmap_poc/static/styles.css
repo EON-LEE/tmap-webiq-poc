@@ -49,6 +49,12 @@ a { color: inherit; }
 .voice-option [aria-invalid="true"] { border-color: var(--bad); }
 .voice-option .hint { margin-top: .25rem; font-size: .75rem; }
 .voice-option-inactive { color: var(--warn); }
+.settings-actions { position: sticky; bottom: -1rem; display: flex; align-items: center; justify-content: flex-end; gap: .5rem; padding: .6rem 0; background: var(--panel); border-top: 1px solid var(--line); }
+.settings-actions .hint { margin-right: auto; font-size: .78rem; color: var(--warn); }
+.primary { background: var(--webiq); border-color: var(--webiq); color: #fff; font-weight: 600; }
+.primary:not(:disabled):hover { background: #3f3aa8; }
+.pending-badge { margin-left: .4rem; padding: .05rem .4rem; border-radius: 999px; background: #fff4e5; color: var(--warn); font-size: .72rem; font-weight: 600; }
+.applied-mode { font-size: .8rem; color: var(--muted); white-space: nowrap; }
 .settings-notes { font-size: .8rem; color: var(--muted); }
 .settings-notes summary { min-height: 36px; display: list-item; padding: .3rem 0; }
 .settings-notes ul { padding-left: 1.1rem; margin: .3rem 0 0; }
@@ -185,6 +191,7 @@ a { color: inherit; }
   .brand p { display: none; }
   .brand-mark { width: 36px; height: 36px; font-size: 1.1rem; }
   .header-actions button, .settings > summary { padding: .4rem .7rem; }
+  .applied-mode { display: none; }
   .lane-bar { gap: .5rem; }
   .lane-chip { flex-wrap: wrap; padding: .4rem .5rem; gap: .2rem .45rem; }
   .lane-chip strong { white-space: normal; }
