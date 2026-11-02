@@ -1,7 +1,7 @@
 import { createSettingsView } from "./settings-view.js";
 import { createCompareView } from "./compare-view.js";
 import { textNode, isRecord } from "./search-results.js";
-import { providerNames, comparedProviders, routeSummary } from "./run-labels.js";
+import { providerNames, comparedProviders, modeNames, routeSummary } from "./run-labels.js";
 
 const $ = (id) => document.getElementById(id);
 const Audio = window.AudioContext || window.webkitAudioContext;
@@ -21,6 +21,8 @@ let liveProvider = "webiq";
 let replay = null;
 // Explains why the connection just ended after a settings change, until the next comparison starts.
 let restartNotice = "";
+// Settings the comparisons use. Edits in the panel stay a draft until the user presses Apply.
+let applied = null;
 const settingsView = createSettingsView();
 const compareView = createCompareView({ onReplay: toggleReplay, onLive: setLive });
 const voiceFields = new Map();
@@ -39,14 +41,27 @@ const liveLanes = () => group ? [...group.lanes.values()].filter((lane) => !lane
 const awaiting = () => liveLanes().some((lane) => lane.awaiting);
 
 function controls() {
-  const voice = voiceOptionsState();
-  const usable = Boolean(config) && configuredProviders().length > 0 && !config.errors.length && !voice.message;
+  const draft = voiceOptionsState();
+  const usable = Boolean(config) && configuredProviders().length > 0 && !config.errors.length && Boolean(applied);
   $("start").disabled = Boolean(group || !usable || browserError);
   $("start").hidden = Boolean(group);
   $("stop").disabled = !group;
   $("stop").hidden = !group;
   $("send-command").disabled = group ? awaiting() || !liveLanes().length : !usable;
   $("voice-options-defaults").disabled = !voiceFields.size;
+  const pending = pendingChange(draft);
+  $("voice-options-apply").disabled = !pending || Boolean(draft.message);
+  $("voice-options-cancel").disabled = !pending;
+  $("voice-options-pending").hidden = !pending;
+  $("voice-options-pending-badge").hidden = !pending;
+  const values = applied?.values;
+  const mode = values ? modeNames[values.connection_mode || "agent"] || values.connection_mode : "";
+  const label = mode ? `적용 중: ${[mode, values.connection_mode === "realtime_agent_tool" ? values.realtime_model : null].filter(Boolean).join(" · ")}` : "";
+  $("applied-mode").hidden = !label;
+  if ($("applied-mode").textContent !== label) $("applied-mode").textContent = label;
+}
+function pendingChange(draft) {
+  return Boolean(applied) && JSON.stringify(draft.values) !== JSON.stringify(applied.values);
 }
 function status() {
   const lanes = liveLanes();
@@ -158,6 +173,11 @@ function resetVoiceOptions(mode = null) {
     setVoiceOption(field, mode === null ? field.definition.default : voiceDefault(key, field, { connection_mode: mode }));
   }
 }
+function restoreVoiceOptions(values) {
+  for (const [key, field] of voiceFields) {
+    if (Object.hasOwn(values, key)) setVoiceOption(field, values[key]);
+  }
+}
 function configureVoiceOptions(schema) {
   voiceFields.clear();
   settingsView.reset();
@@ -214,10 +234,6 @@ function configureVoiceOptions(schema) {
           if (voiceFields.has(key)) setVoiceOption(voiceFields.get(key), value);
         }
       }
-      if (group) {
-        finishGroup(group, "");
-        restartNotice = "설정을 바꿨습니다. 다음 질문부터 새 설정으로 비교합니다.";
-      }
       availability();
     };
     input.addEventListener("input", changed);
@@ -241,9 +257,11 @@ async function loadConfig() {
         || (p.agent != null && (!isRecord(p.agent) || typeof p.agent.name !== "string")))) throw new Error();
     config = data;
     configureVoiceOptions(config.voice_options);
+    applied = voiceOptionsState();
     availability();
   } catch {
     config = null;
+    applied = null;
     $("status").textContent = "서버 설정을 불러오지 못했습니다.";
     $("voice-settings-state").hidden = false;
     $("voice-settings-state").textContent = "서버 설정을 불러오지 못했습니다. 연결을 확인한 뒤 페이지를 새로 고쳐 주세요.";
@@ -283,9 +301,9 @@ function mediaError(cause) {
 
 async function start(inputMode, pending = null) {
   if (group) return;
-  const voice = voiceOptionsState();
+  const voice = applied;
   const providers = configuredProviders();
-  if (!config || voice.message || !providers.length || (inputMode === "audio" && browserError)) { controls(); return; }
+  if (!config || !voice || !providers.length || (inputMode === "audio" && browserError)) { controls(); return; }
   const g = { closed: false, inputMode, lanes: new Map(), voice, capturing: false };
   group = g;
   restartNotice = "";
@@ -619,6 +637,7 @@ function resetConversation() {
   restartNotice = "";
   compareView.reset();
   resetVoiceOptions();
+  if (config) applied = voiceOptionsState();
   $("command-input").value = "";
   error();
   availability();
@@ -648,12 +667,21 @@ $("skip-to-content").addEventListener("click", (event) => {
   $("command-input").focus();
 });
 $("voice-options-defaults").addEventListener("click", () => {
-  if (group) {
-    finishGroup(group, "");
-    restartNotice = "설정을 기본값으로 되돌렸습니다. 다음 질문부터 새 설정으로 비교합니다.";
-  }
   const mode = voiceFields.get("connection_mode");
   resetVoiceOptions(mode ? voiceOptionValue(mode) : null);
+  availability();
+});
+$("voice-options-cancel").addEventListener("click", () => {
+  if (applied) restoreVoiceOptions(applied.values);
+  availability();
+});
+$("voice-options-apply").addEventListener("click", () => {
+  const draft = voiceOptionsState();
+  if (draft.message || !pendingChange(draft)) return;
+  applied = draft;
+  if (group) finishGroup(group, "");
+  restartNotice = "설정을 적용했습니다. 다음 질문부터 새 설정으로 비교합니다.";
+  $("connection-settings").open = false;
   availability();
 });
 window.addEventListener("pagehide", () => {
