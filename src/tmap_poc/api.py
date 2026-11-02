@@ -1,13 +1,14 @@
 """One local-first web service for the voice interface."""
 
 import asyncio
+import hashlib
 import logging
 from pathlib import Path
 
 import aiohttp
 from azure.core.exceptions import AzureError
 from fastapi import FastAPI, WebSocket
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect, WebSocketState
 
@@ -23,24 +24,39 @@ MAX_ACTIVE_SESSIONS = 4
 logger = logging.getLogger(__name__)
 
 
+def static_version():
+    """Content hash of the browser files. A new build gets new asset URLs, so no browser mixes old and new files."""
+    digest = hashlib.sha256()
+    for path in sorted(STATIC.rglob("*")):
+        if path.is_file():
+            digest.update(path.relative_to(STATIC).as_posix().encode())
+            digest.update(path.read_bytes())
+    return digest.hexdigest()[:12]
+
+
 def create_app(settings=None, *, voice_factory=VoiceSession):
     settings = settings or AppSettings.from_env()
     app = FastAPI(title="Navigation voice agent")
     app.state.active_sessions = 0
+    assets = f"/assets/{static_version()}"
+    page = (STATIC / "index.html").read_text(encoding="utf-8").replace('"/static/', f'"{assets}/')
 
     @app.middleware("http")
-    async def revalidate_page(request, call_next):
+    async def cache_policy(request, call_next):
         response = await call_next(request)
-        # The page and its modules must change together; a cached older module would leave new buttons dead.
-        if request.url.path == "/" or request.url.path.startswith("/static/"):
+        path = request.url.path
+        if path.startswith(assets + "/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        elif path == "/" or path.startswith("/static/"):
             response.headers["Cache-Control"] = "no-cache"
         return response
 
+    app.mount(assets, StaticFiles(directory=STATIC, check_dir=False), name="assets")
     app.mount("/static", StaticFiles(directory=STATIC, check_dir=False), name="static")
 
     @app.get("/")
     async def index():
-        return FileResponse(STATIC / "index.html")
+        return HTMLResponse(page)
 
     @app.get("/healthz")
     async def health():
