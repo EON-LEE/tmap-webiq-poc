@@ -1,4 +1,5 @@
 import contextlib
+import http.client
 import importlib.util
 import io
 import json
@@ -377,6 +378,23 @@ class ApplyTests(RunMixin, unittest.TestCase):
         cloud = FakeCloud(group=True, what_if_failure=True)
         with self.assertRaisesRegex(provision.ProvisionError, "InvalidTemplate.*InsufficientQuota"):
             self.run_script(cloud)
+
+    def test_dropped_connection_retries_safe_requests_only(self):
+        cloud = FakeCloud()
+        attempts = {"GET": 0, "POST": 0}
+
+        def flaky(request, timeout=None):
+            attempts[request.get_method()] += 1
+            if attempts[request.get_method()] == 1:
+                raise http.client.RemoteDisconnected("Remote end closed connection without response")
+            return Response(200, {"ok": True})
+
+        azure = provision.Azure("test", run=cloud.run, urlopen=flaky, sleep=lambda _seconds: None)
+        with patch.dict("os.environ", {"TMAP_AZ_BINARY": "az"}):
+            self.assertEqual(azure.request("GET", "https://management.azure.com/x", provision.ARM_RESOURCE)[1], {"ok": True})
+            with self.assertRaisesRegex(provision.ProvisionError, "run the same command again"):
+                azure.request("POST", "https://management.azure.com/x", provision.ARM_RESOURCE, {})
+        self.assertEqual(attempts, {"GET": 2, "POST": 1})
 
     def test_secret_is_redacted_before_a_message_is_shortened(self):
         cloud, secret = FakeCloud(), "S3cr3t-Value-That-Crosses-The-Cut"
