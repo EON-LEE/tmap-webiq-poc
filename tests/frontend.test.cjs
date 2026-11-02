@@ -298,7 +298,6 @@ function voiceOptionsSchema() {
         step: 50,
       },
     ],
-    limitations: ["demo"],
   };
 }
 

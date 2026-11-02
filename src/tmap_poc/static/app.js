@@ -181,7 +181,6 @@ function restoreVoiceOptions(values) {
 function configureVoiceOptions(schema) {
   voiceFields.clear();
   settingsView.reset();
-  $("voice-options-limitations").replaceChildren();
   const supported = schema?.mode === "foundry_agent" && Array.isArray(schema.fields);
   $("voice-settings-state").hidden = supported;
   $("voice-settings-state").textContent = supported ? "" : "서버가 선택 가능한 음성 설정을 제공하지 않습니다.";
@@ -240,9 +239,6 @@ function configureVoiceOptions(schema) {
     input.addEventListener("change", changed);
     wrapper.append(label, input, ...(help ? [help] : []), requirement);
     settingsView.addField(definition.key, wrapper);
-  }
-  for (const limitation of Array.isArray(schema.limitations) ? schema.limitations : []) {
-    if (typeof limitation === "string") $("voice-options-limitations").append(textNode("li", limitation));
   }
 }
 async function loadConfig() {

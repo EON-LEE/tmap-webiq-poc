@@ -1,5 +1,8 @@
 # Bing · Web IQ MCP 3조건 전체 비교
 
+> 2026-09-08 텍스트 벤치마크 요약이다. 이 결과를 만든 실행 코드는 저장소에 없다.
+> 실행별 원본과 출처 스냅숏은 Git 태그 `archive/v9-benchmark-20260908`에 보관했다.
+
 2026-09-08 · 6개 기능군 × 동일 질문 5개 × 3조건 = **90회**, 각 1회·재시도 0·이미지 제외.
 동일 Foundry Agent 모델(gpt-5-6-luna)·공통 지침·low reasoning·음성. Web IQ 두 조건은 같은 6개 MCP 도구를 사용하며 **초기 검색량 정책만** 다르다.
 
@@ -42,5 +45,5 @@
 ² Web IQ는 사용자 제공 요율표의 web/news/videos/browse, Bing은 [Microsoft 요율](https://www.microsoft.com/en-us/bing/apis). Places/Finance 요율·내부과금 거래수·Voice Live/모델 합산 미확정: **질문당 총비용은 비교 불가**.
 ³ API보고 Agent 입력 문맥(질문·지침·도구설명·검색결과 등), 검색 자체 토큰 아님. 오디오 제외·캐시 중복 없음. 실패 0/미보고를 무료로 해석하지 않는다.
 
-[전체30질문·3조건 실제답변 CSV](../results/full_comparison_v9_20260908/question_results.csv) · [30개 동일 질문](FULL_COMPARISON_V9_QUESTIONS.md) · [90개 답변·검증 상세](FULL_COMPARISON_V9_DETAILS.md)
-[원본·manifest·집계·출처](../results/full_comparison_v9_20260908/)
+[전체30질문·3조건 실제답변 CSV](../results/full_comparison_v9_20260908/question_results.csv) · [30개 동일 질문](FULL_COMPARISON_V9_QUESTIONS.md) · [90개 답변·검증 상세(보관 태그)](https://github.com/EON-LEE/tmap-webiq-poc/blob/archive/v9-benchmark-20260908/docs/FULL_COMPARISON_V9_DETAILS.md)
+[manifest·집계](../results/full_comparison_v9_20260908/) · [원본 실행 기록·출처 스냅숏(보관 태그)](https://github.com/EON-LEE/tmap-webiq-poc/tree/archive/v9-benchmark-20260908/results/full_comparison_v9_20260908)

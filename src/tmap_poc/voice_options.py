@@ -320,17 +320,6 @@ def option_schema(default_voice):
             "agent": {"tool_executor": "Foundry Agent", "agent_model": "기존 Agent에 설정된 모델"},
             _REALTIME_MODE: {"tool_executor": "WebIQ MCP와 Bing 웹 검색", "model": "선택한 Realtime 모델"},
         },
-        "limitations": [
-            _AGENT_LIMITATION,
-            "Whisper / GPT 전사와 OpenAI native 음성은 End-to-end에서만 선택합니다. Agent 연결은 Azure Speech / MAI와 Azure 음성을 사용합니다.",
-            "End-to-end 모델은 인사 등에는 직접 답하고, 정보 질문은 WebIQ MCP 검색과 Bing 웹 검색으로 처리합니다.",
-            "OpenAI native 음성을 고르면 Bing Agent 답변 전달이 '선택한 모델이 답변 구성'으로 함께 바뀝니다. 서비스가 직접 반환 조합을 거부하는 것을 실제 초기화에서 확인했습니다.",
-            "TTS 모델 계열은 음성 이름에 포함됩니다. 별도의 tts_model / model 배포 입력은 없습니다.",
-            "MAI Transcribe는 preview, DragonHD는 지역 제한이 있습니다. 문서화된 선택이지 모든 리소스에서의 실행 보장은 아닙니다.",
-            "빈 숫자와 '기존 서비스 설정 유지'는 null입니다. 현재 모드 기본값은 실행 구조를 유지합니다. 빈 voice_options 객체의 API 호환 기본값은 직접 Agent 모드입니다.",
-            "지연 설정은 발화 감지 / 재생 설정입니다. 검색 / Agent 추론 시간이나 첫 음성 지연을 보장하지 않습니다.",
-            "중간 응답(interim response)은 추가하지 않습니다. 감독 모델이 먼저 말한 음성은 Agent 답변의 첫 음성과 구분해 지연을 해석해야 합니다.",
-        ],
     }
 
 

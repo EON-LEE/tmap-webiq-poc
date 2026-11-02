@@ -10,6 +10,7 @@ import time
 import unittest
 from unittest.mock import patch
 import urllib.error
+import urllib.parse
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -417,6 +418,106 @@ class ApplyTests(RunMixin, unittest.TestCase):
         self.assertIn("BadRequest", message)
         self.assertIn("<redacted>", message)
         self.assertNotIn(WEBIQ_KEY, message)
+
+
+class DestroyCloud:
+    """Answers the calls --destroy makes against an environment that exists until it is deleted."""
+
+    def __init__(self, *, group=True):
+        self.group = group
+        self.purged = False
+        self.calls = []
+
+    def azure(self):
+        cloud = FakeCloud()
+        return provision.Azure("test", run=cloud.run, urlopen=self.urlopen, sleep=lambda _seconds: None)
+
+    def urlopen(self, request, timeout=None):
+        method, url = request.get_method(), request.full_url
+        self.calls.append((method, url))
+        path = url.split("?", 1)[0]
+        group = f"/subscriptions/{SUBSCRIPTION}/resourceGroups/rg"
+        if url.startswith(provision.GRAPH):
+            if path.endswith("/me"):
+                return Response(200, {"id": "deployer"})
+            if path.endswith("/applications") and "displayName eq" in urllib.parse.unquote(url):
+                return Response(200, {"value": [{"appId": "login-app"}]})
+            if path.endswith("/applications"):
+                return Response(200, {"value": [{"id": "login-object", "appId": "login-app", "displayName": "tmap-webiq-poc-login"}]})
+            if "/deletedItems/microsoft.graph." in path:
+                return Response(200, {"value": [{"id": "deleted-" + path.rsplit(".", 1)[-1]}]})
+            return Response(204)
+        if path.endswith(group):
+            if method == "DELETE":
+                self.group = False
+                return Response(202)
+            if not self.group:
+                raise failure(url, 404)
+            return Response(200, {})
+        if path.endswith(f"{group}/resources"):
+            return Response(200, {"value": [
+                {"id": f"{group}/providers/Microsoft.App/containerApps/app", "type": "Microsoft.App/containerApps", "name": "app"},
+                {"id": f"{group}/providers/Microsoft.CognitiveServices/accounts/foundry",
+                 "type": "Microsoft.CognitiveServices/accounts", "name": "foundry", "location": "eastus2"},
+            ]})
+        if path.endswith("/authConfigs/current"):
+            return Response(200, {"properties": {"identityProviders": {"azureActiveDirectory": {
+                "registration": {"clientId": "login-app"}}}}})
+        if "/deletedAccounts/foundry" in path:
+            if method == "DELETE":
+                self.purged = True
+                return Response(202)
+            if self.purged:
+                raise failure(url, 404)
+            return Response(200, {})
+        raise AssertionError(f"unexpected call {method} {url}")
+
+    def deletes(self):
+        return [url.split("?", 1)[0] for method, url in self.calls if method == "DELETE"]
+
+
+class DestroyTests(unittest.TestCase):
+    def destroy(self, cloud, *extra, answer=None):
+        lines = []
+        with patch.dict("os.environ", {"TMAP_AZ_BINARY": "az"}), \
+                patch.object(provision.sys, "stdin", type("Tty", (), {"isatty": lambda self: answer is not None})()):
+            provision.run(arguments("--destroy", *extra), azure=cloud.azure(), out=lines.append,
+                          confirm=lambda _prompt: answer)
+        return "\n".join(lines)
+
+    def test_plan_lists_everything_and_deletes_nothing(self):
+        cloud = DestroyCloud()
+        output = self.destroy(cloud)
+        self.assertIn("Plan only (destroy)", output)
+        self.assertIn("purge Foundry account foundry (eastus2)", output)
+        self.assertIn("delete Entra sign-in app tmap-webiq-poc-login (login-app)", output)
+        self.assertEqual(cloud.deletes(), [])
+
+    def test_apply_deletes_group_purges_foundry_and_removes_sign_in_app(self):
+        cloud = DestroyCloud()
+        output = self.destroy(cloud, "--apply", answer="rg")
+        deletes = cloud.deletes()
+        self.assertTrue(deletes[0].endswith("/resourceGroups/rg"))
+        self.assertTrue(deletes[1].endswith("/locations/eastus2/resourceGroups/rg/deletedAccounts/foundry"))
+        self.assertTrue(deletes[2].endswith("/applications/login-object"))
+        self.assertEqual(len([url for url in deletes if "/directory/deletedItems/" in url]), 2)
+        self.assertIn("Destroyed.", output)
+
+    def test_wrong_confirmation_or_no_terminal_changes_nothing(self):
+        for answer in ("other-rg", None):
+            with self.subTest(answer=answer):
+                cloud = DestroyCloud()
+                with self.assertRaises(provision.ProvisionError):
+                    self.destroy(cloud, "--apply", answer=answer)
+                self.assertEqual(cloud.deletes(), [])
+
+    def test_yes_skips_the_prompt_and_missing_group_is_a_no_op(self):
+        cloud = DestroyCloud()
+        self.destroy(cloud, "--apply", "--yes")
+        self.assertEqual(len(cloud.deletes()), 5)
+        gone = DestroyCloud(group=False)
+        self.assertIn("nothing to destroy", self.destroy(gone, "--apply", "--yes"))
+        self.assertEqual(gone.deletes(), [])
 
 
 class SetupWebIQConnectionTests(unittest.TestCase):
