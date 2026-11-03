@@ -10,7 +10,7 @@ from time import time
 
 import aiohttp
 
-from tmap_poc.config import ConfigError
+from tmap_poc.settings import ConfigError
 
 SCOPE = "https://ai.azure.com/.default"
 _TIMEOUT_SECONDS = 45

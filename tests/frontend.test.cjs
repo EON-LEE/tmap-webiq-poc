@@ -12,7 +12,7 @@ const appSource = readStaticFile("app.js");
 const compareSource = readStaticFile("compare-view.js");
 const clientModuleOrder = [
   "search-results.js",
-  "run-labels.js",
+  "labels.js",
   "settings-view.js",
   "compare-view.js",
   "app.js",
@@ -237,30 +237,29 @@ function voiceOptionsSchema() {
   };
 
   return {
-    mode: "foundry_agent",
     defaults,
     defaults_by_mode: {
       agent: { ...defaults },
-      realtime_agent_tool: {
+      end_to_end: {
         ...defaults,
-        connection_mode: "realtime_agent_tool",
+        connection_mode: "end_to_end",
         realtime_model: "gpt-realtime-mini",
       },
     },
-    supported_modes: ["agent", "realtime_agent_tool"],
+    supported_modes: ["agent", "end_to_end"],
     fields: [
       selectField("connection_mode", "실행 구조", "agent", [
         option("agent", "Agent"),
-        option("realtime_agent_tool", "Realtime"),
+        option("end_to_end", "Realtime"),
       ]),
       selectField("realtime_model", "Realtime 모델", null, [
         option(null, "없음", { connection_mode: ["agent"] }),
-        option("gpt-realtime-mini", "gpt-realtime-mini", { connection_mode: "realtime_agent_tool" }),
-      ], { nullable: true, requires: { connection_mode: "realtime_agent_tool" } }),
+        option("gpt-realtime-mini", "gpt-realtime-mini", { connection_mode: "end_to_end" }),
+      ], { nullable: true, requires: { connection_mode: "end_to_end" } }),
       selectField("return_agent_response_directly", "Bing Agent 답변 전달", true, [
         option(true, "직접", { voice_name: ["ko-KR-SunHiNeural", "ko-KR-SunHi:DragonHDLatestNeural"] }),
         option(false, "재작성"),
-      ], { requires: { connection_mode: ["realtime_agent_tool"] } }),
+      ], { requires: { connection_mode: ["end_to_end"] } }),
       selectField("transcription_model", "STT", "azure-speech", [
         option("azure-speech", "azure-speech"),
         option("mai-transcribe", "mai-transcribe"),
@@ -269,7 +268,7 @@ function voiceOptionsSchema() {
         option("ko-KR-SunHiNeural", "SunHi"),
         option("ko-KR-SunHi:DragonHDLatestNeural", "Dragon"),
         {
-          ...option("openai:marin", "OpenAI native · marin", { connection_mode: "realtime_agent_tool" }),
+          ...option("openai:marin", "OpenAI native · marin", { connection_mode: "end_to_end" }),
           implies: { return_agent_response_directly: false },
         },
       ]),
@@ -952,12 +951,12 @@ test("places, web and news results render facts and strip HTML; unsafe URLs stay
 
 test("End-to-end waits on tool-only completion and then settles on follow-up text", async () => {
   const env = await createHarness();
-  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.changeVoiceOption("connection_mode", "end_to_end");
   await env.click("voice-options-apply");
   await startTextComparison(env, "삼성전자");
   const bing = readyProviderLane(env, "bing");
   readyProviderLane(env, "webiq");
-  assert.equal(JSON.parse(bing.sent[0]).voice_options.connection_mode, "realtime_agent_tool");
+  assert.equal(JSON.parse(bing.sent[0]).voice_options.connection_mode, "end_to_end");
 
   bing.event({
     type: "tool",
@@ -1187,7 +1186,7 @@ test("settings offer only Agent and End-to-end and change nothing until Apply", 
   await startTextComparison(env, "설정 전");
   readyProviderLane(env, "webiq");
   readyProviderLane(env, "bing");
-  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.changeVoiceOption("connection_mode", "end_to_end");
   assert.equal(env.sockets.some((socket) => socket.closed), false, "editing alone keeps the comparison running");
   assert.equal(env.elements["voice-options-apply"].disabled, false);
   assert.equal(env.elements["voice-options-pending"].hidden, false);
@@ -1198,7 +1197,7 @@ test("settings offer only Agent and End-to-end and change nothing until Apply", 
   assert.equal(env.elements["voice-options-apply"].disabled, true);
   assert.equal(env.elements["voice-options-pending-badge"].hidden, true);
 
-  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.changeVoiceOption("connection_mode", "end_to_end");
   env.elements["connection-settings"].open = true;
   await env.click("voice-options-apply");
   assert.equal(env.sockets.every((socket) => socket.closed), true, "Apply ends the running comparison");
@@ -1209,13 +1208,13 @@ test("settings offer only Agent and End-to-end and change nothing until Apply", 
   await env.submit("설정 후");
   assert.equal(env.sockets.length, 4);
   env.sockets[2].open();
-  assert.equal(JSON.parse(env.sockets[2].sent[0]).voice_options.connection_mode, "realtime_agent_tool");
+  assert.equal(JSON.parse(env.sockets[2].sent[0]).voice_options.connection_mode, "end_to_end");
   const sttInput = descendants(env.root).find((node) => node.id === "voice-option-transcription_model");
   readyProviderLane(env, "webiq");
   env.changeVoiceOption("turn_detection", "server_vad");
   await env.click("voice-options-defaults");
   assert.equal(env.sockets.slice(2).some((socket) => socket.closed), false, "Defaults only fills the draft");
-  assert.equal(env.voiceOptionValue("connection_mode"), "realtime_agent_tool");
+  assert.equal(env.voiceOptionValue("connection_mode"), "end_to_end");
   assert.equal(env.voiceOptionValue("return_agent_response_directly"), true);
   assert.equal(env.voiceOptionValue("realtime_model"), "gpt-realtime-mini");
   assert.equal(env.voiceOptionValue("turn_detection"), "azure_semantic_vad_multilingual");
@@ -1239,7 +1238,7 @@ test("End-to-end offers the model's own voice directly and switches Bing's deliv
   const voiceSelect = descendants(env.root).find((node) => node.id === "voice-option-voice_name");
   const native = voiceSelect.children[2];
   assert.equal(native.hidden, true, "Agent mode keeps Azure voices");
-  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.changeVoiceOption("connection_mode", "end_to_end");
   assert.equal(native.hidden, false, "offered without changing Bing's delivery first");
   const sttWrapper = descendants(env.root).find((node) => node.id === "voice-option-transcription_model").parentNode;
   assert.equal(sttWrapper.hidden, true, "End-to-end has no caption model to choose");
@@ -1469,7 +1468,7 @@ test("voice turns show listening, recognition time and thinking before the answe
 
 test("End-to-end shows no caption, starts thinking at the end of speech and separates a spoken filler", async () => {
   const env = await createHarness();
-  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.changeVoiceOption("connection_mode", "end_to_end");
   await env.click("voice-options-apply");
   await env.click("start");
   for (const socket of env.sockets) socket.open();
@@ -1527,7 +1526,7 @@ test("End-to-end shows no caption, starts thinking at the end of speech and sepa
 
 test("a new spoken question ends an earlier answer that was still waiting for its search", async () => {
   const env = await createHarness();
-  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.changeVoiceOption("connection_mode", "end_to_end");
   await env.click("voice-options-apply");
   await env.click("start");
   for (const socket of env.sockets) socket.open();
@@ -1550,7 +1549,7 @@ test("a new spoken question ends an earlier answer that was still waiting for it
 
 test("End-to-end Bing shows its web search answer and sources without an Agent", async () => {
   const env = await createHarness();
-  env.changeVoiceOption("connection_mode", "realtime_agent_tool");
+  env.changeVoiceOption("connection_mode", "end_to_end");
   await env.click("voice-options-apply");
   const delivery = descendants(env.root).find((node) => node.id === "voice-option-return_agent_response_directly").parentNode;
   assert.equal(delivery.hidden, true, "Bing's Agent delivery setting does not apply without an Agent");

@@ -15,8 +15,8 @@ from azure.ai.voicelive.models import (
 
 from tmap_poc.voice_options import (
     VoiceOptionsError,
-    build_search_session,
-    build_session_options,
+    build_agent_session,
+    build_end_to_end_session,
     option_schema,
     validate_options,
 )
@@ -35,9 +35,9 @@ AGENT_CONFIG = {
 class VoiceOptionsTests(unittest.TestCase):
     def session(self, values=None, default_voice=DEFAULT_VOICE):
         chosen = validate_options(values or {}, default_voice)
-        if chosen["connection_mode"] == "realtime_agent_tool":
-            return build_search_session(chosen, AGENT_CONFIG).as_dict()
-        return build_session_options(chosen).as_dict()
+        if chosen["connection_mode"] == "end_to_end":
+            return build_end_to_end_session(chosen, AGENT_CONFIG).as_dict()
+        return build_agent_session(chosen).as_dict()
 
     def test_defaults_match_previous_actual_sdk_payload_exactly(self):
         previous = RequestSession(
@@ -63,7 +63,6 @@ class VoiceOptionsTests(unittest.TestCase):
     def test_schema_defaults_round_trip_to_identical_wire(self):
         schema = json.loads(json.dumps(option_schema(DEFAULT_VOICE), allow_nan=False))
         fields = schema["fields"]
-        self.assertEqual(schema["mode"], "foundry_agent")
         self.assertEqual({f["key"]: f["default"] for f in fields}, schema["defaults"])
         self.assertEqual(self.session(schema["defaults"]), self.session())
         self.assertEqual(set(schema["defaults"]), set(validate_options({}, DEFAULT_VOICE)))
@@ -206,14 +205,14 @@ class VoiceOptionsTests(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(VoiceOptionsError):
                 validate_options({key: "gpt-realtime"}, DEFAULT_VOICE)
 
-    def test_model_mode_transcription_is_explicitly_rejected_in_agent_mode(self):
+    def test_end_to_end_transcription_is_explicitly_rejected_in_agent_mode(self):
         for model in ("whisper-1", "gpt-4o-transcribe", "gpt-4o-mini-transcribe", "gpt-4o-transcribe-diarize"):
-            with self.subTest(model=model), self.assertRaisesRegex(VoiceOptionsError, "Foundry Agent"):
+            with self.subTest(model=model), self.assertRaisesRegex(VoiceOptionsError, "End-to-end 전용"):
                 validate_options({"transcription_model": model}, DEFAULT_VOICE)
 
     def test_invalid_select_and_boolean_types_are_rejected_without_coercion(self):
         cases = {
-            "connection_mode": [None, [], {}, 1, True, "model", "realtime", "model_search", "model_tools"],
+            "connection_mode": [None, [], {}, 1, True, "model", "realtime", "realtime_agent_tool", "model_search", "model_tools"],
             "transcription_model": [None, [], True, "mai-transcribe-1", "other"],
             "voice_name": [None, {}, 1, "alloy", "sunhi", "not-allowlisted"],
             "turn_detection": [None, [], 1, "semantic_vad", "azure_semantic_vad"],
@@ -247,10 +246,10 @@ class VoiceOptionsTests(unittest.TestCase):
         options = validate_options({}, DEFAULT_VOICE)
         options["model"] = "gpt-realtime"
         with self.assertRaises(VoiceOptionsError):
-            build_session_options(options)
+            build_agent_session(options)
         for options in (None, {}, []):
             with self.subTest(options=options), self.assertRaises(VoiceOptionsError):
-                build_session_options(options)
+                build_agent_session(options)
 
     def test_session_never_overrides_agent_brains_tools_or_transport(self):
         data = self.session({
@@ -264,12 +263,12 @@ class VoiceOptionsTests(unittest.TestCase):
         self.assertEqual(data["modalities"], ["text", "audio"])
         self.assertTrue(data["turn_detection"]["create_response"])
 
-    def test_only_supervisor_mode_selects_documented_mode_defaults(self):
-        chosen = validate_options({"connection_mode": "realtime_agent_tool"}, DEFAULT_VOICE)
+    def test_only_end_to_end_mode_selects_documented_mode_defaults(self):
+        chosen = validate_options({"connection_mode": "end_to_end"}, DEFAULT_VOICE)
         self.assertEqual(chosen["realtime_model"], "gpt-realtime-mini")
         self.assertEqual(chosen["transcription_model"], "gpt-4o-mini-transcribe")
         self.assertEqual(chosen["voice_name"], DEFAULT_VOICE)
-        session = self.session({"connection_mode": "realtime_agent_tool"})
+        session = self.session({"connection_mode": "end_to_end"})
         self.assertEqual(session["input_audio_transcription"], {
             "model": "gpt-4o-mini-transcribe", "language": "ko",
         })
@@ -277,13 +276,13 @@ class VoiceOptionsTests(unittest.TestCase):
         self.assertNotIn("connection_mode", session)
         self.assertNotIn("realtime_model", session)
 
-    def test_supervisor_has_only_existing_trusted_agent_tool_with_cross_resource_target(self):
+    def test_end_to_end_has_only_existing_trusted_agent_tool_with_cross_resource_target(self):
         for name, version in (("existing-bing", "3"), ("existing-webiq", "7")):
             with self.subTest(agent=name):
                 target = {**AGENT_CONFIG, "agent_name": name, "agent_version": version}
                 before = dict(target)
-                session = build_search_session(
-                    validate_options({"connection_mode": "realtime_agent_tool"}, DEFAULT_VOICE), target,
+                session = build_end_to_end_session(
+                    validate_options({"connection_mode": "end_to_end"}, DEFAULT_VOICE), target,
                 ).as_dict()
                 self.assertEqual(target, before)
                 self.assertEqual(session["tools"], [{
@@ -303,20 +302,20 @@ class VoiceOptionsTests(unittest.TestCase):
                 validate_options({"connection_mode": "agent", "realtime_model": model}, DEFAULT_VOICE)
         self.assertIsNone(validate_options({}, DEFAULT_VOICE)["realtime_model"])
 
-    def test_supervisor_model_allowlist_is_finite_and_does_not_allow_null(self):
+    def test_end_to_end_model_allowlist_is_finite_and_does_not_allow_null(self):
         for model in ("gpt-realtime", "gpt-realtime-mini"):
             self.assertEqual(
-                validate_options({"connection_mode": "realtime_agent_tool", "realtime_model": model}, DEFAULT_VOICE)["realtime_model"],
+                validate_options({"connection_mode": "end_to_end", "realtime_model": model}, DEFAULT_VOICE)["realtime_model"],
                 model,
             )
         for model in (None, "", "azure-realtime", "gpt-4.1", False, 0, {}, []):
             with self.subTest(model=model), self.assertRaises(VoiceOptionsError):
-                validate_options({"connection_mode": "realtime_agent_tool", "realtime_model": model}, DEFAULT_VOICE)
+                validate_options({"connection_mode": "end_to_end", "realtime_model": model}, DEFAULT_VOICE)
 
     def test_transcription_compatibility_is_checked_in_both_modes(self):
         with self.assertRaises(VoiceOptionsError):
             validate_options({
-                "connection_mode": "realtime_agent_tool", "transcription_model": "azure-speech",
+                "connection_mode": "end_to_end", "transcription_model": "azure-speech",
             }, DEFAULT_VOICE)
         for model in (
             "whisper-1", "gpt-4o-transcribe", "gpt-4o-mini-transcribe",
@@ -324,17 +323,17 @@ class VoiceOptionsTests(unittest.TestCase):
         ):
             with self.subTest(model=model):
                 session = self.session({
-                    "connection_mode": "realtime_agent_tool", "transcription_model": model,
+                    "connection_mode": "end_to_end", "transcription_model": model,
                 })
                 self.assertEqual(session["input_audio_transcription"], {"model": model, "language": "ko"})
 
-    def test_native_openai_voices_require_supervisor_mode_and_no_rate(self):
+    def test_native_openai_voices_require_end_to_end_mode_and_no_rate(self):
         for name in ("alloy", "coral", "verse", "marin"):
             voice = f"openai:{name}"
             with self.subTest(voice=voice), self.assertRaises(VoiceOptionsError):
                 validate_options({"voice_name": voice}, DEFAULT_VOICE)
             values = {
-                "connection_mode": "realtime_agent_tool", "voice_name": voice,
+                "connection_mode": "end_to_end", "voice_name": voice,
                 "return_agent_response_directly": False,
             }
             self.assertEqual(self.session(values)["voice"], {"type": "openai", "name": name})
@@ -343,12 +342,12 @@ class VoiceOptionsTests(unittest.TestCase):
                     validate_options({**values, "speech_rate": rate}, DEFAULT_VOICE)
         for name in ("openai:unknown", "alloy", "azure-realtime:sunhi"):
             with self.subTest(voice=name), self.assertRaises(VoiceOptionsError):
-                validate_options({"connection_mode": "realtime_agent_tool", "voice_name": name}, DEFAULT_VOICE)
+                validate_options({"connection_mode": "end_to_end", "voice_name": name}, DEFAULT_VOICE)
 
-    def test_azure_voices_and_rate_still_work_with_supervisor(self):
+    def test_azure_voices_and_rate_still_work_with_end_to_end(self):
         for name in (DEFAULT_VOICE, "ko-KR-SunHi:DragonHDLatestNeural"):
             session = self.session({
-                "connection_mode": "realtime_agent_tool", "voice_name": name, "speech_rate": 1.15,
+                "connection_mode": "end_to_end", "voice_name": name, "speech_rate": 1.15,
             })
             self.assertEqual(session["voice"], {"type": "azure-standard", "name": name, "rate": "1.15"})
 
@@ -357,21 +356,21 @@ class VoiceOptionsTests(unittest.TestCase):
         fields = {field["key"]: field for field in schema["fields"]}
         modes_by_value = {option["value"]: option for option in fields["connection_mode"]["options"]}
         self.assertIn("STT", modes_by_value["agent"]["help"])
-        self.assertIn("비용", modes_by_value["realtime_agent_tool"]["help"])
-        self.assertEqual(fields["realtime_model"]["requires"], {"connection_mode": "realtime_agent_tool"})
+        self.assertIn("비용", modes_by_value["end_to_end"]["help"])
+        self.assertEqual(fields["realtime_model"]["requires"], {"connection_mode": "end_to_end"})
         azure_names = fields["speech_rate"]["requires"]["voice_name"]
         self.assertIn(DEFAULT_VOICE, azure_names)
         self.assertNotIn("openai:alloy", azure_names)
         native = next(option for option in fields["voice_name"]["options"] if option["value"] == "openai:marin")
-        self.assertEqual(native["requires"], {"connection_mode": "realtime_agent_tool"}, "offered without a prior Bing change")
+        self.assertEqual(native["requires"], {"connection_mode": "end_to_end"}, "offered without a prior Bing change")
         self.assertEqual(native["implies"], {"return_agent_response_directly": False})
         modes = schema["defaults_by_mode"]
         modes["agent"]["transcription_model"] = "changed"
-        self.assertEqual(modes["realtime_agent_tool"]["transcription_model"], "gpt-4o-mini-transcribe")
+        self.assertEqual(modes["end_to_end"]["transcription_model"], "gpt-4o-mini-transcribe")
         self.assertEqual(option_schema(DEFAULT_VOICE)["defaults_by_mode"]["agent"]["transcription_model"], "azure-speech")
 
-    def test_native_voice_requires_explicit_realtime_answer_construction(self):
-        values = {"connection_mode": "realtime_agent_tool", "voice_name": "openai:coral"}
+    def test_native_voice_requires_the_model_to_construct_the_answer(self):
+        values = {"connection_mode": "end_to_end", "voice_name": "openai:coral"}
         with self.assertRaises(VoiceOptionsError):
             validate_options(values, DEFAULT_VOICE)
         for invalid in (None, "false", 0, 1):
@@ -384,12 +383,12 @@ class VoiceOptionsTests(unittest.TestCase):
             validate_options({"return_agent_response_directly": True}, DEFAULT_VOICE)
 
     def test_builders_reject_wrong_modes_and_missing_or_unknown_trusted_target(self):
-        direct = validate_options({}, DEFAULT_VOICE)
-        supervisor = validate_options({"connection_mode": "realtime_agent_tool"}, DEFAULT_VOICE)
+        agent = validate_options({}, DEFAULT_VOICE)
+        end_to_end = validate_options({"connection_mode": "end_to_end"}, DEFAULT_VOICE)
         with self.assertRaises(VoiceOptionsError):
-            build_session_options(supervisor)
+            build_agent_session(end_to_end)
         with self.assertRaises(VoiceOptionsError):
-            build_search_session(direct, AGENT_CONFIG)
+            build_end_to_end_session(agent, AGENT_CONFIG)
         bad_configs = [
             None, [], {}, {"agent_name": "agent"}, {"project_name": "project"},
             {**AGENT_CONFIG, "model": "gpt-realtime"},
@@ -400,11 +399,11 @@ class VoiceOptionsTests(unittest.TestCase):
                 bad_configs.append({**AGENT_CONFIG, key: value})
         for target in bad_configs:
             with self.subTest(target=target), self.assertRaises(VoiceOptionsError):
-                build_search_session(supervisor, target)
+                build_end_to_end_session(end_to_end, target)
 
     def test_same_resource_target_omits_only_optional_none_values(self):
-        supervisor = validate_options({"connection_mode": "realtime_agent_tool"}, DEFAULT_VOICE)
-        session = build_search_session(supervisor, {
+        end_to_end = validate_options({"connection_mode": "end_to_end"}, DEFAULT_VOICE)
+        session = build_end_to_end_session(end_to_end, {
             "agent_name": "same-resource-agent", "project_name": "same-resource-project",
             "agent_version": None, "client_id": None, "foundry_resource_override": None,
         }).as_dict()
@@ -418,15 +417,15 @@ class VoiceOptionsTests(unittest.TestCase):
         }])
 
 
-class SearchSessionSerializationTests(unittest.IsolatedAsyncioTestCase):
+class EndToEndSessionSerializationTests(unittest.IsolatedAsyncioTestCase):
     async def test_actual_sdk_session_update_preserves_documented_raw_agent_tool(self):
         normalized = validate_options({
-            "connection_mode": "realtime_agent_tool",
+            "connection_mode": "end_to_end",
             "realtime_model": "gpt-realtime",
             "voice_name": "openai:coral",
             "return_agent_response_directly": False,
         }, DEFAULT_VOICE)
-        session = build_search_session(normalized, AGENT_CONFIG)
+        session = build_end_to_end_session(normalized, AGENT_CONFIG)
         transport = SimpleNamespace(send_str=AsyncMock())
         connection = VoiceLiveConnection(SimpleNamespace(), transport)
         await connection.session.update(session=session)

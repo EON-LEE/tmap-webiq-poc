@@ -5,7 +5,7 @@ import unittest
 from unittest.mock import Mock
 
 spec = importlib.util.spec_from_file_location(
-    "deploy_voice_app", Path(__file__).resolve().parents[1] / "scripts" / "deploy_voice_app.py"
+    "deploy_app", Path(__file__).resolve().parents[1] / "scripts" / "deploy_app.py"
 )
 deployment = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(deployment)
@@ -13,7 +13,7 @@ spec.loader.exec_module(deployment)
 
 def resources():
     names = (
-        "GWB_PROJECT_ENDPOINT", "TMAP_VOICE_ENDPOINT",
+        "FOUNDRY_PROJECT_ENDPOINT", "TMAP_VOICE_ENDPOINT",
         "TMAP_BING_AGENT_NAME", "TMAP_BING_AGENT_VERSION",
         "TMAP_WEBIQ_AGENT_NAME", "TMAP_WEBIQ_AGENT_VERSION",
     )

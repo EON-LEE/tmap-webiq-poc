@@ -45,5 +45,5 @@
 ² Web IQ는 사용자 제공 요율표의 web/news/videos/browse, Bing은 [Microsoft 요율](https://www.microsoft.com/en-us/bing/apis). Places/Finance 요율·내부과금 거래수·Voice Live/모델 합산 미확정: **질문당 총비용은 비교 불가**.
 ³ API보고 Agent 입력 문맥(질문·지침·도구설명·검색결과 등), 검색 자체 토큰 아님. 오디오 제외·캐시 중복 없음. 실패 0/미보고를 무료로 해석하지 않는다.
 
-[전체30질문·3조건 실제답변 CSV](../results/full_comparison_v9_20260908/question_results.csv) · [30개 동일 질문](FULL_COMPARISON_V9_QUESTIONS.md) · [90개 답변·검증 상세(보관 태그)](https://github.com/EON-LEE/tmap-webiq-poc/blob/archive/v9-benchmark-20260908/docs/FULL_COMPARISON_V9_DETAILS.md)
-[manifest·집계](../results/full_comparison_v9_20260908/) · [원본 실행 기록·출처 스냅숏(보관 태그)](https://github.com/EON-LEE/tmap-webiq-poc/tree/archive/v9-benchmark-20260908/results/full_comparison_v9_20260908)
+[전체30질문·3조건 실제답변 CSV](../results/benchmark_20260908/question_results.csv) · [30개 동일 질문](BENCHMARK_QUESTIONS.md) · [90개 답변·검증 상세(보관 태그)](https://github.com/EON-LEE/tmap-webiq-poc/blob/archive/v9-benchmark-20260908/docs/FULL_COMPARISON_V9_DETAILS.md)
+[manifest·집계](../results/benchmark_20260908/) · [원본 실행 기록·출처 스냅숏(보관 태그)](https://github.com/EON-LEE/tmap-webiq-poc/tree/archive/v9-benchmark-20260908/results/full_comparison_v9_20260908)

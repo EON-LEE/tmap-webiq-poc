@@ -12,7 +12,7 @@ FastAPI 서버와 화면을 Docker 이미지 하나로 만들어 Azure Container
 | 올리기 | 위 명령 + `--apply` | 새 환경 약 20분, 다시 실행 약 2분 |
 | 내리기 계획(읽기만) | 위 명령 + `--destroy` | 1분 |
 | 내리기 | 위 명령 + `--destroy --apply` | 약 30분 |
-| 코드만 갱신 | `python scripts/deploy_voice_app.py ... --apply` | 약 3분 |
+| 코드만 갱신 | `python scripts/deploy_app.py ... --apply` | 약 3분 |
 | WebIQ 키 교체 | `python scripts/setup_webiq_connection.py ... --apply` | 1분 |
 
 `--apply`가 없으면 아무것도 바꾸지 않는다.
@@ -71,7 +71,7 @@ Entra 로그인 앱을 지운다. 실행 전 리소스 그룹 이름을 직접 �
 ## 코드만 갱신
 
 ```bash
-python scripts/deploy_voice_app.py --subscription <구독> --resource-group <RG> --registry <ACR> --name <앱> --apply
+python scripts/deploy_app.py --subscription <구독> --resource-group <RG> --registry <ACR> --name <앱> --apply
 ```
 
 이미지를 빌드해 기존 앱의 이미지만 바꾼다. 로그인이 꺼진 앱은 거부한다. 리비전이 바뀌면 진행 중인 음성 연결이 끊긴다.

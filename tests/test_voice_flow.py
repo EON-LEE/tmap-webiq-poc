@@ -14,7 +14,7 @@ from azure.ai.voicelive.models import (
 from fastapi.testclient import TestClient
 
 from tmap_poc.api import create_app
-from tmap_poc.app_settings import AppSettings
+from tmap_poc.settings import AppSettings
 from tmap_poc.voice import VoiceServiceError, VoiceSession
 from tests.test_voice_conversation import settings
 
@@ -111,13 +111,13 @@ class VoiceFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(target["provider"], "webiq")
         self.assertEqual(target["session_id"], self.session.session_id)
 
-    async def test_supervisor_target_and_session_request_keep_only_safe_actual_settings(self):
+    async def test_end_to_end_target_and_session_request_keep_only_safe_actual_settings(self):
         config = settings(
             foundry_resource_override="different-resource",
             agent_identity_client_id="PRIVATE_IDENTITY",
         )
         self.session = VoiceSession(config, "bing", voice_options={
-            "connection_mode": "realtime_agent_tool", "realtime_model": "gpt-realtime-mini",
+            "connection_mode": "end_to_end", "realtime_model": "gpt-realtime-mini",
         })
         self.addCleanup(self.session.tools.close)
         await self.serve()
@@ -543,11 +543,11 @@ class VoiceFlowTests(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(result.exception.response_id)
         self.assertNotIn("PRIVATE", str(result.exception))
 
-    async def test_caption_failure_does_not_end_a_realtime_session(self):
-        realtime = VoiceSession(settings(), "webiq", "PRIVATE_APP_CONTEXT", voice_options={"connection_mode": "realtime_agent_tool"})
-        self.addCleanup(realtime.tools.close)
+    async def test_caption_failure_does_not_end_an_end_to_end_session(self):
+        end_to_end = VoiceSession(settings(), "webiq", "PRIVATE_APP_CONTEXT", voice_options={"connection_mode": "end_to_end"})
+        self.addCleanup(end_to_end.tools.close)
         with self.assertLogs("tmap_poc.voice", level="WARNING"):
-            await realtime.handle_event({
+            await end_to_end.handle_event({
                 "type": "conversation.item.input_audio_transcription.failed", "item_id": "heard",
                 "error": {"code": "transcription_failed", "message": "PRIVATE_FAILURE"},
             }, self.connection, self.socket)

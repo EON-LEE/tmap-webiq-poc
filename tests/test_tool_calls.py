@@ -15,8 +15,8 @@ from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanE
 from starlette.websockets import WebSocketDisconnect
 
 from tmap_poc import telemetry
-from tmap_poc.profiles import AgentReference
-from tmap_poc.tool_spans import ToolLifecycle, public_call
+from tmap_poc.agents import AgentReference
+from tmap_poc.tool_calls import ToolLifecycle, public_call
 from tmap_poc.voice import VoiceSession
 from tests.test_voice_app import settings
 

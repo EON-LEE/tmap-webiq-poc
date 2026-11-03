@@ -34,7 +34,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from tmap_poc.profiles import PROVIDER_LABELS, WEBIQ_MCP_URL, agent_definition  # noqa: E402
+from tmap_poc.agents import PROVIDER_LABELS, WEBIQ_MCP_URL, agent_definition  # noqa: E402
 
 ARM = "https://management.azure.com"
 ARM_RESOURCE = "https://management.azure.com/"
@@ -732,11 +732,11 @@ def apply(azure, ctx, template, args, out):
     out("For local development, put these in .env (no secrets):")
     for line in (
         "TMAP_AUTH_MODE=cli",
-        f"TMAP_POC_AZ_SUBSCRIPTION={ctx.subscription_id}",
-        f"GWB_PROJECT_ENDPOINT={outputs['projectEndpoint']}",
+        f"TMAP_AZ_SUBSCRIPTION={ctx.subscription_id}",
+        f"FOUNDRY_PROJECT_ENDPOINT={outputs['projectEndpoint']}",
         f"TMAP_VOICE_ENDPOINT=https://{ctx.names.account}.cognitiveservices.azure.com",
-        f"TMAP_POC_MODEL_DEPLOYMENT={ctx.model['name']}",
-        f"GWB_CONNECTION_ID={outputs['bingConnectionId']}",
+        f"TMAP_MODEL_DEPLOYMENT={ctx.model['name']}",
+        f"BING_CONNECTION_ID={outputs['bingConnectionId']}",
         f"WEBIQ_CONNECTION_ID={outputs['webiqConnectionId']}",
         f"TMAP_BING_AGENT_NAME={agents['bing']['name']}",
         f"TMAP_BING_AGENT_VERSION={agents['bing']['version']}",

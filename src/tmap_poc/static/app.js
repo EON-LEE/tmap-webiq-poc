@@ -1,7 +1,7 @@
 import { createSettingsView } from "./settings-view.js";
 import { createCompareView } from "./compare-view.js";
 import { textNode, isRecord } from "./search-results.js";
-import { providerNames, comparedProviders, modeNames, routeSummary } from "./run-labels.js";
+import { providerNames, comparedProviders, modeNames, routeSummary } from "./labels.js";
 
 const $ = (id) => document.getElementById(id);
 const Audio = window.AudioContext || window.webkitAudioContext;
@@ -56,7 +56,7 @@ function controls() {
   $("voice-options-pending-badge").hidden = !pending;
   const values = applied?.values;
   const mode = values ? modeNames[values.connection_mode || "agent"] || values.connection_mode : "";
-  const label = mode ? `적용 중: ${[mode, values.connection_mode === "realtime_agent_tool" ? values.realtime_model : null].filter(Boolean).join(" · ")}` : "";
+  const label = mode ? `적용 중: ${[mode, values.connection_mode === "end_to_end" ? values.realtime_model : null].filter(Boolean).join(" · ")}` : "";
   $("applied-mode").hidden = !label;
   if ($("applied-mode").textContent !== label) $("applied-mode").textContent = label;
 }
@@ -181,7 +181,7 @@ function restoreVoiceOptions(values) {
 function configureVoiceOptions(schema) {
   voiceFields.clear();
   settingsView.reset();
-  const supported = schema?.mode === "foundry_agent" && Array.isArray(schema.fields);
+  const supported = Array.isArray(schema?.fields);
   $("voice-settings-state").hidden = supported;
   $("voice-settings-state").textContent = supported ? "" : "서버가 선택 가능한 음성 설정을 제공하지 않습니다.";
   if (!supported) return;

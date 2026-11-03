@@ -1,5 +1,5 @@
 import { textNode } from "./search-results.js";
-import { modeNames } from "./run-labels.js";
+import { modeNames } from "./labels.js";
 
 export function createSettingsView() {
   const get = (id) => document.getElementById(id);
@@ -16,7 +16,7 @@ export function createSettingsView() {
   return {
     fieldLabel: (key, fallback) => Object.hasOwn(labels, key) ? labels[key] : fallback,
     // End-to-end models hear the audio themselves and reach both searches over MCP, so these choices do not apply.
-    hidden: (key, mode) => mode === "realtime_agent_tool" && ["transcription_model", "return_agent_response_directly"].includes(key),
+    hidden: (key, mode) => mode === "end_to_end" && ["transcription_model", "return_agent_response_directly"].includes(key),
     optionLabel: (key, option) => key === "connection_mode" && Object.hasOwn(modeNames, option.value)
       ? modeNames[option.value] : option.label,
     reset() {

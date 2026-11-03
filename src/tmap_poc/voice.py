@@ -24,14 +24,14 @@ from azure.ai.voicelive.models import (
 )
 from starlette.websockets import WebSocketDisconnect
 
-from tmap_poc.config import ConfigError
-from tmap_poc.profiles import PROVIDER_LABELS
-from tmap_poc.serialization import citation_links
+from tmap_poc.agents import PROVIDER_LABELS
+from tmap_poc.citations import citation_links
+from tmap_poc.settings import ConfigError
 from tmap_poc.telemetry import foundry_response_link, span, trace_headers
-from tmap_poc.tool_spans import ToolLifecycle
+from tmap_poc.tool_calls import ToolLifecycle
 from tmap_poc.voice_options import (
-    FOLLOWUP_INSTRUCTIONS, build_search_session, build_session_options, build_web_search_session,
-    validate_options,
+    FOLLOWUP_INSTRUCTIONS, build_agent_session, build_end_to_end_session,
+    build_end_to_end_web_search_session, validate_options,
 )
 
 API_VERSION = "2026-07-15"
@@ -193,7 +193,7 @@ def connection_url(settings, agent, *, voice_options=None):
     parsed = urlparse(settings.voice_endpoint)
     options = validate_options({} if voice_options is None else voice_options, settings.voice_name)
     params = {"api-version": API_VERSION}
-    if options["connection_mode"] == "realtime_agent_tool":
+    if options["connection_mode"] == "end_to_end":
         params["model"] = options["realtime_model"]
     else:
         if agent is None:
@@ -280,7 +280,7 @@ class VoiceSession:
         # End-to-end Bing runs the Toolbox's Bing-based Web Search as an app-executed function.
         self.web_search = None
         if (
-            self.options["connection_mode"] == "realtime_agent_tool" and provider == "bing"
+            self.options["connection_mode"] == "end_to_end" and provider == "bing"
             and settings.web_search_toolbox_url
         ):
             from tmap_poc.web_search import ToolboxWebSearch
@@ -504,9 +504,9 @@ class VoiceSession:
         search_attachment = None
         if self.web_search is not None:
             # End-to-end reaches Bing without an Agent: the app runs the Toolbox's Bing-based Web Search.
-            session_options = build_web_search_session(self.options)
+            session_options = build_end_to_end_web_search_session(self.options)
             search_attachment = "web_search_function"
-        elif mode == "realtime_agent_tool":
+        elif mode == "end_to_end":
             agent_config = {
                 "agent_name": self.agent.name,
                 "project_name": self.settings.project_name,
@@ -522,9 +522,9 @@ class VoiceSession:
             else:
                 target_config = {key: value for key, value in agent_config.items() if value is not None}
                 search_attachment = "foundry_agent"
-            session_options = build_search_session(self.options, target_config)
+            session_options = build_end_to_end_session(self.options, target_config)
         else:
-            session_options = build_session_options(self.options)
+            session_options = build_agent_session(self.options)
         self.mcp_tools_required = search_attachment == "mcp"
         target = {
             "api_version": API_VERSION, "connection_mode": mode,
@@ -1047,12 +1047,12 @@ class VoiceSession:
                 )
         elif kind == "conversation.item.input_audio_transcription.failed":
             # A realtime model hears the audio itself, so only its unused caption failed and the session goes on.
-            if self.options["connection_mode"] != "realtime_agent_tool":
+            if self.options["connection_mode"] != "end_to_end":
                 raise VoiceServiceError(
                     "음성 전사(STT)에 실패했습니다. 마이크 입력과 선택한 전사 모델·지역·접근 권한을 확인하거나 텍스트로 다시 질문하세요.",
                     event.get("error"), item_id=event_item_id, source_event=kind,
                 )
-            logger.warning("Caption transcription failed in a realtime session (session=%s)", self.session_id)
+            logger.warning("Caption transcription failed in an end-to-end session (session=%s)", self.session_id)
         elif kind == "warning":
             detail = _flow_fields(event.get("warning"), ("code", "param"))
             await self._flow(socket, "service", "warning", source_event=kind, data={

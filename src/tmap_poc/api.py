@@ -12,9 +12,8 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect, WebSocketState
 
-from tmap_poc.app_settings import AppSettings
-from tmap_poc.config import ConfigError
-from tmap_poc.profiles import PROVIDER_LABELS
+from tmap_poc.agents import PROVIDER_LABELS
+from tmap_poc.settings import AppSettings, ConfigError
 from tmap_poc.voice import VoiceProtocolError, VoiceServiceError, VoiceSession, parse_control
 from tmap_poc.voice_options import VoiceOptionsError, option_schema, validate_options
 

@@ -274,8 +274,8 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = if (deployApp) {
           env: [
             { name: 'TMAP_AUTH_MODE', value: 'managed_identity' }
             { name: 'AZURE_CLIENT_ID', value: identity.properties.clientId }
-            { name: 'GWB_PROJECT_ENDPOINT', value: projectEndpoint }
-            { name: 'TMAP_POC_MODEL_DEPLOYMENT', value: model.name }
+            { name: 'FOUNDRY_PROJECT_ENDPOINT', value: projectEndpoint }
+            { name: 'TMAP_MODEL_DEPLOYMENT', value: model.name }
             { name: 'TMAP_VOICE_ENDPOINT', value: 'https://${names.account}.cognitiveservices.azure.com' }
             { name: 'TMAP_VOICE_NAME', value: voiceName }
             { name: 'TMAP_BING_AGENT_NAME', value: bingAgent.name }

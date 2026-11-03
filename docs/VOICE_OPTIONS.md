@@ -10,7 +10,7 @@
 | 방식 | `connection_mode` | 흐름 | 쓰임 |
 | --- | --- | --- | --- |
 | Agent 연결(기본) | `agent` | STT → Foundry Agent → TTS. 두 Agent는 같은 모델·지시를 쓰고 검색 도구만 다르다 | 검색 엔진 공정 비교 |
-| End-to-end | `realtime_agent_tool` | Realtime 모델이 음성을 직접 듣고 말한다. WebIQ는 세션 MCP 도구, Bing은 앱 서버가 부르는 Toolbox Web Search(없으면 Bing Agent)를 쓴다 | 응답 속도 확인 |
+| End-to-end | `end_to_end` | Realtime 모델이 음성을 직접 듣고 말한다. WebIQ는 세션 MCP 도구, Bing은 앱 서버가 부르는 Toolbox Web Search(없으면 Bing Agent)를 쓴다 | 응답 속도 확인 |
 
 ## 항목
 

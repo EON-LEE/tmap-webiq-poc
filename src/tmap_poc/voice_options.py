@@ -36,11 +36,11 @@ _VOICES = (
     ),
 )
 _SEMANTIC_VAD = "azure_semantic_vad_multilingual"
-_REALTIME_MODE = "realtime_agent_tool"
+_END_TO_END = "end_to_end"
 _REALTIME_MODELS = ("gpt-realtime", "gpt-realtime-mini")
-CONNECTION_MODES = ("agent", _REALTIME_MODE)
+CONNECTION_MODES = ("agent", _END_TO_END)
 _OPENAI_VOICES = ("alloy", "coral", "verse", "marin")
-_MODEL_MODE_TRANSCRIPTION = (
+_END_TO_END_TRANSCRIPTION = (
     "whisper-1", "gpt-4o-transcribe", "gpt-4o-mini-transcribe",
     "gpt-4o-transcribe-diarize",
 )
@@ -134,7 +134,7 @@ def _default_values(default_voice):
 
 def _mode_defaults(default_voice, mode):
     defaults = _default_values(default_voice)
-    if mode == _REALTIME_MODE:
+    if mode == _END_TO_END:
         defaults.update(
             connection_mode=mode,
             realtime_model="gpt-realtime-mini",
@@ -161,7 +161,7 @@ def option_schema(default_voice):
     # Selecting a native voice also switches Bing's delivery; validation still requires the explicit pair.
     voices.extend({
         "value": f"openai:{name}", "label": f"OpenAI native · {name}",
-        "family": "openai", "requires": {"connection_mode": _REALTIME_MODE},
+        "family": "openai", "requires": {"connection_mode": _END_TO_END},
         "implies": {"return_agent_response_directly": False},
     } for name in _OPENAI_VOICES)
     fields = [
@@ -173,14 +173,14 @@ def option_schema(default_voice):
                     "help": "STT → 기존 Foundry Agent(검색 도구 포함) → TTS. 답변 모델은 Agent에 지정된 모델입니다.",
                 },
                 {
-                    "value": _REALTIME_MODE, "label": "End-to-end",
+                    "value": _END_TO_END, "label": "End-to-end",
                     "help": "Realtime 모델이 음성을 직접 듣고 말합니다. WebIQ는 모델이 MCP로 직접 검색하고, Bing은 Foundry Toolbox 웹 검색(없으면 Bing Agent)을 사용합니다. 별도 Realtime 비용이 발생합니다.",
                 },
             ],
         },
         {
-            "key": "realtime_model", "label": "Realtime 감독 모델", "type": "select",
-            "nullable": True, "requires": {"connection_mode": _REALTIME_MODE},
+            "key": "realtime_model", "label": "Realtime 모델", "type": "select",
+            "nullable": True, "requires": {"connection_mode": _END_TO_END},
             "options": [
                 {
                     "value": None, "label": "직접 Agent 모드: 추가 모델 없음",
@@ -189,25 +189,25 @@ def option_schema(default_voice):
                 *[
                     {
                         "value": model, "label": model,
-                        "requires": {"connection_mode": _REALTIME_MODE},
+                        "requires": {"connection_mode": _END_TO_END},
                     }
                     for model in _REALTIME_MODELS
                 ],
             ],
-            "help": "감독 모드에서만 실제 model 연결 쿼리에 적용합니다. 기존 Foundry Agent의 모델/버전은 변경하지 않습니다.",
+            "help": "End-to-end에서만 실제 model 연결 쿼리에 적용합니다. 기존 Foundry Agent의 모델/버전은 변경하지 않습니다.",
         },
         {
             "key": "return_agent_response_directly", "label": "Agent 답변 전달 방식",
-            "type": "select", "nullable": True, "requires": {"connection_mode": [_REALTIME_MODE]},
+            "type": "select", "nullable": True, "requires": {"connection_mode": [_END_TO_END]},
             "options": [
-                {"value": None, "label": "감독 모드 외에는 사용하지 않음", "requires": {"connection_mode": ["agent"]}},
+                {"value": None, "label": "Agent 연결에서는 사용하지 않음", "requires": {"connection_mode": ["agent"]}},
                 {
                     "value": True, "label": "Agent 답변 직접 사용 · Azure TTS",
-                    "requires": {"connection_mode": [_REALTIME_MODE], "voice_name": azure_voice_names},
+                    "requires": {"connection_mode": [_END_TO_END], "voice_name": azure_voice_names},
                 },
                 {
                     "value": False, "label": "선택한 모델이 답변 구성 · OpenAI 음성 사용 가능",
-                    "requires": {"connection_mode": [_REALTIME_MODE]},
+                    "requires": {"connection_mode": [_END_TO_END]},
                 },
             ],
             "help": "Bing Agent 도구에만 적용됩니다. WebIQ 직접 검색 답변은 항상 선택한 모델이 작성합니다. OpenAI native 음성은 직접 반환과 함께 사용할 수 없습니다.",
@@ -223,9 +223,9 @@ def option_schema(default_voice):
                 *[
                     {
                         "value": model, "label": model,
-                        "requires": {"connection_mode": _REALTIME_MODE},
+                        "requires": {"connection_mode": _END_TO_END},
                     }
-                    for model in _MODEL_MODE_TRANSCRIPTION
+                    for model in _END_TO_END_TRANSCRIPTION
                 ],
             ],
             "help": "직접 Agent 모드에서는 LLM에 전달하는 STT입니다. Realtime에서는 모델이 음성을 직접 이해하며 별도 전사 모델을 선택하는 것입니다.",
@@ -233,7 +233,7 @@ def option_schema(default_voice):
         {
             "key": "voice_name", "label": "TTS 모델 계열 / 음성", "type": "select",
             "options": voices,
-            "help": "Neural/DragonHD는 Azure voice.name, OpenAI native는 감독 모드의 voice.type=openai로 적용합니다.",
+            "help": "Neural/DragonHD는 Azure voice.name, OpenAI native는 End-to-end의 voice.type=openai로 적용합니다.",
         },
         {
             "key": "turn_detection", "label": "발화 종료 감지", "type": "select",
@@ -302,7 +302,6 @@ def option_schema(default_voice):
             minimum, maximum, step = _NUMBERS[key]
             field.update(min=minimum, max=maximum, step=step, nullable=True)
     return {
-        "mode": "foundry_agent",
         "supported_modes": list(CONNECTION_MODES),
         "fields": fields,
         "defaults": defaults,
@@ -318,7 +317,7 @@ def option_schema(default_voice):
         },
         "fixed_by_mode": {
             "agent": {"tool_executor": "Foundry Agent", "agent_model": "기존 Agent에 설정된 모델"},
-            _REALTIME_MODE: {"tool_executor": "WebIQ MCP와 Bing 웹 검색", "model": "선택한 Realtime 모델"},
+            _END_TO_END: {"tool_executor": "WebIQ MCP와 Bing 웹 검색", "model": "선택한 Realtime 모델"},
         },
     }
 
@@ -343,38 +342,38 @@ def validate_options(mapping, default_voice):
         raise VoiceOptionsError("지원하지 않는 connection_mode입니다.")
     result = {**_mode_defaults(default_voice, mode), **mapping}
     realtime_model = result["realtime_model"]
-    if mode != _REALTIME_MODE:
+    if mode != _END_TO_END:
         if realtime_model is not None:
-            raise VoiceOptionsError("realtime_model은 realtime_agent_tool 모드에서만 지정할 수 있습니다.")
+            raise VoiceOptionsError("realtime_model은 end_to_end 모드에서만 지정할 수 있습니다.")
     elif not isinstance(realtime_model, str) or realtime_model not in _REALTIME_MODELS:
-        raise VoiceOptionsError("감독 모드의 realtime_model은 gpt-realtime 또는 gpt-realtime-mini여야 합니다.")
+        raise VoiceOptionsError("End-to-end의 realtime_model은 gpt-realtime 또는 gpt-realtime-mini여야 합니다.")
     direct_return = result["return_agent_response_directly"]
-    if mode != _REALTIME_MODE:
+    if mode != _END_TO_END:
         if direct_return is not None:
-            raise VoiceOptionsError("Agent 답변 전달 방식은 realtime_agent_tool 모드 전용입니다.")
+            raise VoiceOptionsError("Agent 답변 전달 방식은 end_to_end 모드 전용입니다.")
     elif type(direct_return) is not bool:
         raise VoiceOptionsError("return_agent_response_directly는 true 또는 false여야 합니다.")
     stt = result["transcription_model"]
     allowed_stt = (
         ("azure-speech", "mai-transcribe")
-        if mode != _REALTIME_MODE else (*_MODEL_MODE_TRANSCRIPTION, "mai-transcribe")
+        if mode != _END_TO_END else (*_END_TO_END_TRANSCRIPTION, "mai-transcribe")
     )
     if not isinstance(stt, str) or stt not in allowed_stt:
-        if mode == "agent" and isinstance(stt, str) and stt in _MODEL_MODE_TRANSCRIPTION:
+        if mode == "agent" and isinstance(stt, str) and stt in _END_TO_END_TRANSCRIPTION:
             raise VoiceOptionsError(
-                "Whisper / GPT 전사는 감독 모드용이며 현재 직접 Foundry Agent 모드에서는 "
-                "azure-speech 또는 mai-transcribe를 선택하세요."
+                "Whisper / GPT 전사는 End-to-end 전용입니다. "
+                "Agent 연결에서는 azure-speech 또는 mai-transcribe를 선택하세요."
             )
         raise VoiceOptionsError("현재 connection_mode에서 지원하지 않는 transcription_model입니다.")
     voice = result["voice_name"]
     native_voices = {f"openai:{name}" for name in _OPENAI_VOICES}
     allowed_voices = {default_voice, *(v[0] for v in _VOICES)}
-    if mode == _REALTIME_MODE:
+    if mode == _END_TO_END:
         allowed_voices.update(native_voices)
     if not isinstance(voice, str) or voice not in allowed_voices:
         raise VoiceOptionsError("voice_name은 현재 실행 구조에서 허용된 음성 또는 서버 기본 음성이어야 합니다.")
-    if voice in native_voices and mode != _REALTIME_MODE:
-        raise VoiceOptionsError("OpenAI native 음성은 realtime_agent_tool 모드에서만 사용할 수 있습니다.")
+    if voice in native_voices and mode != _END_TO_END:
+        raise VoiceOptionsError("OpenAI native 음성은 end_to_end 모드에서만 사용할 수 있습니다.")
     if voice in native_voices and direct_return:
         raise VoiceOptionsError("OpenAI native 음성은 Agent 직접 반환과 함께 사용할 수 없습니다. 답변 구성 방식을 선택하세요.")
     vad = result["turn_detection"]
@@ -467,11 +466,11 @@ def _speech_session(options):
     return RequestSession(**kwargs)
 
 
-def build_session_options(normalized):
-    """Build the unchanged direct-Agent RequestSession; never set model/tools."""
+def build_agent_session(normalized):
+    """Build the Agent-mode RequestSession; never set model/tools."""
     options = _builder_options(normalized)
     if options["connection_mode"] != "agent":
-        raise VoiceOptionsError("선택한 실행 구조에 맞는 모델 또는 감독 세션 빌더를 사용하세요.")
+        raise VoiceOptionsError("선택한 실행 구조에 맞는 세션 빌더를 사용하세요.")
     return _speech_session(options)
 
 
@@ -523,11 +522,11 @@ def _validated_mcp_target(mcp_config):
     return {"server_url": server_url, "headers": safe_headers}
 
 
-def build_web_search_session(normalized):
+def build_end_to_end_web_search_session(normalized):
     """End-to-end Bing lane: the model calls a web_search function that the app runs on the Foundry Toolbox."""
     options = _builder_options(normalized)
-    if options["connection_mode"] != _REALTIME_MODE:
-        raise VoiceOptionsError("build_web_search_session은 realtime_agent_tool 모드 전용입니다.")
+    if options["connection_mode"] != _END_TO_END:
+        raise VoiceOptionsError("build_end_to_end_web_search_session은 end_to_end 모드 전용입니다.")
     session = _speech_session(options)
     session.tools = [dict(WEB_SEARCH_FUNCTION, parameters=deepcopy(WEB_SEARCH_FUNCTION["parameters"]))]
     session.instructions = _WEB_SEARCH_INSTRUCTIONS
@@ -535,11 +534,11 @@ def build_web_search_session(normalized):
     return session
 
 
-def build_search_session(normalized, target):
-    """Build realtime_agent_tool settings with a foundry_agent or MCP target."""
+def build_end_to_end_session(normalized, target):
+    """Build End-to-end settings with a foundry_agent or MCP target."""
     options = _builder_options(normalized)
-    if options["connection_mode"] != _REALTIME_MODE:
-        raise VoiceOptionsError("build_search_session은 realtime_agent_tool 모드 전용입니다.")
+    if options["connection_mode"] != _END_TO_END:
+        raise VoiceOptionsError("build_end_to_end_session은 end_to_end 모드 전용입니다.")
     # SDK 1.3 lacks this class; the documented API tool mapping is preserved losslessly.
     if isinstance(target, Mapping) and "server_url" in target:
         mcp = _validated_mcp_target(target)

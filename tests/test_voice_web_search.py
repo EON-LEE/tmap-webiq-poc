@@ -3,17 +3,16 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import AsyncMock
 
-from tmap_poc.app_settings import AppSettings
-from tmap_poc.config import ConfigError
-from tmap_poc.profiles import AgentReference
+from tmap_poc.agents import AgentReference
+from tmap_poc.settings import AppSettings, ConfigError
 from tmap_poc.voice import VoiceSession
 from tmap_poc.voice_options import (
-    WEB_SEARCH_FOLLOWUP_INSTRUCTIONS, VoiceOptionsError, build_web_search_session, validate_options,
+    WEB_SEARCH_FOLLOWUP_INSTRUCTIONS, VoiceOptionsError, build_end_to_end_web_search_session, validate_options,
 )
 from tmap_poc.web_search import ToolboxWebSearch, WebSearchError, _payload, result_text
 
 DEFAULT_VOICE = "ko-KR-SunHiNeural"
-REALTIME = {"connection_mode": "realtime_agent_tool"}
+END_TO_END = {"connection_mode": "end_to_end"}
 
 
 def settings(**overrides):
@@ -49,20 +48,20 @@ class WebSearchSettingsTests(unittest.TestCase):
 
 class WebSearchSessionTests(unittest.TestCase):
     def test_end_to_end_bing_session_offers_only_the_web_search_function(self):
-        session = build_web_search_session(validate_options(REALTIME, DEFAULT_VOICE)).as_dict()
+        session = build_end_to_end_web_search_session(validate_options(END_TO_END, DEFAULT_VOICE)).as_dict()
         self.assertEqual([tool["type"] for tool in session["tools"]], ["function"])
         self.assertEqual(session["tools"][0]["name"], "web_search")
         self.assertEqual(session["tools"][0]["parameters"]["required"], ["search_query"])
         self.assertIn("web_search 도구", session["instructions"])
         self.assertNotIn("agent", str(session["tools"]).lower())
         with self.assertRaises(VoiceOptionsError):
-            build_web_search_session(validate_options({}, DEFAULT_VOICE))
+            build_end_to_end_web_search_session(validate_options({}, DEFAULT_VOICE))
 
     def test_only_the_end_to_end_bing_lane_runs_the_toolbox(self):
-        self.assertIsNotNone(VoiceSession(settings(), "bing", voice_options=REALTIME).web_search)
-        self.assertIsNone(VoiceSession(settings(), "webiq", voice_options=REALTIME).web_search)
+        self.assertIsNotNone(VoiceSession(settings(), "bing", voice_options=END_TO_END).web_search)
+        self.assertIsNone(VoiceSession(settings(), "webiq", voice_options=END_TO_END).web_search)
         self.assertIsNone(VoiceSession(settings(), "bing").web_search)
-        self.assertIsNone(VoiceSession(settings(web_search_toolbox=""), "bing", voice_options=REALTIME).web_search)
+        self.assertIsNone(VoiceSession(settings(web_search_toolbox=""), "bing", voice_options=END_TO_END).web_search)
 
 
 class ToolboxResultTests(unittest.TestCase):
@@ -101,7 +100,7 @@ class WebSearchFlowTests(unittest.IsolatedAsyncioTestCase):
             conversation=SimpleNamespace(item=SimpleNamespace(create=AsyncMock())),
             response=SimpleNamespace(create=AsyncMock(), cancel=AsyncMock()),
         )
-        self.session = VoiceSession(settings(), "bing", voice_options=REALTIME)
+        self.session = VoiceSession(settings(), "bing", voice_options=END_TO_END)
         self.addCleanup(self.session.tools.close)
         self.session.connection = self.connection
         self.session.connection_opened.set()

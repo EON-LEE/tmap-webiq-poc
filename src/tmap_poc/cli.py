@@ -6,12 +6,11 @@ import os
 from pathlib import Path
 import re
 
-from tmap_poc.app_settings import AppSettings
-from tmap_poc.config import ConfigError, load_dotenv
-from tmap_poc.profiles import PROVIDER_LABELS, agent_definition
+from tmap_poc.agents import PROVIDER_LABELS, agent_definition
+from tmap_poc.settings import AppSettings, ConfigError, load_dotenv
 from tmap_poc.telemetry import configure_tracing, shutdown_tracing
 
-CONNECTION_ENV = {"bing": "GWB_CONNECTION_ID", "webiq": "WEBIQ_CONNECTION_ID"}
+CONNECTION_ENV = {"bing": "BING_CONNECTION_ID", "webiq": "WEBIQ_CONNECTION_ID"}
 
 
 def prepare_agents(settings, prefix, apply):

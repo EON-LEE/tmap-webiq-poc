@@ -12,7 +12,7 @@ from opentelemetry.trace import Link
 from opentelemetry.trace import Status, StatusCode
 from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
-from tmap_poc.config import ConfigError
+from tmap_poc.settings import ConfigError
 
 _provider = None
 _mode = "none"
@@ -76,11 +76,11 @@ def _foundry_connection_string():
     from azure.ai.projects import AIProjectClient
     from azure.core.exceptions import AzureError, ResourceNotFoundError
 
-    from tmap_poc.app_settings import AppSettings
+    from tmap_poc.settings import AppSettings
 
     settings = AppSettings.from_env()
     if not settings.project_endpoint or "/projects/" not in settings.project_endpoint:
-        raise ConfigError("Foundry tracing requires GWB_PROJECT_ENDPOINT to identify the current Foundry project.")
+        raise ConfigError("Foundry tracing requires FOUNDRY_PROJECT_ENDPOINT to identify the current Foundry project.")
     missing = (
         "The current Foundry project has no usable Application Insights connection. "
         "In Foundry, open Agents > Traces > Connect and select an existing Application Insights resource."

@@ -66,9 +66,9 @@ python scripts/scan_secrets.py                # 커밋 전 비밀값 검사
 | `src/tmap_poc/api.py`, `cli.py` | 웹 API와 WebSocket(`/ws/voice`), `tmap serve`, `tmap prepare-agents` |
 | `src/tmap_poc/voice.py`, `voice_options.py` | Voice Live 세션과 이벤트 중계, 음성 설정 검증 |
 | `src/tmap_poc/webiq_mcp.py`, `web_search.py` | WebIQ MCP 연결, Toolbox Web Search 호출 |
-| `src/tmap_poc/profiles.py` | 두 Agent의 공통 지시와 검색 도구 |
-| `src/tmap_poc/app_settings.py`, `auth.py`, `config.py` | 환경 설정, Azure CLI·Managed Identity 인증 |
-| `src/tmap_poc/telemetry.py`, `tool_spans.py`, `serialization.py` | Trace, 도구 span, 인용 정리 |
+| `src/tmap_poc/agents.py` | 두 Agent의 공통 지시와 검색 도구 |
+| `src/tmap_poc/settings.py`, `auth.py` | 환경 설정, Azure CLI·Managed Identity 인증 |
+| `src/tmap_poc/telemetry.py`, `tool_calls.py`, `citations.py` | Trace, 도구 호출 관측, 인용 링크 정리 |
 | `src/tmap_poc/static/` | 비교 화면 |
 | `infra/`, `scripts/` | Bicep 템플릿, 올리기·내리기·코드 갱신·키 교체·연결 점검·비밀값 검사 |
 | `docs/`, `results/` | 문서와 검증 결과 |
@@ -78,8 +78,8 @@ python scripts/scan_secrets.py                # 커밋 전 비밀값 검사
 - [배포](docs/DEPLOYMENT.md): 올리기, 내리기, 코드 갱신, 키 교체
 - [음성 설정](docs/VOICE_OPTIONS.md): 화면 설정과 적용 방법, 서비스 제약
 - [Trace](docs/TRACING.md)
-- [검증 기록](docs/VOICE_STATUS.md)
-- [V9 텍스트 검색 벤치마크](docs/REPORT.md): 2026-09-08, 30질문 × 3조건 요약. 원본은 Git 태그 `archive/v9-benchmark-20260908`에 있다.
+- [검증 기록](docs/VERIFICATION_LOG.md)
+- [텍스트 검색 벤치마크](docs/BENCHMARK_REPORT.md): 2026-09-08, 30질문 × 3조건 요약. 원본은 Git 태그 `archive/v9-benchmark-20260908`에 있다.
 
 ## GitHub 인증
 

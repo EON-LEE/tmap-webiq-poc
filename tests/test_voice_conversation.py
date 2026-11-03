@@ -7,9 +7,9 @@ from unittest.mock import AsyncMock, patch
 
 from fastapi.testclient import TestClient
 
+from tmap_poc.agents import AgentReference
 from tmap_poc.api import create_app
-from tmap_poc.app_settings import AppSettings
-from tmap_poc.profiles import AgentReference
+from tmap_poc.settings import AppSettings
 from tmap_poc.voice import VoiceServiceError, VoiceSession
 
 
@@ -63,7 +63,7 @@ class ProviderReadinessTests(unittest.TestCase):
             with self.subTest(path=path):
                 config = settings(project_endpoint="https://agent.example.invalid" + path)
                 self.assertEqual(config.project_name, "")
-                self.assertIn("GWB_PROJECT_ENDPOINT", " ".join(config.problems("bing")))
+                self.assertIn("FOUNDRY_PROJECT_ENDPOINT", " ".join(config.problems("bing")))
         self.assertEqual(settings().project_name, "demo")
 
     def test_terminal_api_error_preserves_known_response_correlation(self):
@@ -415,7 +415,7 @@ class ConversationEventsTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.session.item_responses["message"], "first")
 
     async def test_ready_identifies_actual_selected_provider_and_pinned_agent_in_both_modes(self):
-        for mode in ("agent", "realtime_agent_tool"):
+        for mode in ("agent", "end_to_end"):
             for provider in ("bing", "webiq"):
                 with self.subTest(mode=mode, provider=provider):
                     session = VoiceSession(settings(), provider, voice_options={"connection_mode": mode})
