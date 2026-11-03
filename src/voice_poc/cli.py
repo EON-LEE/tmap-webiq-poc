@@ -6,9 +6,9 @@ import os
 from pathlib import Path
 import re
 
-from tmap_poc.agents import PROVIDER_LABELS, agent_definition
-from tmap_poc.settings import AppSettings, ConfigError, load_dotenv
-from tmap_poc.telemetry import configure_tracing, shutdown_tracing
+from voice_poc.agents import PROVIDER_LABELS, agent_definition
+from voice_poc.settings import AppSettings, ConfigError, load_dotenv
+from voice_poc.telemetry import configure_tracing, shutdown_tracing
 
 CONNECTION_ENV = {"bing": "BING_CONNECTION_ID", "webiq": "WEBIQ_CONNECTION_ID"}
 
@@ -37,8 +37,8 @@ def prepare_agents(settings, prefix, apply):
             for provider, definition in definitions.items():
                 name = f"{prefix}-{provider}"
                 result = project.agents.create_version(agent_name=name, definition=definition)
-                print(f"TMAP_{provider.upper()}_AGENT_NAME={name}")
-                print(f"TMAP_{provider.upper()}_AGENT_VERSION={result.version}")
+                print(f"POC_{provider.upper()}_AGENT_NAME={name}")
+                print(f"POC_{provider.upper()}_AGENT_VERSION={result.version}")
     finally:
         close = getattr(credential, "close", None)
         if close is not None:
@@ -46,14 +46,14 @@ def prepare_agents(settings, prefix, apply):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Foundry voice agent")
+    parser = argparse.ArgumentParser(prog="voice-poc", description="WebIQ vs Bing voice search POC")
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
     commands = parser.add_subparsers(dest="command", required=True)
     serve = commands.add_parser("serve", help="Serve the local voice interface")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8000)
     agents = commands.add_parser("prepare-agents", help="Plan/register shared voice-ready agents")
-    agents.add_argument("--prefix", default="tmap-voice")
+    agents.add_argument("--prefix", default="voice-poc")
     agents.add_argument("--apply", action="store_true")
     args = parser.parse_args(argv)
     load_dotenv(args.env_file)
@@ -63,9 +63,9 @@ def main(argv=None):
             configure_tracing()
         if args.command == "serve":
             import uvicorn
-            from tmap_poc.api import create_app
+            from voice_poc.api import create_app
 
-            if not os.environ.get("TMAP_ALLOWED_ORIGINS") and args.host in ("localhost", "127.0.0.1", "::1"):
+            if not os.environ.get("POC_ALLOWED_ORIGINS") and args.host in ("localhost", "127.0.0.1", "::1"):
                 settings = replace(settings, allowed_origins=(
                     f"http://localhost:{args.port}", f"http://127.0.0.1:{args.port}",
                     f"http://[::1]:{args.port}",

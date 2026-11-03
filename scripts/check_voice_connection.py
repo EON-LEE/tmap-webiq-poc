@@ -15,10 +15,10 @@ import time
 import aiohttp
 from azure.core.exceptions import AzureError
 
-from tmap_poc.agents import PROVIDER_LABELS
-from tmap_poc.settings import AppSettings, ConfigError, load_dotenv
-from tmap_poc.voice import VoiceProtocolError, VoiceServiceError, VoiceSession
-from tmap_poc.voice_options import VoiceOptionsError, validate_options
+from voice_poc.agents import PROVIDER_LABELS
+from voice_poc.settings import AppSettings, ConfigError, load_dotenv
+from voice_poc.voice import VoiceProtocolError, VoiceServiceError, VoiceSession
+from voice_poc.voice_options import VoiceOptionsError, validate_options
 
 
 class CheckSocket:

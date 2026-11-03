@@ -3,13 +3,13 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import AsyncMock
 
-from tmap_poc.agents import AgentReference
-from tmap_poc.settings import AppSettings, ConfigError
-from tmap_poc.voice import VoiceSession
-from tmap_poc.voice_options import (
+from voice_poc.agents import AgentReference
+from voice_poc.settings import AppSettings, ConfigError
+from voice_poc.voice import VoiceSession
+from voice_poc.voice_options import (
     WEB_SEARCH_FOLLOWUP_INSTRUCTIONS, VoiceOptionsError, build_end_to_end_web_search_session, validate_options,
 )
-from tmap_poc.web_search import ToolboxWebSearch, WebSearchError, _payload, result_text
+from voice_poc.web_search import ToolboxWebSearch, WebSearchError, _payload, result_text
 
 DEFAULT_VOICE = "ko-KR-SunHiNeural"
 END_TO_END = {"connection_mode": "end_to_end"}
@@ -39,11 +39,11 @@ class WebSearchSettingsTests(unittest.TestCase):
         from unittest.mock import patch
 
         for name in ("bad name", "../x", "x/y"):
-            with self.subTest(name=name), patch.dict(os.environ, {"TMAP_WEB_SEARCH_TOOLBOX": name}):
+            with self.subTest(name=name), patch.dict(os.environ, {"POC_WEB_SEARCH_TOOLBOX": name}):
                 with self.assertRaises(ConfigError):
                     AppSettings.from_env()
-        with patch.dict(os.environ, {"TMAP_WEB_SEARCH_TOOLBOX": "tmap-web-search"}):
-            self.assertEqual(AppSettings.from_env().web_search_toolbox, "tmap-web-search")
+        with patch.dict(os.environ, {"POC_WEB_SEARCH_TOOLBOX": "voice-poc-web-search"}):
+            self.assertEqual(AppSettings.from_env().web_search_toolbox, "voice-poc-web-search")
 
 
 class WebSearchSessionTests(unittest.TestCase):

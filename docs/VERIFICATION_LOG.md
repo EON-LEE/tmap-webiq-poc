@@ -15,7 +15,7 @@
 ## 2026-10-22: 미사용 기능 삭제, 한 명령 배포 검증
 
 - 화면에서 쓰지 않는 기능을 삭제했다: 앱 조작 데모(`model_tools`), STT → LLM → TTS(`model_search`),
-  서버 trace 조회(`/api/traces`), `tmap compare`. 남은 방식은 Agent 연결과 End-to-end다.
+  서버 trace 조회(`/api/traces`), CLI `compare` 명령. 남은 방식은 Agent 연결과 End-to-end다.
 - `scripts/provision.py --apply`로 새 리소스 그룹에 환경 전체를 만들었다. `gpt-6-luna` 할당량이 모두 사용 중이라
   시험 모델은 `gpt-5-mini`(용량 300)였다. 약 20분이 걸렸고, 그중 인프라 배포가 15분 51초였다(대부분 Container Apps 환경 생성).
 - 로그인 토큰으로 호출한 `/api/config`는 두 엔진 모두 설정 완료였고, 로그인 없는 요청은 차단됐다.

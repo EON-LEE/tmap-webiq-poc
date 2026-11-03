@@ -4,7 +4,7 @@ const { readFileSync } = require("node:fs");
 const { join } = require("node:path");
 const vm = require("node:vm");
 
-const staticRoot = join(process.cwd(), "src", "tmap_poc", "static");
+const staticRoot = join(process.cwd(), "src", "voice_poc", "static");
 const readStaticFile = (fileName) => readFileSync(join(staticRoot, fileName), "utf8");
 
 const htmlSource = readStaticFile("index.html");
@@ -719,8 +719,8 @@ test("static contract: comparison DOM, examples, settings and no unsafe sinks", 
   assert.equal(elements["example-prompts"].children.length, 4);
   assert.deepEqual(elements["example-prompts"].children.map((button) => button.dataset.prompt), [
     "삼성전자 주식 찾아줘.",
-    "서울역 근처 충전소 찾아줘.",
-    "인천공항 주차비 얼마야?",
+    "서울역 근처 맛집 찾아줘.",
+    "내일 서울 날씨 어때?",
     "오늘 주요 뉴스 알려줘.",
   ]);
   assert.doesNotMatch(appSource, /\binnerHTML\b|\beval\s*\(/);
@@ -1298,7 +1298,7 @@ test("example prompts only fill and focus the composer", async () => {
   await env.submit("엔터 질문");
   const socketCount = env.sockets.length;
   env.elements["example-prompts"].children[1].listeners.click();
-  assert.equal(env.elements["command-input"].value, "서울역 근처 충전소 찾아줘.");
+  assert.equal(env.elements["command-input"].value, "서울역 근처 맛집 찾아줘.");
   assert.equal(env.document.activeElement, env.elements["command-input"]);
   assert.equal(env.sockets.length, socketCount);
 });

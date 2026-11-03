@@ -10,7 +10,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from tmap_poc.auth import az_binary  # noqa: E402
+from voice_poc.auth import az_binary  # noqa: E402
 
 
 class DeploymentError(RuntimeError):
@@ -59,9 +59,9 @@ def validate_existing(app, auth, *, allow_anonymous=False):
         raise DeploymentError("This helper only updates a single-container application.")
     env = {item["name"]: item for item in containers[0].get("env", [])}
     required = (
-        "FOUNDRY_PROJECT_ENDPOINT", "TMAP_VOICE_ENDPOINT",
-        "TMAP_BING_AGENT_NAME", "TMAP_BING_AGENT_VERSION",
-        "TMAP_WEBIQ_AGENT_NAME", "TMAP_WEBIQ_AGENT_VERSION",
+        "FOUNDRY_PROJECT_ENDPOINT", "POC_VOICE_ENDPOINT",
+        "POC_BING_AGENT_NAME", "POC_BING_AGENT_VERSION",
+        "POC_WEBIQ_AGENT_NAME", "POC_WEBIQ_AGENT_VERSION",
     )
     missing = [name for name in required if not (env.get(name, {}).get("value") or env.get(name, {}).get("secretRef"))]
     if missing:
@@ -106,7 +106,7 @@ def deploy(args, *, inspect=read_json, execute=subprocess.run):
         args.subscription, "containerapp", "update",
         "--name", args.name, "--resource-group", args.resource_group,
         "--image", f"{login_server}/{image}",
-        "--set-env-vars", "TMAP_AUTH_MODE=managed_identity", f"TMAP_ALLOWED_ORIGINS={origin}",
+        "--set-env-vars", "POC_AUTH_MODE=managed_identity", f"POC_ALLOWED_ORIGINS={origin}",
         "--output", "none",
     ), check=True)
     print(f"Image update submitted. Open {origin} after the new revision is ready.")

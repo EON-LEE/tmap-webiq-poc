@@ -12,10 +12,10 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect, WebSocketState
 
-from tmap_poc.agents import PROVIDER_LABELS
-from tmap_poc.settings import AppSettings, ConfigError
-from tmap_poc.voice import VoiceProtocolError, VoiceServiceError, VoiceSession, parse_control
-from tmap_poc.voice_options import VoiceOptionsError, option_schema, validate_options
+from voice_poc.agents import PROVIDER_LABELS
+from voice_poc.settings import AppSettings, ConfigError
+from voice_poc.voice import VoiceProtocolError, VoiceServiceError, VoiceSession, parse_control
+from voice_poc.voice_options import VoiceOptionsError, option_schema, validate_options
 
 STATIC = Path(__file__).with_name("static")
 # One comparison runs a WebIQ and a Bing session together; allow two comparisons or a reconnect overlap.
@@ -35,7 +35,7 @@ def static_version():
 
 def create_app(settings=None, *, voice_factory=VoiceSession):
     settings = settings or AppSettings.from_env()
-    app = FastAPI(title="Navigation voice agent")
+    app = FastAPI(title="WebIQ vs Bing voice POC")
     app.state.active_sessions = 0
     assets = f"/assets/{static_version()}"
     page = (STATIC / "index.html").read_text(encoding="utf-8").replace('"/static/', f'"{assets}/')

@@ -12,7 +12,7 @@ from opentelemetry.trace import Link
 from opentelemetry.trace import Status, StatusCode
 from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
 
-from tmap_poc.settings import ConfigError
+from voice_poc.settings import ConfigError
 
 _provider = None
 _mode = "none"
@@ -76,7 +76,7 @@ def _foundry_connection_string():
     from azure.ai.projects import AIProjectClient
     from azure.core.exceptions import AzureError, ResourceNotFoundError
 
-    from tmap_poc.settings import AppSettings
+    from voice_poc.settings import AppSettings
 
     settings = AppSettings.from_env()
     if not settings.project_endpoint or "/projects/" not in settings.project_endpoint:
@@ -108,9 +108,9 @@ def _foundry_connection_string():
 
 def configure_tracing():
     global _provider, _mode
-    mode = os.environ.get("TMAP_TRACE_EXPORTER", "console").strip().lower()
+    mode = os.environ.get("POC_TRACE_EXPORTER", "console").strip().lower()
     if mode not in ("none", "console", "azure", "foundry"):
-        raise ConfigError("TMAP_TRACE_EXPORTER must be none, console, azure or foundry.")
+        raise ConfigError("POC_TRACE_EXPORTER must be none, console, azure or foundry.")
     if _closed and mode != "none":
         raise ConfigError("Tracing has shut down; start a new process.")
     if _provider is not None:
@@ -140,7 +140,7 @@ def configure_tracing():
         )
     else:
         exporter = ConsoleSpanExporter()
-    provider = TracerProvider(resource=Resource.create({"service.name": "navigation-voice-agent"}))
+    provider = TracerProvider(resource=Resource.create({"service.name": "voice-search-poc"}))
     provider.add_span_processor(BatchSpanProcessor(MetadataExporter(exporter)))
     trace.set_tracer_provider(provider)
     _provider, _mode = provider, mode
@@ -167,7 +167,7 @@ def shutdown_tracing():
 
 
 def tracer():
-    return trace.get_tracer("tmap_poc")
+    return trace.get_tracer("voice_poc")
 
 
 @contextmanager

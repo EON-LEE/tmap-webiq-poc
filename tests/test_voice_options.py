@@ -13,7 +13,7 @@ from azure.ai.voicelive.models import (
     RequestSession,
 )
 
-from tmap_poc.voice_options import (
+from voice_poc.voice_options import (
     VoiceOptionsError,
     build_agent_session,
     build_end_to_end_session,

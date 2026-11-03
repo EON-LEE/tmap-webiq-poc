@@ -1,4 +1,4 @@
-// One TMAP WebIQ POC environment in one resource group. Deployed by scripts/provision.py:
+// One WebIQ vs Bing voice POC environment in one resource group. Deployed by scripts/provision.py:
 // first with deployApp=false (shared resources), then with deployApp=true once the image,
 // agents and sign-in app exist. Secrets are never outputs.
 
@@ -50,7 +50,7 @@ param signInClientId string = ''
 param signInClientSecret string = ''
 
 param tags object = {
-  workload: 'tmap-webiq-poc'
+  workload: 'webiq-vs-bing-voice-poc'
   environment: 'poc'
 }
 
@@ -111,7 +111,7 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-06-01' = {
   location: location
   identity: { type: 'SystemAssigned' }
   properties: {
-    displayName: 'TMAP WebIQ POC'
+    displayName: 'WebIQ vs Bing voice POC'
     description: 'WebIQ versus Grounding with Bing voice comparison'
   }
 }
@@ -272,19 +272,19 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = if (deployApp) {
             memory: '2Gi'
           }
           env: [
-            { name: 'TMAP_AUTH_MODE', value: 'managed_identity' }
+            { name: 'POC_AUTH_MODE', value: 'managed_identity' }
             { name: 'AZURE_CLIENT_ID', value: identity.properties.clientId }
             { name: 'FOUNDRY_PROJECT_ENDPOINT', value: projectEndpoint }
-            { name: 'TMAP_MODEL_DEPLOYMENT', value: model.name }
-            { name: 'TMAP_VOICE_ENDPOINT', value: 'https://${names.account}.cognitiveservices.azure.com' }
-            { name: 'TMAP_VOICE_NAME', value: voiceName }
-            { name: 'TMAP_BING_AGENT_NAME', value: bingAgent.name }
-            { name: 'TMAP_BING_AGENT_VERSION', value: bingAgent.version }
-            { name: 'TMAP_WEBIQ_AGENT_NAME', value: webiqAgent.name }
-            { name: 'TMAP_WEBIQ_AGENT_VERSION', value: webiqAgent.version }
-            { name: 'TMAP_WEB_SEARCH_TOOLBOX', value: webSearchToolbox }
-            { name: 'TMAP_ALLOWED_ORIGINS', value: appUrl }
-            { name: 'TMAP_TRACE_EXPORTER', value: 'none' }
+            { name: 'POC_MODEL_DEPLOYMENT', value: model.name }
+            { name: 'POC_VOICE_ENDPOINT', value: 'https://${names.account}.cognitiveservices.azure.com' }
+            { name: 'POC_VOICE_NAME', value: voiceName }
+            { name: 'POC_BING_AGENT_NAME', value: bingAgent.name }
+            { name: 'POC_BING_AGENT_VERSION', value: bingAgent.version }
+            { name: 'POC_WEBIQ_AGENT_NAME', value: webiqAgent.name }
+            { name: 'POC_WEBIQ_AGENT_VERSION', value: webiqAgent.version }
+            { name: 'POC_WEB_SEARCH_TOOLBOX', value: webSearchToolbox }
+            { name: 'POC_ALLOWED_ORIGINS', value: appUrl }
+            { name: 'POC_TRACE_EXPORTER', value: 'none' }
           ]
         }
       ]

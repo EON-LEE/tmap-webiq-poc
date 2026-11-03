@@ -5,11 +5,11 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from tmap_poc.agents import AgentReference
-from tmap_poc.settings import AppSettings, ConfigError
-from tmap_poc.voice import VoiceServiceError, VoiceSession
-from tmap_poc.voice_options import build_end_to_end_session, option_schema, validate_options
-from tmap_poc.webiq_mcp import WebIQMCPTarget, resolve_webiq_mcp_target
+from voice_poc.agents import AgentReference
+from voice_poc.settings import AppSettings, ConfigError
+from voice_poc.voice import VoiceServiceError, VoiceSession
+from voice_poc.voice_options import build_end_to_end_session, option_schema, validate_options
+from voice_poc.webiq_mcp import WebIQMCPTarget, resolve_webiq_mcp_target
 
 
 DEFAULT_VOICE = "ko-KR-SunHiNeural"
@@ -86,7 +86,7 @@ class EndToEndFlowTests(unittest.IsolatedAsyncioTestCase):
             yield self.connection
 
         session.connector = connector
-        with patch("tmap_poc.webiq_mcp.resolve_webiq_mcp_target", new=AsyncMock(return_value=MCP_TARGET)):
+        with patch("voice_poc.webiq_mcp.resolve_webiq_mcp_target", new=AsyncMock(return_value=MCP_TARGET)):
             with patch.object(session, "_from_service", new=AsyncMock()):
                 await session._serve_cloud(self.socket)
         sent = self.connection.session.update.call_args.kwargs["session"].as_dict()
@@ -115,7 +115,7 @@ class EndToEndFlowTests(unittest.IsolatedAsyncioTestCase):
             coro.close()
             raise TimeoutError
 
-        with patch("tmap_poc.voice.asyncio.wait_for", new=timeout):
+        with patch("voice_poc.voice.asyncio.wait_for", new=timeout):
             with self.assertRaisesRegex(VoiceServiceError, "WebIQ 검색 도구"):
                 await session._ready_deadline()
 
@@ -237,7 +237,7 @@ class WebIQResolverTests(unittest.IsolatedAsyncioTestCase):
             })))
 
         config = settings()
-        with patch("tmap_poc.webiq_mcp._CACHE", {}):
+        with patch("voice_poc.webiq_mcp._CACHE", {}):
             with patch("azure.ai.projects.AIProjectClient", return_value=Client()) as constructor:
                 target = await resolve_webiq_mcp_target(config, config.agents["webiq"])
                 again = await resolve_webiq_mcp_target(config, config.agents["webiq"])
@@ -247,7 +247,7 @@ class WebIQResolverTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("PRIVATE_44_CHAR_KEY", repr(target))
 
     async def test_resolver_maps_failures_to_safe_korean_error(self):
-        with patch("tmap_poc.webiq_mcp._CACHE", {}):
+        with patch("voice_poc.webiq_mcp._CACHE", {}):
             with patch("azure.ai.projects.AIProjectClient", side_effect=RuntimeError("PRIVATE")):
                 with self.assertRaises(ConfigError) as error:
                     await resolve_webiq_mcp_target(settings(), settings().agents["webiq"])

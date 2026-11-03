@@ -12,12 +12,12 @@ from urllib.parse import parse_qs, urlparse
 from fastapi.testclient import TestClient
 from starlette.websockets import WebSocketDisconnect
 
-from tmap_poc.agents import AgentReference, SEARCH_AGENT_INSTRUCTIONS, agent_definition
-from tmap_poc.api import create_app
-from tmap_poc.cli import prepare_agents
-from tmap_poc.settings import AppSettings, ConfigError
-from tmap_poc.voice_options import VoiceOptionsError
-from tmap_poc.voice import (
+from voice_poc.agents import AgentReference, SEARCH_AGENT_INSTRUCTIONS, agent_definition
+from voice_poc.api import create_app
+from voice_poc.cli import prepare_agents
+from voice_poc.settings import AppSettings, ConfigError
+from voice_poc.voice_options import VoiceOptionsError
+from voice_poc.voice import (
     VoiceProtocolError, VoiceServiceError, VoiceSession, connection_url, parse_control,
 )
 
@@ -27,7 +27,7 @@ SESSION_TEST_TIMEOUT = 10
 
 def settings():
     return AppSettings(
-        project_endpoint="https://agent.example.invalid/api/projects/navigation",
+        project_endpoint="https://agent.example.invalid/api/projects/voice-poc",
         voice_endpoint="https://voice.example.invalid",
         model="test-model", subscription="explicit-test-subscription",
         agents={
@@ -43,7 +43,7 @@ class SettingsTests(unittest.TestCase):
             config = AppSettings.from_env()
             with self.assertRaises(ConfigError):
                 config.credential()
-            self.assertIn("TMAP_AZ_SUBSCRIPTION", " ".join(config.problems()))
+            self.assertIn("POC_AZ_SUBSCRIPTION", " ".join(config.problems()))
 
     def test_managed_identity_requires_no_subscription(self):
         config = AppSettings(auth_mode="managed_identity")
@@ -52,14 +52,14 @@ class SettingsTests(unittest.TestCase):
             constructor.assert_called_once_with()
 
     def test_settings_do_not_expose_environment_values_in_config_errors(self):
-        with patch.dict(os.environ, {"TMAP_VOICE_ENDPOINT": "https://user:secret@example.invalid"}, clear=True):
+        with patch.dict(os.environ, {"POC_VOICE_ENDPOINT": "https://user:secret@example.invalid"}, clear=True):
             with self.assertRaises(ConfigError) as error:
                 AppSettings.from_env()
             self.assertNotIn("secret", str(error.exception))
 
     def test_exact_origins_required(self):
         for origin in ("*", "https://example.invalid/path", "https://u:p@example.invalid"):
-            with self.subTest(origin=origin), patch.dict(os.environ, {"TMAP_ALLOWED_ORIGINS": origin}, clear=True):
+            with self.subTest(origin=origin), patch.dict(os.environ, {"POC_ALLOWED_ORIGINS": origin}, clear=True):
                 with self.assertRaises(ConfigError):
                     AppSettings.from_env()
 
@@ -103,7 +103,7 @@ class SettingsTests(unittest.TestCase):
         query = parse_qs(url.query)
         self.assertEqual(url.scheme, "wss")
         self.assertEqual(query["agent-name"], ["test-webiq"])
-        self.assertEqual(query["agent-project-name"], ["navigation"])
+        self.assertEqual(query["agent-project-name"], ["voice-poc"])
         self.assertEqual(query["agent-version"], ["2"])
         self.assertNotIn("model", query)
         self.assertNotIn("api-key", query)
@@ -156,7 +156,7 @@ class ApiTests(unittest.TestCase):
             response = client.get("/api/config")
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response.json()["voice_options"])
-        self.assertTrue(any("TMAP_VOICE_NAME" in item for item in response.json()["errors"]))
+        self.assertTrue(any("POC_VOICE_NAME" in item for item in response.json()["errors"]))
 
     def test_browser_origin_is_required(self):
         with TestClient(create_app(settings())) as client:
@@ -417,7 +417,7 @@ class VoiceEventsTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_ready_deadline_starts_after_authentication_and_connection(self):
         original = asyncio.wait_for
-        with patch("tmap_poc.voice.asyncio.wait_for", new=AsyncMock(wraps=original)) as wait:
+        with patch("voice_poc.voice.asyncio.wait_for", new=AsyncMock(wraps=original)) as wait:
             task = asyncio.create_task(self.session._ready_deadline())
             await asyncio.sleep(0)
             wait.assert_not_called()

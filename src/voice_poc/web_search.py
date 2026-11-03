@@ -10,7 +10,7 @@ from time import time
 
 import aiohttp
 
-from tmap_poc.settings import ConfigError
+from voice_poc.settings import ConfigError
 
 SCOPE = "https://ai.azure.com/.default"
 _TIMEOUT_SECONDS = 45
@@ -25,7 +25,7 @@ class WebSearchError(RuntimeError):
 class ToolboxWebSearch:
     def __init__(self, settings, credential=None):
         if not settings.web_search_toolbox_url:
-            raise ConfigError("TMAP_WEB_SEARCH_TOOLBOX가 없어 Bing 웹 검색을 사용할 수 없습니다.")
+            raise ConfigError("POC_WEB_SEARCH_TOOLBOX가 없어 Bing 웹 검색을 사용할 수 없습니다.")
         self.url = settings.web_search_toolbox_url
         self.credential = credential or settings.credential()
         self._token = None
@@ -57,7 +57,7 @@ class ToolboxWebSearch:
                 session_id, _ = await self._rpc(http, {
                     "jsonrpc": "2.0", "id": 1, "method": "initialize",
                     "params": {"protocolVersion": "2025-03-26", "capabilities": {},
-                               "clientInfo": {"name": "tmap-voice-demo", "version": "1"}},
+                               "clientInfo": {"name": "webiq-vs-bing-voice-poc", "version": "1"}},
                 })
                 await self._rpc(http, {"jsonrpc": "2.0", "method": "notifications/initialized"}, session_id)
                 _, reply = await self._rpc(http, {

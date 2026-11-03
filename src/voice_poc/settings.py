@@ -10,7 +10,7 @@ import re
 from dataclasses import dataclass, field
 from urllib.parse import urlparse
 
-from tmap_poc.agents import AgentReference, PROVIDER_LABELS
+from voice_poc.agents import AgentReference, PROVIDER_LABELS
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 
@@ -71,19 +71,19 @@ class AppSettings:
 
     @classmethod
     def from_env(cls):
-        mode = _value("TMAP_AUTH_MODE", "cli")
+        mode = _value("POC_AUTH_MODE", "cli")
         if mode not in ("cli", "managed_identity"):
-            raise ConfigError("TMAP_AUTH_MODE must be cli or managed_identity")
+            raise ConfigError("POC_AUTH_MODE must be cli or managed_identity")
         agents = {}
         for provider in PROVIDER_LABELS:
-            prefix = f"TMAP_{provider.upper()}_AGENT"
+            prefix = f"POC_{provider.upper()}_AGENT"
             name, version = _value(prefix + "_NAME"), _value(prefix + "_VERSION")
             if version and not name:
                 raise ConfigError(f"{prefix}_VERSION requires {prefix}_NAME")
             if name:
                 agents[provider] = AgentReference(name, version or None)
         origins = _value(
-            "TMAP_ALLOWED_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000"
+            "POC_ALLOWED_ORIGINS", "http://localhost:8000,http://127.0.0.1:8000"
         )
         allowed_origins = tuple(part.strip().rstrip("/") for part in origins.split(",") if part.strip())
         for origin in allowed_origins:
@@ -93,22 +93,22 @@ class AppSettings:
                 or parsed.username or parsed.password or parsed.path
                 or parsed.query or parsed.fragment
             ):
-                raise ConfigError("TMAP_ALLOWED_ORIGINS must contain exact HTTP(S) origins.")
+                raise ConfigError("POC_ALLOWED_ORIGINS must contain exact HTTP(S) origins.")
         if not allowed_origins:
-            raise ConfigError("TMAP_ALLOWED_ORIGINS must not be empty.")
-        toolbox = _value("TMAP_WEB_SEARCH_TOOLBOX")
+            raise ConfigError("POC_ALLOWED_ORIGINS must not be empty.")
+        toolbox = _value("POC_WEB_SEARCH_TOOLBOX")
         if toolbox and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}", toolbox):
-            raise ConfigError("TMAP_WEB_SEARCH_TOOLBOX must be a Foundry toolbox name.")
+            raise ConfigError("POC_WEB_SEARCH_TOOLBOX must be a Foundry toolbox name.")
         return cls(
             project_endpoint=_https(_value("FOUNDRY_PROJECT_ENDPOINT"), "FOUNDRY_PROJECT_ENDPOINT"),
-            voice_endpoint=_https(_value("TMAP_VOICE_ENDPOINT"), "TMAP_VOICE_ENDPOINT"),
-            model=_value("TMAP_MODEL_DEPLOYMENT"),
-            subscription=_value("TMAP_AZ_SUBSCRIPTION"),
+            voice_endpoint=_https(_value("POC_VOICE_ENDPOINT"), "POC_VOICE_ENDPOINT"),
+            model=_value("POC_MODEL_DEPLOYMENT"),
+            subscription=_value("POC_AZ_SUBSCRIPTION"),
             auth_mode=mode,
             managed_identity_client_id=_value("AZURE_CLIENT_ID"),
-            voice_name=_value("TMAP_VOICE_NAME", "ko-KR-SunHiNeural"),
-            foundry_resource_override=_value("TMAP_VOICE_FOUNDRY_RESOURCE_OVERRIDE"),
-            agent_identity_client_id=_value("TMAP_VOICE_AGENT_IDENTITY_CLIENT_ID"),
+            voice_name=_value("POC_VOICE_NAME", "ko-KR-SunHiNeural"),
+            foundry_resource_override=_value("POC_VOICE_FOUNDRY_RESOURCE_OVERRIDE"),
+            agent_identity_client_id=_value("POC_VOICE_AGENT_IDENTITY_CLIENT_ID"),
             web_search_toolbox=toolbox,
             agents=agents,
             allowed_origins=allowed_origins,
@@ -136,7 +136,7 @@ class AppSettings:
         warnings = []
         if agent is not None and not agent.version:
             warnings.append(
-                f"TMAP_{provider.upper()}_AGENT_VERSION is not pinned; the service selects the version."
+                f"POC_{provider.upper()}_AGENT_VERSION is not pinned; the service selects the version."
             )
         if agent is not None and any(
             other != provider and reference == agent
@@ -163,15 +163,15 @@ class AppSettings:
         if not self.project_name:
             errors.append("FOUNDRY_PROJECT_ENDPOINT must identify a Foundry project.")
         if self.auth_mode == "cli" and not self.subscription:
-            errors.append("TMAP_AZ_SUBSCRIPTION is required for local CLI authentication.")
+            errors.append("POC_AZ_SUBSCRIPTION is required for local CLI authentication.")
         if voice and not self.voice_endpoint:
-            errors.append("TMAP_VOICE_ENDPOINT is required for Voice Live.")
+            errors.append("POC_VOICE_ENDPOINT is required for Voice Live.")
         if voice and not self.voice_name:
-            errors.append("TMAP_VOICE_NAME must identify the server's default voice.")
+            errors.append("POC_VOICE_NAME must identify the server's default voice.")
         if not voice and not self.model:
-            errors.append("TMAP_MODEL_DEPLOYMENT is required.")
+            errors.append("POC_MODEL_DEPLOYMENT is required.")
         if provider is not None and provider not in self.agents:
-            errors.append(f"Configure TMAP_{provider.upper()}_AGENT_NAME first.")
+            errors.append(f"Configure POC_{provider.upper()}_AGENT_NAME first.")
         return errors
 
     def require(self, provider=None, *, voice=True):
@@ -188,7 +188,7 @@ class AppSettings:
             kwargs = {"client_id": self.managed_identity_client_id} if self.managed_identity_client_id else {}
             return ManagedIdentityCredential(**kwargs)
         if not self.subscription:
-            raise ConfigError("TMAP_AZ_SUBSCRIPTION is required; default subscription is not used.")
-        from tmap_poc.auth import AzTokenCredential
+            raise ConfigError("POC_AZ_SUBSCRIPTION is required; default subscription is not used.")
+        from voice_poc.auth import AzTokenCredential
 
         return AzTokenCredential(subscription=self.subscription)

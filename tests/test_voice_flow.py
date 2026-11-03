@@ -13,9 +13,9 @@ from azure.ai.voicelive.models import (
 )
 from fastapi.testclient import TestClient
 
-from tmap_poc.api import create_app
-from tmap_poc.settings import AppSettings
-from tmap_poc.voice import VoiceServiceError, VoiceSession
+from voice_poc.api import create_app
+from voice_poc.settings import AppSettings
+from voice_poc.voice import VoiceServiceError, VoiceSession
 from tests.test_voice_conversation import settings
 
 
@@ -546,7 +546,7 @@ class VoiceFlowTests(unittest.IsolatedAsyncioTestCase):
     async def test_caption_failure_does_not_end_an_end_to_end_session(self):
         end_to_end = VoiceSession(settings(), "webiq", "PRIVATE_APP_CONTEXT", voice_options={"connection_mode": "end_to_end"})
         self.addCleanup(end_to_end.tools.close)
-        with self.assertLogs("tmap_poc.voice", level="WARNING"):
+        with self.assertLogs("voice_poc.voice", level="WARNING"):
             await end_to_end.handle_event({
                 "type": "conversation.item.input_audio_transcription.failed", "item_id": "heard",
                 "error": {"code": "transcription_failed", "message": "PRIVATE_FAILURE"},
