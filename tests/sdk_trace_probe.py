@@ -15,7 +15,7 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 
-from tmap_poc.telemetry import MetadataExporter
+from voice_poc.telemetry import MetadataExporter
 
 PRIVATE = "PRIVATE_TRANSCRIPT_OFFLINE_SENTINEL"
 

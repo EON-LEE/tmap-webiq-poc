@@ -13,9 +13,9 @@ spec.loader.exec_module(deployment)
 
 def resources():
     names = (
-        "FOUNDRY_PROJECT_ENDPOINT", "TMAP_VOICE_ENDPOINT",
-        "TMAP_BING_AGENT_NAME", "TMAP_BING_AGENT_VERSION",
-        "TMAP_WEBIQ_AGENT_NAME", "TMAP_WEBIQ_AGENT_VERSION",
+        "FOUNDRY_PROJECT_ENDPOINT", "POC_VOICE_ENDPOINT",
+        "POC_BING_AGENT_NAME", "POC_BING_AGENT_VERSION",
+        "POC_WEBIQ_AGENT_NAME", "POC_WEBIQ_AGENT_VERSION",
     )
     app = {
         "identity": {"type": "SystemAssigned"},

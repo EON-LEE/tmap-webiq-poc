@@ -1,4 +1,4 @@
-"""Create or update a complete TMAP WebIQ POC environment with one command.
+"""Create or update a complete WebIQ vs Bing voice POC environment with one command.
 
 Without --apply the script only reads: sign-in, resource names, model quota and an ARM what-if.
 With --apply it runs, in order: resource providers and resource group, shared resources
@@ -34,7 +34,7 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from tmap_poc.agents import PROVIDER_LABELS, WEBIQ_MCP_URL, agent_definition  # noqa: E402
+from voice_poc.agents import PROVIDER_LABELS, WEBIQ_MCP_URL, agent_definition  # noqa: E402
 
 ARM = "https://management.azure.com"
 ARM_RESOURCE = "https://management.azure.com/"
@@ -45,10 +45,10 @@ AZURE_CLI_APP_ID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 SIGN_IN_SECRET = "aad-client-secret"
 SIGN_IN_SCOPE = "user_impersonation"
 WEBIQ_CONNECTION = "webiq-mcp"
-AGENT_NAMES = {"bing": "tmap-voice-bing", "webiq": "tmap-voice-webiq"}
-WEB_SEARCH_TOOLBOX = "tmap-web-search"
+AGENT_NAMES = {"bing": "voice-poc-bing", "webiq": "voice-poc-webiq"}
+WEB_SEARCH_TOOLBOX = "voice-poc-web-search"
 WEB_SEARCH_TOOLS = [{"type": "web_search", "user_location": {"type": "approximate", "country": "KR"}}]
-TAGS = {"workload": "tmap-webiq-poc", "environment": "poc"}
+TAGS = {"workload": "webiq-vs-bing-voice-poc", "environment": "poc"}
 RESOURCE_PROVIDERS = (
     "Microsoft.App", "Microsoft.Bing", "Microsoft.CognitiveServices",
     "Microsoft.ContainerRegistry", "Microsoft.ManagedIdentity", "Microsoft.OperationalInsights",
@@ -184,7 +184,7 @@ class Azure:
         return text
 
     def az(self, *arguments):
-        binary = os.environ.get("TMAP_AZ_BINARY") or shutil.which("az")
+        binary = os.environ.get("POC_AZ_BINARY") or shutil.which("az")
         if not binary:
             raise ProvisionError("Install the Azure CLI and sign in with 'az login'.")
         result = self._run(
@@ -333,7 +333,7 @@ def parameters(ctx, **application):
 
 
 def what_if(azure, ctx, template, params):
-    path = f"{ctx.group_path}/providers/Microsoft.Resources/deployments/tmap-plan/whatIf"
+    path = f"{ctx.group_path}/providers/Microsoft.Resources/deployments/poc-plan/whatIf"
     body = {"properties": {"mode": "Incremental", "template": template, "parameters": params}}
     status, result, headers = azure.arm("POST", path, API_DEPLOYMENTS, body)
     location = headers.get("Location") if status == 202 else None
@@ -359,7 +359,7 @@ def what_if(azure, ctx, template, params):
 
 
 def deploy(azure, ctx, template, params, label):
-    name = f"tmap-{label}-{datetime.now(timezone.utc):%Y%m%d%H%M%S}"
+    name = f"poc-{label}-{datetime.now(timezone.utc):%Y%m%d%H%M%S}"
     path = f"{ctx.group_path}/providers/Microsoft.Resources/deployments/{name}"
     azure.arm("PUT", path, API_DEPLOYMENTS, {
         "properties": {"mode": "Incremental", "template": template, "parameters": params},
@@ -423,7 +423,7 @@ def put_webiq_connection(azure, connection_path, key):
         "authType": "CustomKeys",
         "isSharedToAll": False,
         "credentials": {"keys": {"x-apikey": key}},
-        "metadata": {"purpose": "WebIQ MCP server for the TMAP POC"},
+        "metadata": {"purpose": "WebIQ MCP server for the voice search POC"},
     }})
 
 
@@ -457,7 +457,7 @@ def ensure_agents(azure, ctx, outputs, *, definition=agent_definition):
             continue
         _, created, _ = azure.request(
             "POST", f"{endpoint}/agents/{name}/versions?api-version=v1", FOUNDRY_RESOURCE,
-            {"definition": desired, "description": f"TMAP voice comparison agent using {provider}"},
+            {"definition": desired, "description": f"Voice search comparison agent using {provider}"},
             retry=PROPAGATING, wait=900,
         )
         agents[provider] = {"name": name, "version": str(created["version"])}
@@ -507,8 +507,10 @@ def build_image(azure, ctx, outputs, tag):
 def _scope(scope_id):
     return {
         "id": scope_id, "value": SIGN_IN_SCOPE, "type": "User", "isEnabled": True,
-        "adminConsentDisplayName": "Access TMAP WebIQ POC", "adminConsentDescription": "Access the TMAP WebIQ POC",
-        "userConsentDisplayName": "Access TMAP WebIQ POC", "userConsentDescription": "Access the TMAP WebIQ POC",
+        "adminConsentDisplayName": "Access WebIQ vs Bing voice POC",
+        "adminConsentDescription": "Access the WebIQ vs Bing voice POC",
+        "userConsentDisplayName": "Access WebIQ vs Bing voice POC",
+        "userConsentDescription": "Access the WebIQ vs Bing voice POC",
     }
 
 
@@ -731,18 +733,18 @@ def apply(azure, ctx, template, args, out):
     out(f"Ready: {outputs['appUrl']} (Microsoft Entra sign-in required)")
     out("For local development, put these in .env (no secrets):")
     for line in (
-        "TMAP_AUTH_MODE=cli",
-        f"TMAP_AZ_SUBSCRIPTION={ctx.subscription_id}",
+        "POC_AUTH_MODE=cli",
+        f"POC_AZ_SUBSCRIPTION={ctx.subscription_id}",
         f"FOUNDRY_PROJECT_ENDPOINT={outputs['projectEndpoint']}",
-        f"TMAP_VOICE_ENDPOINT=https://{ctx.names.account}.cognitiveservices.azure.com",
-        f"TMAP_MODEL_DEPLOYMENT={ctx.model['name']}",
+        f"POC_VOICE_ENDPOINT=https://{ctx.names.account}.cognitiveservices.azure.com",
+        f"POC_MODEL_DEPLOYMENT={ctx.model['name']}",
         f"BING_CONNECTION_ID={outputs['bingConnectionId']}",
         f"WEBIQ_CONNECTION_ID={outputs['webiqConnectionId']}",
-        f"TMAP_BING_AGENT_NAME={agents['bing']['name']}",
-        f"TMAP_BING_AGENT_VERSION={agents['bing']['version']}",
-        f"TMAP_WEBIQ_AGENT_NAME={agents['webiq']['name']}",
-        f"TMAP_WEBIQ_AGENT_VERSION={agents['webiq']['version']}",
-        f"TMAP_WEB_SEARCH_TOOLBOX={WEB_SEARCH_TOOLBOX}",
+        f"POC_BING_AGENT_NAME={agents['bing']['name']}",
+        f"POC_BING_AGENT_VERSION={agents['bing']['version']}",
+        f"POC_WEBIQ_AGENT_NAME={agents['webiq']['name']}",
+        f"POC_WEBIQ_AGENT_VERSION={agents['webiq']['version']}",
+        f"POC_WEB_SEARCH_TOOLBOX={WEB_SEARCH_TOOLBOX}",
     ):
         out(f"  {line}")
 
@@ -863,7 +865,7 @@ def parser():
     result.add_argument("--subscription", required=True, help="Subscription ID or name.")
     result.add_argument("--resource-group", required=True, help="Resource group for the environment; created if missing.")
     result.add_argument("--location", default="eastus2", help="Region with Voice Live and the model (default: eastus2).")
-    result.add_argument("--name", default="tmap-webiq-poc", help="Container App name; other names derive from it.")
+    result.add_argument("--name", default="webiq-vs-bing-voice-poc", help="Container App name; other names derive from it.")
     result.add_argument("--model", default="gpt-6-luna")
     result.add_argument("--model-version", default="2026-09-22")
     result.add_argument("--model-sku", default="GlobalStandard")

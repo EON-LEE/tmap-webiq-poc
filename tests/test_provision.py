@@ -31,7 +31,7 @@ SUBSCRIPTION = "00000000-0000-0000-0000-000000000001"
 WEBIQ_KEY = "WEBIQ-KEY-NEVER-PRINTED"
 NEW_SECRET = "NEW-SIGN-IN-SECRET"
 OLD_SECRET = "OLD-SIGN-IN-SECRET"
-ENDPOINT = "https://account.services.ai.azure.com/api/projects/tmap-webiq-poc"
+ENDPOINT = "https://account.services.ai.azure.com/api/projects/webiq-vs-bing-voice-poc"
 OUTPUTS = {
     "projectEndpoint": ENDPOINT,
     "projectId": "/subscriptions/s/resourceGroups/rg/providers/Microsoft.CognitiveServices/accounts/a/projects/p",
@@ -39,7 +39,7 @@ OUTPUTS = {
     "webiqConnectionId": "/subscriptions/s/resourceGroups/rg/providers/Microsoft.CognitiveServices/accounts/a/projects/p/connections/webiq-mcp",
     "registryName": "registry",
     "registryLoginServer": "registry.azurecr.io",
-    "appUrl": "https://tmap-webiq-poc.example.invalid",
+    "appUrl": "https://webiq-vs-bing-voice-poc.example.invalid",
 }
 
 
@@ -243,7 +243,7 @@ def existing_agents():
 
 class RunMixin:
     def run_script(self, cloud, *extra, key=None):
-        environment = {"TMAP_AZ_BINARY": "az"}
+        environment = {"POC_AZ_BINARY": "az"}
         if key:
             environment["WEBIQ_API_KEY"] = key
         output = io.StringIO()
@@ -258,15 +258,15 @@ class RunMixin:
 
 class NameTests(unittest.TestCase):
     def test_names_are_stable_valid_and_unique_per_resource_group(self):
-        first = provision.Names.derive(SUBSCRIPTION, "rg", "tmap-webiq-poc")
-        self.assertEqual(first, provision.Names.derive(SUBSCRIPTION, "rg", "tmap-webiq-poc"))
-        self.assertNotEqual(first.registry, provision.Names.derive(SUBSCRIPTION, "rg2", "tmap-webiq-poc").registry)
+        first = provision.Names.derive(SUBSCRIPTION, "rg", "webiq-vs-bing-voice-poc")
+        self.assertEqual(first, provision.Names.derive(SUBSCRIPTION, "rg", "webiq-vs-bing-voice-poc"))
+        self.assertNotEqual(first.registry, provision.Names.derive(SUBSCRIPTION, "rg2", "webiq-vs-bing-voice-poc").registry)
         self.assertRegex(first.registry, r"^[a-z0-9]{5,50}$")
         self.assertRegex(first.account, r"^[a-z0-9]{2,24}$")
-        self.assertEqual((first.app, first.project, first.sign_in), ("tmap-webiq-poc", "tmap-webiq-poc", "tmap-webiq-poc-login"))
+        self.assertEqual((first.app, first.project, first.sign_in), ("webiq-vs-bing-voice-poc", "webiq-vs-bing-voice-poc", "webiq-vs-bing-voice-poc-login"))
 
     def test_invalid_names_are_rejected(self):
-        for name in ("Tmap", "ab", "tmap--poc", "-tmap", "tmap-", "t" * 25):
+        for name in ("Voice", "ab", "voice--poc", "-voice", "voice-", "v" * 25):
             with self.subTest(name=name), self.assertRaises(provision.ProvisionError):
                 provision.Names.derive(SUBSCRIPTION, "rg", name)
 
@@ -295,7 +295,7 @@ class ApplyTests(RunMixin, unittest.TestCase):
         cloud = FakeCloud()
         output = self.run_script(cloud, "--apply", key=WEBIQ_KEY)
 
-        self.assertIn("Ready: https://tmap-webiq-poc.example.invalid", output)
+        self.assertIn("Ready: https://webiq-vs-bing-voice-poc.example.invalid", output)
         for secret in (WEBIQ_KEY, NEW_SECRET):
             self.assertNotIn(secret, output)
             self.assertFalse(any(secret in " ".join(command) for command in cloud.commands))
@@ -311,9 +311,9 @@ class ApplyTests(RunMixin, unittest.TestCase):
         self.assertTrue(app["deployApp"]["value"])
         self.assertEqual(app["signInClientSecret"]["value"], NEW_SECRET)
         self.assertEqual(app["signInClientId"]["value"], "client-id")
-        self.assertEqual(app["image"]["value"][:len("registry.azurecr.io/tmap-webiq-poc:")], "registry.azurecr.io/tmap-webiq-poc:")
-        self.assertEqual(app["bingAgent"]["value"], {"name": "tmap-voice-bing", "version": "1"})
-        self.assertEqual(app["webSearchToolbox"]["value"], "tmap-web-search")
+        self.assertEqual(app["image"]["value"][:len("registry.azurecr.io/webiq-vs-bing-voice-poc:")], "registry.azurecr.io/webiq-vs-bing-voice-poc:")
+        self.assertEqual(app["bingAgent"]["value"], {"name": "voice-poc-bing", "version": "1"})
+        self.assertEqual(app["webSearchToolbox"]["value"], "voice-poc-web-search")
         self.assertEqual(cloud.bodies("POST", "/toolboxes/"), [{"tools": provision.WEB_SEARCH_TOOLS}])
 
         created = cloud.bodies("POST", "/agents/")
@@ -328,37 +328,37 @@ class ApplyTests(RunMixin, unittest.TestCase):
         self.assertEqual(preauthorized[-1]["api"]["preAuthorizedApplications"][0]["appId"], provision.AZURE_CLI_APP_ID)
 
         order = [url for verb, url, _ in cloud.calls if verb in ("PUT", "POST")]
-        steps = ["/resourceGroups/rg?", "/deployments/tmap-infra-", "/connections/webiq-mcp", "/agents/",
-                 "/toolboxes/", "/applications", "/deployments/tmap-app-"]
+        steps = ["/resourceGroups/rg?", "/deployments/poc-infra-", "/connections/webiq-mcp", "/agents/",
+                 "/toolboxes/", "/applications", "/deployments/poc-app-"]
         positions = [next(index for index, url in enumerate(order) if step in url) for step in steps]
         self.assertEqual(positions, sorted(positions))
 
     def test_rerun_reuses_matching_agents_connection_and_sign_in_secret(self):
         cloud = FakeCloud(group=True, connection=True, agents=existing_agents(), toolbox=True,
                           registration=registration(), app_secret=OLD_SECRET)
-        output = self.run_script(cloud, "--apply", "--image", "registry.azurecr.io/tmap-webiq-poc:old")
+        output = self.run_script(cloud, "--apply", "--image", "registry.azurecr.io/webiq-vs-bing-voice-poc:old")
 
         self.assertIn("WebIQ connection kept.", output)
-        self.assertIn("tmap-voice-bing:7, tmap-voice-webiq:7", output)
-        self.assertIn("Toolbox tmap-web-search kept.", output)
+        self.assertIn("voice-poc-bing:7, voice-poc-webiq:7", output)
+        self.assertIn("Toolbox voice-poc-web-search kept.", output)
         self.assertEqual(cloud.bodies("POST", "/agents/"), [])
         self.assertEqual(cloud.bodies("POST", "/toolboxes/"), [])
         self.assertEqual(cloud.bodies("POST", "/addPassword"), [])
         self.assertEqual(cloud.bodies("PATCH", "/applications/"), [])
         self.assertFalse(any("acr" in command for command in cloud.commands))
         self.assertEqual([url for verb, url, _ in cloud.calls if verb == "PUT" and "/resourceGroups/rg?" in url], [])
-        app = cloud.bodies("PUT", "/deployments/tmap-app-")[0]["properties"]["parameters"]
+        app = cloud.bodies("PUT", "/deployments/poc-app-")[0]["properties"]["parameters"]
         self.assertEqual(app["signInClientSecret"]["value"], OLD_SECRET)
-        self.assertEqual(app["image"]["value"], "registry.azurecr.io/tmap-webiq-poc:old")
+        self.assertEqual(app["image"]["value"], "registry.azurecr.io/webiq-vs-bing-voice-poc:old")
         self.assertNotIn(OLD_SECRET, output)
 
     def test_new_sign_in_secret_replaces_the_reused_one(self):
         cloud = FakeCloud(group=True, connection=True, agents=existing_agents(), toolbox=True,
                           registration=registration(), app_secret=OLD_SECRET)
-        self.run_script(cloud, "--apply", "--image", "registry.azurecr.io/tmap-webiq-poc:old", "--new-sign-in-secret")
+        self.run_script(cloud, "--apply", "--image", "registry.azurecr.io/webiq-vs-bing-voice-poc:old", "--new-sign-in-secret")
         self.assertEqual(len(cloud.bodies("POST", "/addPassword")), 1)
         self.assertFalse(any("/listSecrets" in url for _, url, _ in cloud.calls))
-        app = cloud.bodies("PUT", "/deployments/tmap-app-")[0]["properties"]["parameters"]
+        app = cloud.bodies("PUT", "/deployments/poc-app-")[0]["properties"]["parameters"]
         self.assertEqual(app["signInClientSecret"]["value"], NEW_SECRET)
 
     def test_expiring_or_unknown_stored_secret_is_replaced(self):
@@ -369,9 +369,9 @@ class ApplyTests(RunMixin, unittest.TestCase):
                     current["passwordCredentials"] = [{"hint": "zzz", "endDateTime": "2099-01-01T00:00:00Z"}]
                 cloud = FakeCloud(group=True, connection=True, agents=existing_agents(), toolbox=True,
                                   registration=current, app_secret=OLD_SECRET)
-                self.run_script(cloud, "--apply", "--image", "registry.azurecr.io/tmap-webiq-poc:old")
+                self.run_script(cloud, "--apply", "--image", "registry.azurecr.io/webiq-vs-bing-voice-poc:old")
                 self.assertEqual(len(cloud.bodies("POST", "/addPassword")), 1)
-                app = cloud.bodies("PUT", "/deployments/tmap-app-")[0]["properties"]["parameters"]
+                app = cloud.bodies("PUT", "/deployments/poc-app-")[0]["properties"]["parameters"]
                 self.assertEqual(app["signInClientSecret"]["value"], NEW_SECRET)
 
     def test_failed_what_if_is_an_error_not_no_changes(self):
@@ -390,7 +390,7 @@ class ApplyTests(RunMixin, unittest.TestCase):
             return Response(200, {"ok": True})
 
         azure = provision.Azure("test", run=cloud.run, urlopen=flaky, sleep=lambda _seconds: None)
-        with patch.dict("os.environ", {"TMAP_AZ_BINARY": "az"}):
+        with patch.dict("os.environ", {"POC_AZ_BINARY": "az"}):
             self.assertEqual(azure.request("GET", "https://management.azure.com/x", provision.ARM_RESOURCE)[1], {"ok": True})
             with self.assertRaisesRegex(provision.ProvisionError, "run the same command again"):
                 azure.request("POST", "https://management.azure.com/x", provision.ARM_RESOURCE, {})
@@ -404,7 +404,7 @@ class ApplyTests(RunMixin, unittest.TestCase):
 
         azure = provision.Azure("test", run=cloud.run, urlopen=rejecting, sleep=lambda _seconds: None)
         azure.secret(secret)
-        with patch.dict("os.environ", {"TMAP_AZ_BINARY": "az"}), self.assertRaises(provision.ProvisionError) as caught:
+        with patch.dict("os.environ", {"POC_AZ_BINARY": "az"}), self.assertRaises(provision.ProvisionError) as caught:
             azure.request("GET", "https://management.azure.com/thing", provision.ARM_RESOURCE)
         self.assertNotIn(secret[:4], str(caught.exception))
         self.assertIn("<redacted>", str(caught.exception))
@@ -461,7 +461,7 @@ class DestroyCloud:
             if path.endswith("/applications") and "displayName eq" in urllib.parse.unquote(url):
                 return Response(200, {"value": [{"appId": "login-app"}]})
             if path.endswith("/applications"):
-                return Response(200, {"value": [{"id": "login-object", "appId": "login-app", "displayName": "tmap-webiq-poc-login"}]})
+                return Response(200, {"value": [{"id": "login-object", "appId": "login-app", "displayName": "webiq-vs-bing-voice-poc-login"}]})
             if "/deletedItems/microsoft.graph." in path:
                 return Response(200, {"value": [{"id": "deleted-" + path.rsplit(".", 1)[-1]}]})
             return Response(204)
@@ -497,7 +497,7 @@ class DestroyCloud:
 class DestroyTests(unittest.TestCase):
     def destroy(self, cloud, *extra, answer=None):
         lines = []
-        with patch.dict("os.environ", {"TMAP_AZ_BINARY": "az"}), \
+        with patch.dict("os.environ", {"POC_AZ_BINARY": "az"}), \
                 patch.object(provision.sys, "stdin", type("Tty", (), {"isatty": lambda self: answer is not None})()):
             provision.run(arguments("--destroy", *extra), azure=cloud.azure(), out=lines.append,
                           confirm=lambda _prompt: answer)
@@ -508,7 +508,7 @@ class DestroyTests(unittest.TestCase):
         output = self.destroy(cloud)
         self.assertIn("Plan only (destroy)", output)
         self.assertIn("purge Foundry account foundry (eastus2)", output)
-        self.assertIn("delete Entra sign-in app tmap-webiq-poc-login (login-app)", output)
+        self.assertIn("delete Entra sign-in app webiq-vs-bing-voice-poc-login (login-app)", output)
         self.assertEqual(cloud.deletes(), [])
 
     def test_apply_deletes_group_purges_foundry_and_removes_sign_in_app(self):
@@ -549,7 +549,7 @@ class SetupWebIQConnectionTests(unittest.TestCase):
 
     def test_apply_checks_then_stores_key_without_printing_it(self):
         cloud, lines = FakeCloud(connection=True), []
-        with patch.dict("os.environ", {"WEBIQ_API_KEY": WEBIQ_KEY, "TMAP_AZ_BINARY": "az"}):
+        with patch.dict("os.environ", {"WEBIQ_API_KEY": WEBIQ_KEY, "POC_AZ_BINARY": "az"}):
             setup_webiq.main(["--connection-id", self.CONNECTION, "--apply"], azure=cloud.azure(), out=lines.append)
         self.assertEqual([verb for verb, _, _ in cloud.calls], ["POST", "PUT"])
         self.assertEqual(cloud.calls[1][2]["properties"]["credentials"]["keys"]["x-apikey"], WEBIQ_KEY)

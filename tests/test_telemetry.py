@@ -17,8 +17,8 @@ from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 from opentelemetry.trace import Link, Status, StatusCode
 
-from tmap_poc import telemetry
-from tmap_poc.settings import ConfigError
+from voice_poc import telemetry
+from voice_poc.settings import ConfigError
 
 
 class TelemetryTests(unittest.TestCase):
@@ -27,7 +27,7 @@ class TelemetryTests(unittest.TestCase):
         self.provider = TracerProvider()
         self.provider.add_span_processor(SimpleSpanProcessor(self.exporter))
         self.tracer = self.provider.get_tracer("offline-tests")
-        self.patch = patch("tmap_poc.telemetry.tracer", return_value=self.tracer)
+        self.patch = patch("voice_poc.telemetry.tracer", return_value=self.tracer)
         self.patch.start()
 
     def tearDown(self):
@@ -69,12 +69,12 @@ class TelemetryTests(unittest.TestCase):
         self.assertNotIn("app.voice.response_id", event.attributes)
 
     def test_missing_azure_export_configuration_fails_explicitly(self):
-        with patch.dict(os.environ, {"TMAP_TRACE_EXPORTER": "azure"}, clear=True):
+        with patch.dict(os.environ, {"POC_TRACE_EXPORTER": "azure"}, clear=True):
             with self.assertRaises(ConfigError):
                 telemetry.configure_tracing()
 
     def test_existing_exporter_cannot_bypass_metadata_guard(self):
-        with patch.dict(os.environ, {"TMAP_TRACE_EXPORTER": "console"}, clear=True):
+        with patch.dict(os.environ, {"POC_TRACE_EXPORTER": "console"}, clear=True):
             with patch.object(telemetry.trace, "get_tracer_provider", return_value=self.provider):
                 with self.assertRaisesRegex(ConfigError, "already configured"):
                     telemetry.configure_tracing()
@@ -92,7 +92,7 @@ class TelemetryTests(unittest.TestCase):
     def test_metadata_exporter_keeps_lifecycle_metadata_but_not_private_content(self):
         safe = InMemorySpanExporter()
         provider = TracerProvider(resource=Resource({
-            "service.name": "navigation-voice-agent", "private.resource": "PRIVATE_RESOURCE",
+            "service.name": "voice-search-poc", "private.resource": "PRIVATE_RESOURCE",
         }))
         provider.add_span_processor(SimpleSpanProcessor(telemetry.MetadataExporter(safe)))
         attributes = {
@@ -128,7 +128,7 @@ class FoundryTracingTests(unittest.TestCase):
     def setUp(self):
         self.stack = ExitStack()
         self.addCleanup(self.stack.close)
-        self.stack.enter_context(patch.dict(os.environ, {"TMAP_TRACE_EXPORTER": "foundry"}, clear=True))
+        self.stack.enter_context(patch.dict(os.environ, {"POC_TRACE_EXPORTER": "foundry"}, clear=True))
         for name, value in (("_provider", None), ("_mode", "none"), ("_closed", False)):
             self.stack.enter_context(patch.object(telemetry, name, value))
         self.stack.enter_context(patch.object(
@@ -142,7 +142,7 @@ class FoundryTracingTests(unittest.TestCase):
         self.stack.enter_context(patch.dict(sys.modules, {
             "azure.monitor.opentelemetry.exporter": SimpleNamespace(AzureMonitorTraceExporter=self.azure),
         }))
-        self.settings_from_env = self.stack.enter_context(patch("tmap_poc.settings.AppSettings.from_env"))
+        self.settings_from_env = self.stack.enter_context(patch("voice_poc.settings.AppSettings.from_env"))
         self.config = self.settings_from_env.return_value
         self.config.project_endpoint = "https://example.invalid/api/projects/current"
         self.credential = self.config.credential.return_value
@@ -190,7 +190,7 @@ class FoundryTracingTests(unittest.TestCase):
         telemetry.configure_tracing()
         self.lookup.assert_called_once_with()
         self.install.assert_called_once()
-        os.environ["TMAP_TRACE_EXPORTER"] = "azure"
+        os.environ["POC_TRACE_EXPORTER"] = "azure"
         with self.assertRaisesRegex(ConfigError, "Restart"):
             telemetry.configure_tracing()
         self.azure.from_connection_string.assert_called_once()
@@ -252,7 +252,7 @@ class FoundryTracingTests(unittest.TestCase):
         self.lookup.assert_called_once_with()
 
     def test_explicit_azure_mode_still_uses_only_environment_connection(self):
-        os.environ.update(TMAP_TRACE_EXPORTER="azure", APPLICATIONINSIGHTS_CONNECTION_STRING="offline-explicit-connection")
+        os.environ.update(POC_TRACE_EXPORTER="azure", APPLICATIONINSIGHTS_CONNECTION_STRING="offline-explicit-connection")
         telemetry.configure_tracing()
         self.azure.from_connection_string.assert_called_once_with(
             "offline-explicit-connection", disable_offline_storage=True,
@@ -261,10 +261,10 @@ class FoundryTracingTests(unittest.TestCase):
         self.client.assert_not_called()
 
     def test_console_remains_default_and_none_does_no_lookup(self):
-        os.environ["TMAP_TRACE_EXPORTER"] = "none"
+        os.environ["POC_TRACE_EXPORTER"] = "none"
         telemetry.configure_tracing()
         self.provider.assert_not_called()
-        del os.environ["TMAP_TRACE_EXPORTER"]
+        del os.environ["POC_TRACE_EXPORTER"]
         telemetry.configure_tracing()
         self.console.assert_called_once_with()
         self.settings_from_env.assert_not_called()

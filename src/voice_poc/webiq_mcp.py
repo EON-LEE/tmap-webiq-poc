@@ -5,7 +5,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from time import monotonic
 
-from tmap_poc.settings import ConfigError
+from voice_poc.settings import ConfigError
 
 _ERROR = "WebIQ 연결 정보를 확인하지 못했습니다. Foundry 프로젝트의 WebIQ 연결과 권한을 확인하세요."
 _TTL_SECONDS = 600

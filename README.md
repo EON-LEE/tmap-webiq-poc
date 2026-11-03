@@ -1,6 +1,6 @@
-# TMAP 음성 검색 비교: WebIQ vs Grounding with Bing
+# Azure 음성 검색 비교 POC: WebIQ vs Grounding with Bing
 
-TMAP 차량 음성 에이전트에 붙일 웹 검색을 고르기 위한 데모다. 같은 질문(텍스트 또는 음성)을
+Azure에서 음성 에이전트에 붙일 웹 검색을 비교하는 POC다. 같은 질문(텍스트 또는 음성)을
 WebIQ와 Grounding with Bing에 동시에 보내고, 검색·답변 과정과 걸린 시간을 나란히 보여 준다.
 Azure Voice Live와 Microsoft Foundry Agent를 사용한다.
 
@@ -41,13 +41,13 @@ WSL Ubuntu에서 실행하고 Windows 브라우저로 접속한다. 프런트엔
 
 ```bash
 cp config/runtime.example.env .env        # provision.py가 출력한 값을 넣는다
-export UV_PROJECT_ENVIRONMENT="$HOME/.cache/tmap-webiq-poc/$(basename "$PWD")-venv"
+export UV_PROJECT_ENVIRONMENT="$HOME/.cache/webiq-vs-bing-voice-poc/$(basename "$PWD")-venv"
 uv sync --frozen
-uv run tmap serve --port 8000
+uv run voice-poc serve --port 8000
 ```
 
-http://localhost:8000 을 연다. 다른 포트를 쓰면 `TMAP_ALLOWED_ORIGINS`에 그 주소를 추가한다.
-기존 Foundry 프로젝트에 Agent를 등록할 때는 `uv run tmap prepare-agents`(계획)와 `--apply`(등록)를 쓴다.
+http://localhost:8000 을 연다. 다른 포트를 쓰면 `POC_ALLOWED_ORIGINS`에 그 주소를 추가한다.
+기존 Foundry 프로젝트에 Agent를 등록할 때는 `uv run voice-poc prepare-agents`(계획)와 `--apply`(등록)를 쓴다.
 
 ## 테스트
 
@@ -63,13 +63,13 @@ python scripts/scan_secrets.py                # 커밋 전 비밀값 검사
 
 | 위치 | 내용 |
 | --- | --- |
-| `src/tmap_poc/api.py`, `cli.py` | 웹 API와 WebSocket(`/ws/voice`), `tmap serve`, `tmap prepare-agents` |
-| `src/tmap_poc/voice.py`, `voice_options.py` | Voice Live 세션과 이벤트 중계, 음성 설정 검증 |
-| `src/tmap_poc/webiq_mcp.py`, `web_search.py` | WebIQ MCP 연결, Toolbox Web Search 호출 |
-| `src/tmap_poc/agents.py` | 두 Agent의 공통 지시와 검색 도구 |
-| `src/tmap_poc/settings.py`, `auth.py` | 환경 설정, Azure CLI·Managed Identity 인증 |
-| `src/tmap_poc/telemetry.py`, `tool_calls.py`, `citations.py` | Trace, 도구 호출 관측, 인용 링크 정리 |
-| `src/tmap_poc/static/` | 비교 화면 |
+| `src/voice_poc/api.py`, `cli.py` | 웹 API와 WebSocket(`/ws/voice`), `voice-poc serve`, `voice-poc prepare-agents` |
+| `src/voice_poc/voice.py`, `voice_options.py` | Voice Live 세션과 이벤트 중계, 음성 설정 검증 |
+| `src/voice_poc/webiq_mcp.py`, `web_search.py` | WebIQ MCP 연결, Toolbox Web Search 호출 |
+| `src/voice_poc/agents.py` | 두 Agent의 공통 지시와 검색 도구 |
+| `src/voice_poc/settings.py`, `auth.py` | 환경 설정, Azure CLI·Managed Identity 인증 |
+| `src/voice_poc/telemetry.py`, `tool_calls.py`, `citations.py` | Trace, 도구 호출 관측, 인용 링크 정리 |
+| `src/voice_poc/static/` | 비교 화면 |
 | `infra/`, `scripts/` | Bicep 템플릿, 올리기·내리기·코드 갱신·키 교체·연결 점검·비밀값 검사 |
 | `docs/`, `results/` | 문서와 검증 결과 |
 

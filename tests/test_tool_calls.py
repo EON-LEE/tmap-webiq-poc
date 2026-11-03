@@ -14,10 +14,10 @@ from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 from starlette.websockets import WebSocketDisconnect
 
-from tmap_poc import telemetry
-from tmap_poc.agents import AgentReference
-from tmap_poc.tool_calls import ToolLifecycle, public_call
-from tmap_poc.voice import VoiceSession
+from voice_poc import telemetry
+from voice_poc.agents import AgentReference
+from voice_poc.tool_calls import ToolLifecycle, public_call
+from voice_poc.voice import VoiceSession
 from tests.test_voice_app import settings
 
 
@@ -68,9 +68,9 @@ class ToolLifecycleTests(unittest.TestCase):
         self.provider = TracerProvider()
         self.provider.add_span_processor(SimpleSpanProcessor(telemetry.MetadataExporter(self.exporter)))
         self.tracer = self.provider.get_tracer("lifecycle-tests")
-        self.patch = patch("tmap_poc.telemetry.tracer", return_value=self.tracer)
+        self.patch = patch("voice_poc.telemetry.tracer", return_value=self.tracer)
         self.patch.start()
-        self.root = self.tracer.start_span("navigation.voice.session")
+        self.root = self.tracer.start_span("voice.session")
         self.now = 100
         self.tools = ToolLifecycle(self.root, clock=lambda: self.now)
 
@@ -327,7 +327,7 @@ class VoiceToolLifecycleTests(unittest.IsolatedAsyncioTestCase):
                 session = VoiceSession(settings(), "webiq")
                 session.agent = AgentReference("actual-selected-agent", version)
                 socket = SimpleNamespace(send_json=AsyncMock())
-                with patch("tmap_poc.telemetry.tracer", return_value=provider.get_tracer("agent-tests")):
+                with patch("voice_poc.telemetry.tracer", return_value=provider.get_tracer("agent-tests")):
                     with patch.object(session, "_run", new=AsyncMock(return_value="service_closed")):
                         await session.run(socket)
                 parent = exporter.get_finished_spans()[0]
@@ -345,8 +345,8 @@ class VoiceToolLifecycleTests(unittest.IsolatedAsyncioTestCase):
         provider.add_span_processor(SimpleSpanProcessor(exporter))
         session = VoiceSession(settings(), "webiq")
         socket = SimpleNamespace(send_json=AsyncMock())
-        with patch("tmap_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
-            with telemetry.span("navigation.voice.session") as parent:
+        with patch("voice_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
+            with telemetry.span("voice.session") as parent:
                 session.trace_span = parent
                 session.tools.parent = parent
                 for event in (
@@ -373,8 +373,8 @@ class VoiceToolLifecycleTests(unittest.IsolatedAsyncioTestCase):
         provider.add_span_processor(SimpleSpanProcessor(exporter))
         session = VoiceSession(settings(), "webiq")
         socket = SimpleNamespace(send_json=AsyncMock())
-        with patch("tmap_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
-            with telemetry.span("navigation.voice.session") as parent:
+        with patch("voice_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
+            with telemetry.span("voice.session") as parent:
                 session.trace_span = parent
                 session.tools.parent = parent
                 for event in (
@@ -416,7 +416,7 @@ class VoiceToolLifecycleTests(unittest.IsolatedAsyncioTestCase):
                         raise asyncio.CancelledError()
                     return "service_closed"
 
-                with patch("tmap_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
+                with patch("voice_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
                     with patch.object(session, "_run", side_effect=run):
                         if mode in ("stop", "closed"):
                             await session.run(socket)
@@ -464,7 +464,7 @@ class VoiceToolLifecycleTests(unittest.IsolatedAsyncioTestCase):
 
         session = VoiceSession(settings(), "webiq", connector=connector)
         socket = SimpleNamespace(send_json=AsyncMock(), receive=asyncio.Queue().get)
-        with patch("tmap_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
+        with patch("voice_poc.telemetry.tracer", return_value=provider.get_tracer("voice-tests")):
             self.assertEqual(await session.run(socket), "service_closed")
         tool = [entry.args[0] for entry in socket.send_json.call_args_list if entry.args[0]["type"] == "tool"][0]
         self.assertEqual(tool["status"], "completed")

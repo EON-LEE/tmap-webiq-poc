@@ -47,7 +47,7 @@ WebIQ 키와 로그인 비밀값은 HTTPS 요청 본문으로만 보내며 명�
 
 | 옵션 | 기본값 | 설명 |
 | --- | --- | --- |
-| `--name` | `tmap-webiq-poc` | Container App 이름. 다른 리소스 이름은 이 값과 구독·리소스 그룹으로 정한다 |
+| `--name` | `webiq-vs-bing-voice-poc` | Container App 이름. 다른 리소스 이름은 이 값과 구독·리소스 그룹으로 정한다 |
 | `--location` | `eastus2` | Voice Live와 모델을 함께 쓸 수 있는 지역 |
 | `--model`, `--model-version`, `--model-sku`, `--model-capacity` | `gpt-6-luna`, `2026-09-22`, `GlobalStandard`, `250` | 두 Agent의 모델 |
 | `--image` | 없음 | 이미 있는 이미지를 쓰고 빌드를 건너뛴다 |

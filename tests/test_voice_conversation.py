@@ -7,10 +7,10 @@ from unittest.mock import AsyncMock, patch
 
 from fastapi.testclient import TestClient
 
-from tmap_poc.agents import AgentReference
-from tmap_poc.api import create_app
-from tmap_poc.settings import AppSettings
-from tmap_poc.voice import VoiceServiceError, VoiceSession
+from voice_poc.agents import AgentReference
+from voice_poc.api import create_app
+from voice_poc.settings import AppSettings
+from voice_poc.voice import VoiceServiceError, VoiceSession
 
 
 def settings(**overrides):
@@ -41,7 +41,7 @@ class ProviderReadinessTests(unittest.TestCase):
         self.assertEqual(bing["readiness_scope"], "configuration_only")
         self.assertEqual(bing["agent"], {"name": "test-bing", "version": "1", "pinned": True})
         self.assertFalse(webiq["configured"])
-        self.assertIn("TMAP_WEBIQ_AGENT_NAME", " ".join(webiq["errors"]))
+        self.assertIn("POC_WEBIQ_AGENT_NAME", " ".join(webiq["errors"]))
         self.assertIsNone(webiq["agent"])
         self.assertEqual(bing["label"], "Grounding with Bing")
         self.assertEqual(webiq["label"], "WebIQ")
@@ -515,8 +515,8 @@ class ConversationEventsTests(unittest.IsolatedAsyncioTestCase):
         self.assertLess(order.index(("service", "received")), order.index(("audio", sent[-1])))
 
     async def test_slow_browser_send_diagnostic_does_not_log_content(self):
-        with patch("tmap_poc.voice.monotonic", side_effect=[0, 1]):
-            with self.assertLogs("tmap_poc.voice", level="WARNING") as captured:
+        with patch("voice_poc.voice.monotonic", side_effect=[0, 1]):
+            with self.assertLogs("voice_poc.voice", level="WARNING") as captured:
                 await self.session._send(self.socket, {
                     "type": "tool", "output": "PRIVATE_SEARCH_OUTPUT",
                 })
@@ -533,8 +533,8 @@ class ConversationEventsTests(unittest.IsolatedAsyncioTestCase):
         await queue.put({"type": "websocket.receive", "bytes": audio})
         await queue.put({"type": "websocket.receive", "text": '{"type":"stop"}'})
         self.socket.receive = queue.get
-        with patch("tmap_poc.voice.monotonic", side_effect=[0, 0, 0, 1, 1, 1]):
-            with self.assertLogs("tmap_poc.voice", level="WARNING") as captured:
+        with patch("voice_poc.voice.monotonic", side_effect=[0, 0, 0, 1, 1, 1]):
+            with self.assertLogs("voice_poc.voice", level="WARNING") as captured:
                 await self.session._from_browser(self.connection, self.socket)
         message = " ".join(captured.output)
         self.assertIn("Slow Voice audio upload", message)
@@ -543,9 +543,9 @@ class ConversationEventsTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn(base64.b64encode(audio).decode("ascii"), message)
 
     async def test_event_loop_monitor_reports_lag_and_remains_cancellable(self):
-        with patch("tmap_poc.voice.monotonic", side_effect=[0, 1]):
-            with patch("tmap_poc.voice.asyncio.sleep", new=AsyncMock(side_effect=[None, asyncio.CancelledError])):
-                with self.assertLogs("tmap_poc.voice", level="WARNING") as captured:
+        with patch("voice_poc.voice.monotonic", side_effect=[0, 1]):
+            with patch("voice_poc.voice.asyncio.sleep", new=AsyncMock(side_effect=[None, asyncio.CancelledError])):
+                with self.assertLogs("voice_poc.voice", level="WARNING") as captured:
                     with self.assertRaises(asyncio.CancelledError):
                         await self.session._monitor_event_loop()
         self.assertIn("Voice event-loop lag", captured.output[0])

@@ -13,8 +13,8 @@ import time
 
 
 def az_binary():
-    """Azure CLI used for local tokens. TMAP_AZ_BINARY pins it explicitly."""
-    explicit = os.environ.get("TMAP_AZ_BINARY", "").strip()
+    """Azure CLI used for local tokens. POC_AZ_BINARY pins it explicitly."""
+    explicit = os.environ.get("POC_AZ_BINARY", "").strip()
     if explicit:
         return explicit
     linux = os.path.expanduser("~/.local/bin/az")

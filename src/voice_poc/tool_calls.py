@@ -9,7 +9,7 @@ from opentelemetry import trace
 from opentelemetry.context import Context
 from opentelemetry.trace import Status, StatusCode
 
-from tmap_poc import telemetry
+from voice_poc import telemetry
 
 
 def public_call(item):

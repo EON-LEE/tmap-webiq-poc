@@ -68,9 +68,9 @@ _AGENT_LIMITATION = (
     "실행 구조가 다릅니다. model과 Agent 연결 쿼리를 함께 보내는 조합은 사용하지 않습니다."
 )
 _AGENT_TOOL_DESCRIPTION = (
-    "A Korean navigation information assistant. Use it for web searches, current facts, "
-    "place recommendations, opening hours, parking, events and charging information. "
-    "Include relevant navigation context and the user's question."
+    "A Korean voice information assistant. Use it for web searches, current facts, "
+    "news, prices, opening hours, events and place information. "
+    "Include relevant application context and the user's question."
 )
 _BING_SEARCH_INSTRUCTIONS = (
     "You are a Korean voice supervisor connected to one existing Foundry Agent tool. "
@@ -79,7 +79,7 @@ _BING_SEARCH_INSTRUCTIONS = (
     "using the supplied application context, call the configured foundry_agent tool. "
     "Do not answer those questions from your own knowledge or invent search results. "
     "Pass the user's full request in their own words, including what they asked the Agent to do; do not shorten it to keywords. "
-    "Include relevant user-provided application/navigation context and conversation details "
+    "Include relevant user-provided application context and conversation details "
     "in the request to the Agent. The Agent owns retrieval and information-task reasoning. "
     "Return its answer directly; do not replace it with a separate factual answer. "
     "If the tool fails, say that the request could not be completed rather than guessing. "

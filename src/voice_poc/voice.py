@@ -24,12 +24,12 @@ from azure.ai.voicelive.models import (
 )
 from starlette.websockets import WebSocketDisconnect
 
-from tmap_poc.agents import PROVIDER_LABELS
-from tmap_poc.citations import citation_links
-from tmap_poc.settings import ConfigError
-from tmap_poc.telemetry import foundry_response_link, span, trace_headers
-from tmap_poc.tool_calls import ToolLifecycle
-from tmap_poc.voice_options import (
+from voice_poc.agents import PROVIDER_LABELS
+from voice_poc.citations import citation_links
+from voice_poc.settings import ConfigError
+from voice_poc.telemetry import foundry_response_link, span, trace_headers
+from voice_poc.tool_calls import ToolLifecycle
+from voice_poc.voice_options import (
     FOLLOWUP_INSTRUCTIONS, build_agent_session, build_end_to_end_session,
     build_end_to_end_web_search_session, validate_options,
 )
@@ -184,7 +184,7 @@ def context_message(context, at=None):
     at = at or datetime.now(ZoneInfo("Asia/Seoul")).isoformat(timespec="seconds")
     return (
         f"대화 기준시각: {at}\n"
-        f"앱에서 전달한 내비게이션 맥락:\n{context or '별도 앱 맥락 없음'}\n"
+        f"앱에서 전달한 맥락:\n{context or '별도 앱 맥락 없음'}\n"
         "이 메시지 자체에는 답하지 말고 다음 사용자 질문을 해석할 때 참고하세요."
     )
 
@@ -283,7 +283,7 @@ class VoiceSession:
             self.options["connection_mode"] == "end_to_end" and provider == "bing"
             and settings.web_search_toolbox_url
         ):
-            from tmap_poc.web_search import ToolboxWebSearch
+            from voice_poc.web_search import ToolboxWebSearch
 
             self.web_search = ToolboxWebSearch(settings)
         self.web_search_queue = asyncio.Queue()
@@ -460,7 +460,7 @@ class VoiceSession:
             attributes["gen_ai.request.model"] = model
         if self.agent.version:
             attributes["gen_ai.agent.version"] = self.agent.version
-        with span("navigation.voice.session", **attributes) as current:
+        with span("voice.session", **attributes) as current:
             self.trace_span = current
             self.tools.parent = current
             status, error = "incomplete", "session_closed"
@@ -515,7 +515,7 @@ class VoiceSession:
                 "client_id": self.settings.agent_identity_client_id or None,
             }
             if self.provider == "webiq":
-                from tmap_poc.webiq_mcp import resolve_webiq_mcp_target
+                from voice_poc.webiq_mcp import resolve_webiq_mcp_target
 
                 target_config = await resolve_webiq_mcp_target(self.settings, self.agent)
                 search_attachment = "mcp"
@@ -626,7 +626,7 @@ class VoiceSession:
 
     async def _web_search_worker(self, socket):
         """Run the model's web_search calls on the Foundry Toolbox, then ask for the answer."""
-        from tmap_poc.web_search import WebSearchError
+        from voice_poc.web_search import WebSearchError
 
         await self.connection_opened.wait()
         while True:

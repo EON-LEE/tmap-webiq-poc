@@ -5,7 +5,7 @@ SDK의 내용 기록 끄기 옵션이 적용되지 않는 경로가 있어, expo
 
 ## 설정
 
-| `TMAP_TRACE_EXPORTER` | 동작 |
+| `POC_TRACE_EXPORTER` | 동작 |
 | --- | --- |
 | `console`(로컬 기본값) | 표준 출력에 메타데이터 span을 쓴다 |
 | `none` | tracing을 켜지 않는다. `provision.py`로 만든 배포의 값이다 |
@@ -20,7 +20,7 @@ Application Insights 연결이 없으면 시작하지 않는다. 이때 Foundry�
 
 | 이름 | 의미 |
 | --- | --- |
-| `navigation.voice.session` | 앱의 음성 세션 1개 |
+| `voice.session` | 앱의 음성 세션 1개 |
 | `voice.response.created` 이벤트 | Voice Live 응답 시작 |
 | `tool.call.observed` 이벤트 | 응답에서 실제로 받은 도구 호출 |
 | `observe_tool <도구>` | Voice Live가 보낸 도구 시작·끝 이벤트를 앱이 받은 구간. 서버 내부 검색 시간이 아니다 |
