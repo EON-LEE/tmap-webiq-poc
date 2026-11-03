@@ -2,12 +2,12 @@ export const providerNames = { webiq: "WebIQ", bing: "Grounding with Bing" };
 export const comparedProviders = ["webiq", "bing"];
 
 export const modeNames = {
-  agent: "Agent 연결 (기본)", realtime_agent_tool: "End-to-end (Realtime)",
+  agent: "Agent 연결 (기본)", end_to_end: "End-to-end (Realtime)",
 };
 
 // How each engine is reached for the chosen voice pipeline; the actual route is reported by the server.
 export function routeSummary(mode) {
-  if (mode === "realtime_agent_tool") {
+  if (mode === "end_to_end") {
     return "Realtime 모델이 음성을 직접 듣고 말합니다. Agent 없이 모델이 두 검색을 바로 부릅니다: "
       + "WebIQ는 MCP로 WebIQ 검색, Bing은 앱 서버가 Foundry Toolbox의 Bing 기반 Web Search(MCP)를 불러 결과를 전달합니다"
       + "(Toolbox가 없는 환경에서는 Bing Agent). "

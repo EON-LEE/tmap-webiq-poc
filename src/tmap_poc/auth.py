@@ -12,7 +12,7 @@ import subprocess
 import time
 
 
-def _az_binary():
+def az_binary():
     """Azure CLI used for local tokens. TMAP_AZ_BINARY pins it explicitly."""
     explicit = os.environ.get("TMAP_AZ_BINARY", "").strip()
     if explicit:
@@ -57,7 +57,7 @@ class TokenProvider:
         lifetime is what let a stale token be reused: the cached value looked
         fresh to us long after Entra had stopped honouring it.
         """
-        cmd = [_az_binary(), "account", "get-access-token",
+        cmd = [az_binary(), "account", "get-access-token",
                "--resource", self.scope, "-o", "json"]
         if self.subscription:
             cmd[3:3] = ["--subscription", self.subscription]

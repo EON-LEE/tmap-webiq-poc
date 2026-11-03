@@ -10,7 +10,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from tmap_poc.auth import _az_binary  # noqa: E402
+from tmap_poc.auth import az_binary  # noqa: E402
 
 
 class DeploymentError(RuntimeError):
@@ -18,7 +18,7 @@ class DeploymentError(RuntimeError):
 
 
 def command(subscription, *arguments):
-    return [_az_binary(), *arguments, "--subscription", subscription, "--only-show-errors"]
+    return [az_binary(), *arguments, "--subscription", subscription, "--only-show-errors"]
 
 
 def read_json(arguments):
@@ -59,7 +59,7 @@ def validate_existing(app, auth, *, allow_anonymous=False):
         raise DeploymentError("This helper only updates a single-container application.")
     env = {item["name"]: item for item in containers[0].get("env", [])}
     required = (
-        "GWB_PROJECT_ENDPOINT", "TMAP_VOICE_ENDPOINT",
+        "FOUNDRY_PROJECT_ENDPOINT", "TMAP_VOICE_ENDPOINT",
         "TMAP_BING_AGENT_NAME", "TMAP_BING_AGENT_VERSION",
         "TMAP_WEBIQ_AGENT_NAME", "TMAP_WEBIQ_AGENT_VERSION",
     )

@@ -12,11 +12,10 @@ from urllib.parse import parse_qs, urlparse
 from fastapi.testclient import TestClient
 from starlette.websockets import WebSocketDisconnect
 
+from tmap_poc.agents import AgentReference, SEARCH_AGENT_INSTRUCTIONS, agent_definition
 from tmap_poc.api import create_app
-from tmap_poc.app_settings import AppSettings
 from tmap_poc.cli import prepare_agents
-from tmap_poc.config import ConfigError
-from tmap_poc.profiles import AgentReference, SEARCH_AGENT_INSTRUCTIONS, agent_definition
+from tmap_poc.settings import AppSettings, ConfigError
 from tmap_poc.voice_options import VoiceOptionsError
 from tmap_poc.voice import (
     VoiceProtocolError, VoiceServiceError, VoiceSession, connection_url, parse_control,
@@ -44,7 +43,7 @@ class SettingsTests(unittest.TestCase):
             config = AppSettings.from_env()
             with self.assertRaises(ConfigError):
                 config.credential()
-            self.assertIn("TMAP_POC_AZ_SUBSCRIPTION", " ".join(config.problems()))
+            self.assertIn("TMAP_AZ_SUBSCRIPTION", " ".join(config.problems()))
 
     def test_managed_identity_requires_no_subscription(self):
         config = AppSettings(auth_mode="managed_identity")
@@ -65,13 +64,13 @@ class SettingsTests(unittest.TestCase):
                     AppSettings.from_env()
 
     def test_prepare_defaults_to_no_client_creation(self):
-        with patch.dict(os.environ, {"GWB_CONNECTION_ID": "bing-test", "WEBIQ_CONNECTION_ID": "webiq-test"}):
+        with patch.dict(os.environ, {"BING_CONNECTION_ID": "bing-test", "WEBIQ_CONNECTION_ID": "webiq-test"}):
             with patch("azure.ai.projects.AIProjectClient") as client:
                 prepare_agents(settings(), "example", False)
                 client.assert_not_called()
 
     def test_prepare_apply_registers_each_provider_with_its_connection(self):
-        with patch.dict(os.environ, {"GWB_CONNECTION_ID": "bing-test", "WEBIQ_CONNECTION_ID": "webiq-test"}):
+        with patch.dict(os.environ, {"BING_CONNECTION_ID": "bing-test", "WEBIQ_CONNECTION_ID": "webiq-test"}):
             with patch("azure.ai.projects.AIProjectClient") as client, redirect_stdout(io.StringIO()):
                 prepare_agents(settings(), "example", True)
         create = client.return_value.__enter__.return_value.agents.create_version
@@ -80,7 +79,7 @@ class SettingsTests(unittest.TestCase):
             {"agent_name": "example-webiq", "definition": agent_definition("webiq", "test-model", "webiq-test")},
         ])
 
-    def test_profiles_share_instructions_not_tools(self):
+    def test_agents_share_instructions_not_tools(self):
         bing = agent_definition("bing", "test-model", "bing-test")
         webiq = agent_definition("webiq", "test-model", "webiq-test")
         for field in ("instructions", "model", "reasoning", "kind"):
@@ -241,8 +240,8 @@ class VoiceEventsTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("arrival 20:10", item["content"][0]["text"])
         self.assertNotIn("conversation-id", parse_qs(urlparse(connection_url(settings(), fresh.agent)).query))
 
-    async def test_realtime_route_uses_model_query_and_pinned_agent_tool(self):
-        options = {"connection_mode": "realtime_agent_tool", "realtime_model": "gpt-realtime-mini"}
+    async def test_end_to_end_route_uses_model_query_and_pinned_agent_tool(self):
+        options = {"connection_mode": "end_to_end", "realtime_model": "gpt-realtime-mini"}
         session = VoiceSession(settings(), "webiq", voice_options=options)
         query = parse_qs(urlparse(connection_url(settings(), session.agent, voice_options=options)).query)
         self.assertEqual(query["model"], ["gpt-realtime-mini"])
@@ -250,7 +249,7 @@ class VoiceEventsTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("agent-project-name", query)
         self.assertLessEqual(len(session.context_id), 32)
 
-    async def test_realtime_runtime_sends_trusted_agent_target_with_selected_model_route(self):
+    async def test_end_to_end_runtime_sends_trusted_agent_target_with_selected_model_route(self):
         captured = {}
         events = asyncio.Queue()
         browser = asyncio.Queue()
@@ -282,7 +281,7 @@ class VoiceEventsTests(unittest.IsolatedAsyncioTestCase):
         socket = SimpleNamespace(receive=browser.get, send_json=send)
         await events.put({"type": "session.updated"})
         session = VoiceSession(settings(), "bing", connector=connector, voice_options={
-            "connection_mode": "realtime_agent_tool", "realtime_model": "gpt-realtime",
+            "connection_mode": "end_to_end", "realtime_model": "gpt-realtime",
             "voice_name": "openai:coral", "return_agent_response_directly": False,
         })
         self.assertEqual(await asyncio.wait_for(session.run(socket), SESSION_TEST_TIMEOUT), "stopped")

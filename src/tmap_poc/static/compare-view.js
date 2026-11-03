@@ -1,5 +1,5 @@
 import { textNode, safeSourceUrl, sourceLink, isRecord, shortText, toolOutput, compactStringify } from "./search-results.js";
-import { providerNames, comparedProviders } from "./run-labels.js";
+import { providerNames, comparedProviders } from "./labels.js";
 
 const TOOL_LABELS = {
   web: "웹 검색", news: "뉴스 검색", places: "장소 검색", finance: "금융 조회", browse: "페이지 열람",
@@ -152,7 +152,7 @@ export function createCompareView({ onReplay, onLive }) {
   }
   const hidesSearch = (cell) => cell.provider === "bing" && (cell.mode || "agent") === "agent";
   // End-to-end models hear the audio itself; the on-screen caption comes from a separate recognition model.
-  const hearsAudio = (cell) => cell.mode === "realtime_agent_tool";
+  const hearsAudio = (cell) => cell.mode === "end_to_end";
   // A model that talks may say a short filler before it searches; only what follows its last search is the answer.
   // The server also marks a response that ended in a search, since its transcript can arrive after the search starts.
   const lastSearchAt = (cell) => (cell.mode || "agent") === "agent" ? -Infinity
@@ -471,7 +471,7 @@ export function createCompareView({ onReplay, onLive }) {
     cell.searchNote.textContent = note;
     cell.searchNote.hidden = !note;
     // In End-to-end the realtime model searches by itself; there is no Agent in between.
-    cell.searchTitle.textContent = cell.mode === "realtime_agent_tool" && calls.every((entry) => entry.kind !== "foundry_agent_call")
+    cell.searchTitle.textContent = cell.mode === "end_to_end" && calls.every((entry) => entry.kind !== "foundry_agent_call")
       ? SEARCH_TITLES[cell.provider].replace("Agent가", "모델이") : SEARCH_TITLES[cell.provider];
     cell.callList.hidden = !calls.length;
     cell.sources.hidden = !cell.citations.size;

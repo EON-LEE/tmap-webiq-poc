@@ -15,14 +15,13 @@ import time
 import aiohttp
 from azure.core.exceptions import AzureError
 
-from tmap_poc.app_settings import AppSettings
-from tmap_poc.config import ConfigError, load_dotenv
-from tmap_poc.profiles import PROVIDER_LABELS
+from tmap_poc.agents import PROVIDER_LABELS
+from tmap_poc.settings import AppSettings, ConfigError, load_dotenv
 from tmap_poc.voice import VoiceProtocolError, VoiceServiceError, VoiceSession
 from tmap_poc.voice_options import VoiceOptionsError, validate_options
 
 
-class ProbeSocket:
+class CheckSocket:
     def __init__(self, prompt, result):
         self.queue = asyncio.Queue()
         self.prompt = prompt
@@ -63,7 +62,7 @@ class ProbeSocket:
             self.result["usage"].append(event["usage"])
 
 
-class ProbeSession(VoiceSession):
+class CheckSession(VoiceSession):
     def __init__(self, *args, result, **kwargs):
         super().__init__(*args, **kwargs)
         self.result = result
@@ -89,11 +88,11 @@ class ProbeSession(VoiceSession):
                 self.result["service_error_code"] = error["code"]
         await super().handle_event(event, connection, socket)
         if kind == "response.done":
-            native = self.options.get("connection_mode") == "realtime_agent_tool"
+            end_to_end = self.options.get("connection_mode") == "end_to_end"
             has_call = any(
                 "call" in item.get("type", "") for item in response.get("output", []) if isinstance(item, dict)
             )
-            if not native or (
+            if not end_to_end or (
                 self.agent_call_completed and not has_call
                 and self.result["audio_bytes"] > 0 and bool(socket.messages)
             ):
@@ -113,10 +112,10 @@ async def check(settings, provider, prompt, timeout, *, voice_options=None):
         "voice_options": chosen,
     }
     started = time.perf_counter()
-    socket = ProbeSocket(prompt, result)
+    socket = CheckSocket(prompt, result)
     try:
         result["end_reason"] = await asyncio.wait_for(
-            ProbeSession(settings, provider, result=result, voice_options=chosen).run(socket), timeout=timeout,
+            CheckSession(settings, provider, result=result, voice_options=chosen).run(socket), timeout=timeout,
         )
     except (VoiceServiceError, VoiceProtocolError, ConfigError, AzureError, aiohttp.ClientError, TimeoutError) as exc:
         result["error_type"] = type(exc).__name__

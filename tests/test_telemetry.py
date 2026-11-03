@@ -18,7 +18,7 @@ from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanE
 from opentelemetry.trace import Link, Status, StatusCode
 
 from tmap_poc import telemetry
-from tmap_poc.config import ConfigError
+from tmap_poc.settings import ConfigError
 
 
 class TelemetryTests(unittest.TestCase):
@@ -142,8 +142,8 @@ class FoundryTracingTests(unittest.TestCase):
         self.stack.enter_context(patch.dict(sys.modules, {
             "azure.monitor.opentelemetry.exporter": SimpleNamespace(AzureMonitorTraceExporter=self.azure),
         }))
-        self.app_settings = self.stack.enter_context(patch("tmap_poc.app_settings.AppSettings.from_env"))
-        self.config = self.app_settings.return_value
+        self.settings_from_env = self.stack.enter_context(patch("tmap_poc.settings.AppSettings.from_env"))
+        self.config = self.settings_from_env.return_value
         self.config.project_endpoint = "https://example.invalid/api/projects/current"
         self.credential = self.config.credential.return_value
         self.client = self.stack.enter_context(patch("azure.ai.projects.AIProjectClient"))
@@ -160,7 +160,7 @@ class FoundryTracingTests(unittest.TestCase):
         self.project_instrumentor.return_value.instrument.side_effect = lambda **_kwargs: order.append("instrument")
         os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] = "different-explicit-azure-connection"
         telemetry.configure_tracing()
-        self.app_settings.assert_called_once_with()
+        self.settings_from_env.assert_called_once_with()
         self.config.credential.assert_called_once_with()
         self.client.assert_called_once_with(
             endpoint="https://example.invalid/api/projects/current", credential=self.credential,
@@ -234,7 +234,7 @@ class FoundryTracingTests(unittest.TestCase):
 
     def test_missing_project_endpoint_fails_before_acquiring_credentials(self):
         self.config.project_endpoint = ""
-        with self.assertRaisesRegex(ConfigError, "GWB_PROJECT_ENDPOINT"):
+        with self.assertRaisesRegex(ConfigError, "FOUNDRY_PROJECT_ENDPOINT"):
             telemetry.configure_tracing()
         self.config.credential.assert_not_called()
         self.client.assert_not_called()
@@ -257,7 +257,7 @@ class FoundryTracingTests(unittest.TestCase):
         self.azure.from_connection_string.assert_called_once_with(
             "offline-explicit-connection", disable_offline_storage=True,
         )
-        self.app_settings.assert_not_called()
+        self.settings_from_env.assert_not_called()
         self.client.assert_not_called()
 
     def test_console_remains_default_and_none_does_no_lookup(self):
@@ -267,7 +267,7 @@ class FoundryTracingTests(unittest.TestCase):
         del os.environ["TMAP_TRACE_EXPORTER"]
         telemetry.configure_tracing()
         self.console.assert_called_once_with()
-        self.app_settings.assert_not_called()
+        self.settings_from_env.assert_not_called()
         self.client.assert_not_called()
         self.azure.from_connection_string.assert_not_called()
 
