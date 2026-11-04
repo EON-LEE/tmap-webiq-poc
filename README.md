@@ -2,23 +2,34 @@
 
 Azure에서 음성 에이전트에 붙일 웹 검색을 비교하는 POC다. 같은 질문(텍스트 또는 음성)을
 WebIQ와 Grounding with Bing에 동시에 보내고, 검색·답변 과정과 걸린 시간을 나란히 보여 준다.
-Azure Voice Live와 Microsoft Foundry Agent를 사용한다.
+Azure Voice Live, Azure OpenAI GPT-Live, Microsoft Foundry Agent를 사용한다.
 
 > 키·토큰·구독 같은 환경 값은 코드와 결과 파일에 넣지 않는다. 검색·모델·음성 호출에는 사용량 비용이 든다.
 
-## 두 가지 방식
+## 화면
 
-| | Agent 연결(기본) | End-to-end |
-| --- | --- | --- |
-| 흐름 | STT → Foundry Agent(검색 도구) → TTS | Realtime 음성 모델이 직접 듣고 검색한다 |
-| WebIQ | Agent → MCP | 모델 → MCP |
-| Bing | Agent → Grounding with Bing | 모델 → 앱 서버 → Foundry Toolbox Web Search |
-| 쓰임 | 공정 비교: 같은 모델·지시, 검색 도구만 다르다 | 응답 속도 확인 |
+| 화면 | 하는 일 |
+| --- | --- |
+| 엔진 비교 | 같은 질문을 WebIQ와 Bing에 동시에 보내고 답변, 검색 과정, 걸린 시간을 나란히 본다 |
+| 뉴스 브리핑 | WebIQ 뉴스 검색만으로 음성 뉴스 브리핑을 만든다. 6개 시나리오 18문항으로 기존 뉴스 공급을 대체할 수 있는지 확인한다 |
+| 평가 요약 | 뉴스 브리핑 결과를 시나리오별로 집계하고 CSV와 보고서로 내려받는다 |
+
+뉴스 브리핑의 시나리오, 측정값, 판정 기준은 [뉴스 브리핑 평가](docs/NEWS_BRIEFING.md)에 있다.
+
+## 세 가지 방식
+
+| | Agent 연결(기본) | End-to-end | GPT-Live |
+| --- | --- | --- | --- |
+| 흐름 | STT → Foundry Agent(검색 도구) → TTS | Realtime 음성 모델이 직접 듣고 검색한다 | GPT-Live가 직접 듣고 말하며, 검색은 앱을 거쳐 Foundry Agent에 위임한다 |
+| WebIQ | Agent → MCP | 모델 → MCP | GPT-Live → 앱 서버 → WebIQ Agent → MCP |
+| Bing | Agent → Grounding with Bing | 모델 → 앱 서버 → Foundry Toolbox Web Search | GPT-Live → 앱 서버 → Bing Agent → Grounding with Bing |
+| 쓰임 | 공정 비교: 같은 모델·지시, 검색 도구만 다르다 | 응답 속도 확인 | 한국어 음성 확인, 말하는 중 반응 확인. 음성 전용 |
 
 ![Agent 연결](docs/images/agent-mode.png)
 ![End-to-end](docs/images/end-to-end-mode.png)
 
-설정 항목과 서비스 제약은 [음성 설정](docs/VOICE_OPTIONS.md)에 있다.
+GPT-Live는 선택 기능이다. `gpt-live-1`을 배포하고 `POC_LIVE_ENDPOINT`, `POC_LIVE_DEPLOYMENT`를 넣어야 고를 수 있다.
+GPT-Live 흐름과 **한국어 음성 진단**, 설정 항목과 서비스 제약은 [음성 설정](docs/VOICE_OPTIONS.md)에 있다.
 
 ## Azure 배포
 
@@ -33,6 +44,7 @@ python scripts/provision.py --subscription <구독> --resource-group <RG> --dest
 
 올리기는 Foundry·검색 리소스, 검색 Agent, 이미지, Microsoft Entra 로그인까지 한 번에 만든다.
 WebIQ 키는 `WEBIQ_API_KEY` 또는 실행 중 숨김 입력으로 받는다. 내리면 비용이 0이 되고, 다시 올리면 주소가 바뀐다.
+GPT-Live까지 쓰려면 `--with-gpt-live`를 붙인다(`eastus2`, `swedencentral`만 가능).
 코드 갱신과 키 교체는 [배포](docs/DEPLOYMENT.md)를 본다.
 
 ## 로컬 실행
@@ -65,18 +77,21 @@ python scripts/scan_secrets.py                # 커밋 전 비밀값 검사
 | --- | --- |
 | `src/voice_poc/api.py`, `cli.py` | 웹 API와 WebSocket(`/ws/voice`), `voice-poc serve`, `voice-poc prepare-agents` |
 | `src/voice_poc/voice.py`, `voice_options.py` | Voice Live 세션과 이벤트 중계, 음성 설정 검증 |
+| `src/voice_poc/live.py` | GPT-Live 세션, 클라이언트 위임으로 Foundry Agent 호출 |
+| `src/voice_poc/news.py` | 뉴스 브리핑 설정 검증과 브리핑 규칙 |
 | `src/voice_poc/webiq_mcp.py`, `web_search.py` | WebIQ MCP 연결, Toolbox Web Search 호출 |
 | `src/voice_poc/agents.py` | 두 Agent의 공통 지시와 검색 도구 |
 | `src/voice_poc/settings.py`, `auth.py` | 환경 설정, Azure CLI·Managed Identity 인증 |
 | `src/voice_poc/telemetry.py`, `tool_calls.py`, `citations.py` | Trace, 도구 호출 관측, 인용 링크 정리 |
-| `src/voice_poc/static/` | 비교 화면 |
+| `src/voice_poc/static/` | 엔진 비교, 뉴스 브리핑, 평가 요약 화면 |
 | `infra/`, `scripts/` | Bicep 템플릿, 올리기·내리기·코드 갱신·키 교체·연결 점검·비밀값 검사 |
 | `docs/`, `results/` | 문서와 검증 결과 |
 
 ## 문서
 
-- [배포](docs/DEPLOYMENT.md): 올리기, 내리기, 코드 갱신, 키 교체
-- [음성 설정](docs/VOICE_OPTIONS.md): 화면 설정과 적용 방법, 서비스 제약
+- [배포](docs/DEPLOYMENT.md): 올리기, 내리기, 코드 갱신, 키 교체, GPT-Live 배포
+- [음성 설정](docs/VOICE_OPTIONS.md): 화면 설정과 적용 방법, 서비스 제약, GPT-Live와 한국어 음성 진단
+- [뉴스 브리핑 평가](docs/NEWS_BRIEFING.md): 시나리오 18문항, 측정값, 판정 기준
 - [Trace](docs/TRACING.md)
 - [검증 기록](docs/VERIFICATION_LOG.md)
 - [텍스트 검색 벤치마크](docs/BENCHMARK_REPORT.md): 2026-09-08, 30질문 × 3조건 요약. 원본은 Git 태그 `archive/v9-benchmark-20260908`에 있다.

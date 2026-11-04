@@ -18,19 +18,23 @@ const withoutMarks = (value) => value.replace(/【\d+:\d+†[^】]*】/g, "").re
   .replace(/\*\*([^*\n]+)\*\*/g, "$1").replace(/\s+/g, " ").trim();
 const firstText = (...values) => values.find((value) => typeof value === "string" && value.trim())?.trim() || "";
 
-export function createCompareView({ onReplay, onLive }) {
+// The news view reuses this view with a single provider and its own containers; onUpdate and onTurn let it add its panels.
+export function createCompareView({
+  onReplay, onLive = null, providers = comparedProviders, scrollId = "compare-scroll", listId = "turns",
+  onTurn = null, onUpdate = null,
+}) {
   const get = (id) => document.getElementById(id);
-  const scroll = get("compare-scroll");
+  const scroll = get(scrollId);
   const clock = new Intl.DateTimeFormat("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
   const turns = [];
-  const cursors = new Map(comparedProviders.map((provider) => [provider, -1]));
-  const available = new Map(comparedProviders.map((provider) => [provider, false]));
+  const cursors = new Map(providers.map((provider) => [provider, -1]));
+  const available = new Map(providers.map((provider) => [provider, false]));
   const sessions = new WeakMap();
   let following = true;
   scroll.addEventListener("scroll", () => {
     following = scroll.scrollHeight - scroll.scrollTop - scroll.clientHeight < 120;
   });
-  for (const provider of comparedProviders) get(`lane-${provider}-live`).addEventListener("click", () => onLive(provider));
+  if (onLive) for (const provider of providers) get(`lane-${provider}-live`)?.addEventListener("click", () => onLive(provider));
 
   function follow() {
     if (following) scroll.scrollTop = scroll.scrollHeight;
@@ -67,14 +71,16 @@ export function createCompareView({ onReplay, onLive }) {
       textNode("span", kind === "voice" ? "음성" : "텍스트", "turn-kind"), compareNode);
     const lanes = textNode("div", "", "turn-lanes");
     element.append(head, lanes);
-    const turn = { index, kind, question, element, questionNode, compareNode, cells: new Map() };
-    for (const provider of comparedProviders) {
+    const turn = { index, kind, question, element, head, questionNode, compareNode, cells: new Map() };
+    lanes.dataset.count = String(providers.length);
+    for (const provider of providers) {
       const cell = createCell(turn, provider);
       turn.cells.set(provider, cell);
       lanes.append(cell.element);
     }
     turns.push(turn);
-    get("turns").append(element);
+    onTurn?.(turn);
+    get(listId).append(element);
     following = true;
     follow();
     return turn;
@@ -131,7 +137,7 @@ export function createCompareView({ onReplay, onLive }) {
       startedAt: null, speechEndedAt: null, inputFinalAt: null, thinkStartAt: null, thinkEndAt: null,
       outputs: [], fillerResponses: new Set(), audioResponses: new Set(), doneAt: null, responseStarted: false, noticeText: "", playing: false,
       input: { mode: turn.kind, text: turn.question, final: turn.kind === "text", claimed: false },
-      calls: new Map(), citations: new Map(), messages: new Map(), audio: { chunks: [], bytes: 0 },
+      calls: new Map(), citations: new Map(), messages: new Map(), audio: { chunks: [], bytes: 0, total: 0 },
     };
     replay.addEventListener("click", () => onReplay(cell));
     if (turn.kind === "voice" && !available.get(provider)) {
@@ -372,6 +378,7 @@ export function createCompareView({ onReplay, onLive }) {
     for (const part of text.split(/(\*\*[^*\n]+\*\*)/g)) {
       cell.answerText.append(part.startsWith("**") && part.endsWith("**") && part.length > 4 ? textNode("strong", part.slice(2, -2)) : part);
     }
+    return text;
   }
 
   function setStep(cell, key, state, detail) {
@@ -486,15 +493,16 @@ export function createCompareView({ onReplay, onLive }) {
     cell.replay.textContent = cell.playing ? "■ 정지" : "▶ 답변 듣기";
     cell.replay.setAttribute("aria-pressed", String(cell.playing));
     cell.replay.setAttribute("aria-label", `${providerNames[cell.provider]} 답변 ${cell.playing ? "재생 정지" : "듣기"}`);
-    answerText(cell);
+    const answer = answerText(cell);
     cell.answer.hidden = !answered && cell.fillerText.hidden && !cell.timing.textContent && cell.replay.hidden;
     cell.notice.textContent = cell.noticeText;
     cell.notice.hidden = !cell.noticeText;
     compareTurn(cell.turn);
+    onUpdate?.(cell, { answer, answerAt: respondedAt, searchEndAt, terminal });
   }
   function compareTurn(turn) {
-    const cells = comparedProviders.map((provider) => turn.cells.get(provider));
-    if (cells.some((cell) => !cell)) return;
+    const cells = providers.map((provider) => turn.cells.get(provider));
+    if (cells.length < 2 || cells.some((cell) => !cell)) return;
     const times = cells.map((cell) => cell.startedAt != null && answerAt(cell) != null
       ? `${providerNames[cell.provider]} ${seconds(answerAt(cell) - cell.startedAt)}` : null);
     turn.compareNode.hidden = times.some((time) => !time);
@@ -571,7 +579,7 @@ export function createCompareView({ onReplay, onLive }) {
     hasTurns: () => turns.length > 0,
     question(text) {
       const turn = createTurn("text", text);
-      for (const provider of comparedProviders) cursors.set(provider, turn.index);
+      for (const provider of providers) cursors.set(provider, turn.index);
       return turn;
     },
     submitted(lane, cell) {
@@ -687,6 +695,7 @@ export function createCompareView({ onReplay, onLive }) {
     audio(lane, event, bytes) {
       const cell = cellFor(lane, event.response_id);
       if (!cell || cell.status === "offline") return;
+      cell.audio.total += bytes.byteLength;
       if (cell.audio.bytes + bytes.byteLength <= MAX_AUDIO_BYTES) {
         cell.audio.chunks.push(bytes);
         cell.audio.bytes += bytes.byteLength;
@@ -736,12 +745,15 @@ export function createCompareView({ onReplay, onLive }) {
       render(cell);
     },
     laneStatus(provider, state, text) {
+      if (!available.has(provider)) return;
       available.set(provider, ["connecting", "ready", "busy"].includes(state));
+      if (!onLive) return;
       get(`lane-${provider}-dot`).dataset.state = state;
       get(`lane-${provider}-status`).textContent = text;
     },
     setLive(provider) {
-      for (const name of comparedProviders) {
+      if (!onLive) return;
+      for (const name of providers) {
         const button = get(`lane-${name}-live`);
         const live = name === provider;
         button.setAttribute("aria-pressed", String(live));
@@ -754,8 +766,8 @@ export function createCompareView({ onReplay, onLive }) {
     },
     reset() {
       turns.length = 0;
-      for (const provider of comparedProviders) cursors.set(provider, -1);
-      get("turns").replaceChildren();
+      for (const provider of providers) cursors.set(provider, -1);
+      get(listId).replaceChildren();
       following = true;
     },
   };

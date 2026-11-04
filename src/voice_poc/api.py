@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect, WebSocketState
 
 from voice_poc.agents import PROVIDER_LABELS
+from voice_poc.live import LiveSession
 from voice_poc.settings import AppSettings, ConfigError
 from voice_poc.voice import VoiceProtocolError, VoiceServiceError, VoiceSession, parse_control
 from voice_poc.voice_options import VoiceOptionsError, option_schema, validate_options
@@ -33,7 +34,7 @@ def static_version():
     return digest.hexdigest()[:12]
 
 
-def create_app(settings=None, *, voice_factory=VoiceSession):
+def create_app(settings=None, *, voice_factory=VoiceSession, live_factory=LiveSession):
     settings = settings or AppSettings.from_env()
     app = FastAPI(title="WebIQ vs Bing voice POC")
     app.state.active_sessions = 0
@@ -68,6 +69,11 @@ def create_app(settings=None, *, voice_factory=VoiceSession):
             "voice": settings.voice_name,
             "voice_options": option_schema(settings.voice_name) if settings.voice_name else None,
             "errors": settings.problems(),
+            "live": {
+                "configured": not settings.live_problems(),
+                "deployment": settings.live_deployment or None,
+                "errors": settings.live_problems(),
+            },
             "observability": {
                 "flow_schema_version": 1,
                 "scope": "client_observed",
@@ -103,9 +109,15 @@ def create_app(settings=None, *, voice_factory=VoiceSession):
             chosen = validate_options(start.get("voice_options", {}), settings.voice_name)
             provider = start["provider"]
             settings.require(provider)
+            live = chosen["connection_mode"] == "gpt_live"
+            if live:
+                settings.require_live()
             await socket.send_json({"type": "status", "state": "connecting"})
-            kwargs = {"voice_options": chosen} if "voice_options" in start else {}
-            session = voice_factory(settings, start["provider"], start.get("context", ""), **kwargs)
+            kwargs = {"voice_options": chosen} if live or "voice_options" in start else {}
+            if start.get("news") is not None:
+                kwargs["news"] = start["news"]
+            factory = live_factory if live else voice_factory
+            session = factory(settings, start["provider"], start.get("context", ""), **kwargs)
             reason = await session.run(socket)
             await socket.send_json({
                 "type": "done", "reason": reason, "provider": provider,
@@ -119,7 +131,7 @@ def create_app(settings=None, *, voice_factory=VoiceSession):
                 if isinstance(getattr(exc, key, None), str)
             }
             await socket.send_json({
-                "type": "error", "code": type(exc).__name__, "message": str(exc),
+                "type": "error", "code": getattr(exc, "code", None) or type(exc).__name__, "message": str(exc),
                 "terminal": True, "provider": provider,
                 "session_id": getattr(session, "session_id", None), **correlation,
             })

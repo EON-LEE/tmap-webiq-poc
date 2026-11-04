@@ -68,8 +68,9 @@ class FakeCloud:
 
     def __init__(self, *, group=False, used=0, limit=1000, connection=False, agents=None, toolbox=False,
                  registration=None, app_secret=None, webiq_status=200, deployment_state="Succeeded",
-                 what_if_failure=False):
+                 what_if_failure=False, live_limit=None):
         self.group, self.used, self.limit, self.connection = group, used, limit, connection
+        self.live_limit = live_limit
         self.agents = agents or {}
         self.toolbox = toolbox
         self.what_if_failure = what_if_failure
@@ -127,9 +128,12 @@ class FakeCloud:
         if re.search(r"/providers/Microsoft\.[A-Za-z]+$", path) and method == "GET":
             return Response(200, {"registrationState": "Registered"})
         if path.endswith("/usages"):
-            return Response(200, {"value": [{
+            usages = [{
                 "name": {"value": "OpenAI.GlobalStandard.gpt-6-luna"}, "currentValue": self.used, "limit": self.limit,
-            }]})
+            }]
+            if self.live_limit is not None:
+                usages.append({"name": {"value": "OpenAI.GlobalStandard.gpt-live-1"}, "currentValue": 0, "limit": self.live_limit})
+            return Response(200, {"value": usages})
         if re.search(r"/resourceGroups/[^/]+$", path):
             if method == "PUT":
                 self.group = True
@@ -288,6 +292,21 @@ class PlanTests(RunMixin, unittest.TestCase):
         output = self.run_script(cloud)
         self.assertIn("every resource will be created", output)
         self.assertFalse(any("/whatIf" in url for _, url, _ in cloud.calls))
+        self.assertIn("GPT-Live: not deployed", output)
+        self.assertNotIn("GPT-Live quota", output)
+
+    def test_gpt_live_is_opt_in_and_limited_to_supported_regions(self):
+        cloud = FakeCloud()
+        with self.assertRaisesRegex(provision.ProvisionError, "eastus2 and swedencentral"):
+            self.run_script(cloud, "--with-gpt-live", "--location", "eastus")
+        self.assertEqual(cloud.commands, [])
+        output = self.run_script(FakeCloud(), "--with-gpt-live", "--location", "swedencentral")
+        self.assertIn("GPT-Live: gpt-live-1 2026-09-10 GlobalStandard x1 on the same account", output)
+        self.assertIn("GPT-Live quota: unknown", output)
+        output = self.run_script(FakeCloud(live_limit=0), "--with-gpt-live", "--live-capacity", "2")
+        self.assertIn("GPT-Live quota: 0 available, 2 requested (NOT enough; lower --live-capacity)", output)
+        destroy = next(action for action in provision.parser()._actions if action.dest == "destroy")
+        self.assertIn("removes their model deployments, including gpt-live-1", destroy.help)
 
 
 class ApplyTests(RunMixin, unittest.TestCase):
@@ -307,6 +326,8 @@ class ApplyTests(RunMixin, unittest.TestCase):
         deployments = [body["properties"]["parameters"] for body in cloud.bodies("PUT", "/Microsoft.Resources/deployments/")]
         self.assertEqual(len(deployments), 2)
         self.assertNotIn("deployApp", deployments[0])
+        self.assertFalse(any("liveModel" in params for params in deployments))
+        self.assertNotIn("POC_LIVE_", output)
         app = deployments[1]
         self.assertTrue(app["deployApp"]["value"])
         self.assertEqual(app["signInClientSecret"]["value"], NEW_SECRET)
@@ -419,6 +440,23 @@ class ApplyTests(RunMixin, unittest.TestCase):
         with self.assertRaisesRegex(provision.ProvisionError, "Lower --model-capacity"):
             self.run_script(cloud, "--apply", key=WEBIQ_KEY)
         self.assertEqual(cloud.writes(), [])
+        cloud = FakeCloud(live_limit=0)
+        with self.assertRaisesRegex(provision.ProvisionError, "Lower --live-capacity"):
+            self.run_script(cloud, "--apply", "--with-gpt-live", key=WEBIQ_KEY)
+        self.assertEqual(cloud.writes(), [])
+
+    def test_with_gpt_live_deploys_live_model_and_reports_runtime_settings(self):
+        cloud = FakeCloud(live_limit=10)
+        output = self.run_script(cloud, "--apply", "--with-gpt-live", key=WEBIQ_KEY)
+        deployments = [body["properties"]["parameters"] for body in cloud.bodies("PUT", "/Microsoft.Resources/deployments/")]
+        self.assertEqual(len(deployments), 2)
+        for params in deployments:
+            self.assertEqual(params["liveModel"]["value"], {
+                "name": "gpt-live-1", "version": "2026-09-10", "sku": "GlobalStandard", "capacity": 1,
+            })
+        account = provision.Names.derive(SUBSCRIPTION, "rg", "webiq-vs-bing-voice-poc").account
+        self.assertIn(f"  POC_LIVE_ENDPOINT=https://{account}.openai.azure.com\n", output)
+        self.assertIn("  POC_LIVE_DEPLOYMENT=gpt-live-1\n", output)
 
     def test_rejected_webiq_key_stops_before_any_change(self):
         cloud = FakeCloud(webiq_status=401)

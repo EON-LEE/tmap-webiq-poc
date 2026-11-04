@@ -63,6 +63,9 @@ class AppSettings:
     agent_identity_client_id: str = ""
     # Foundry Toolbox that exposes the Bing-based Web Search tool over MCP for End-to-end sessions.
     web_search_toolbox: str = ""
+    # Azure OpenAI GPT-Live deployment for the optional gpt_live mode; empty disables it.
+    live_endpoint: str = ""
+    live_deployment: str = ""
     agents: dict[str, AgentReference] = field(default_factory=dict)
     allowed_origins: tuple[str, ...] = (
         "http://localhost:8000",
@@ -99,6 +102,9 @@ class AppSettings:
         toolbox = _value("POC_WEB_SEARCH_TOOLBOX")
         if toolbox and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}", toolbox):
             raise ConfigError("POC_WEB_SEARCH_TOOLBOX must be a Foundry toolbox name.")
+        live_deployment = _value("POC_LIVE_DEPLOYMENT")
+        if live_deployment and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,63}", live_deployment):
+            raise ConfigError("POC_LIVE_DEPLOYMENT must be a model deployment name.")
         return cls(
             project_endpoint=_https(_value("FOUNDRY_PROJECT_ENDPOINT"), "FOUNDRY_PROJECT_ENDPOINT"),
             voice_endpoint=_https(_value("POC_VOICE_ENDPOINT"), "POC_VOICE_ENDPOINT"),
@@ -110,6 +116,8 @@ class AppSettings:
             foundry_resource_override=_value("POC_VOICE_FOUNDRY_RESOURCE_OVERRIDE"),
             agent_identity_client_id=_value("POC_VOICE_AGENT_IDENTITY_CLIENT_ID"),
             web_search_toolbox=toolbox,
+            live_endpoint=_https(_value("POC_LIVE_ENDPOINT"), "POC_LIVE_ENDPOINT"),
+            live_deployment=live_deployment,
             agents=agents,
             allowed_origins=allowed_origins,
         )
@@ -180,6 +188,24 @@ class AppSettings:
         errors = self.problems(provider, voice=voice)
         if errors:
             raise ConfigError(" ".join(errors))
+
+    def live_problems(self):
+        """GPT-Live is optional, so its settings are not part of problems()."""
+        if self.live_endpoint and self.live_deployment:
+            return []
+        return ["GPT-Live 배포가 설정되지 않았습니다. POC_LIVE_ENDPOINT와 POC_LIVE_DEPLOYMENT를 확인하세요."]
+
+    def require_live(self):
+        errors = self.live_problems()
+        if errors:
+            raise ConfigError(" ".join(errors))
+
+    @property
+    def live_url(self):
+        if not self.live_endpoint:
+            return ""
+        parsed = urlparse(self.live_endpoint)
+        return f"wss://{parsed.netloc}{parsed.path}/openai/v1/live/sessions"
 
     def credential(self):
         if self.auth_mode == "managed_identity":

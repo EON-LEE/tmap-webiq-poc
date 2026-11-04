@@ -3,93 +3,173 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f6fb">
+  <meta name="theme-color" content="#0e1525">
   <title>Azure 음성 검색 비교 POC · WebIQ vs Grounding with Bing</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%234f46e5'/%3E%3Cpath d='M12 12l8 16 8-16' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='12' fill='url(%23g)'/%3E%3Cpath d='M12 12l8 16 8-16' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="/static/styles.css">
   <script type="module" src="/static/app.js"></script>
 </head>
 <body>
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="i-compare" viewBox="0 0 24 24"><rect x="3.5" y="5" width="7" height="14" rx="2"/><rect x="13.5" y="5" width="7" height="14" rx="2"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><path d="M5 5h11v14H6a1 1 0 0 1-1-1zM16 9h3v9a1 1 0 0 1-1 1h-2M8 9h5M8 12h5M8 15h3"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 19V10M10 19V5M15 19v-7M20 19v-4"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-run" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  </svg>
   <a id="skip-to-content" class="skip-link" href="#command-input">질문 입력으로 건너뛰기</a>
-  <div class="page">
-    <header class="page-header">
+  <div class="app">
+    <nav class="nav" aria-label="화면">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true">V</span>
-        <div>
-          <h1 id="page-title">Azure 음성 검색 비교 POC</h1>
-          <p>같은 질문을 WebIQ와 Grounding with Bing에 동시에 보내 결과를 비교합니다</p>
+        <div><b>Azure 음성 검색 비교</b><small>WebIQ · Grounding with Bing</small></div>
+      </div>
+      <div>
+        <p class="nav-label">화면</p>
+        <div class="nav-list">
+          <button id="nav-compare" type="button" class="nav-item" data-view="compare" aria-current="page"><svg class="i" aria-hidden="true"><use href="#i-compare"/></svg><span>엔진 비교</span></button>
+          <button id="nav-news" type="button" class="nav-item" data-view="news" aria-current="false"><svg class="i" aria-hidden="true"><use href="#i-news"/></svg><span>뉴스 브리핑</span><span id="nav-news-count" class="count"></span></button>
+          <button id="nav-summary" type="button" class="nav-item" data-view="summary" aria-current="false"><svg class="i" aria-hidden="true"><use href="#i-chart"/></svg><span>평가 요약</span></button>
         </div>
       </div>
-      <div class="header-actions">
-        <span id="applied-mode" class="applied-mode" role="status" hidden></span>
-        <button id="reset" type="button" class="quiet">새 대화</button>
-        <details id="connection-settings" class="settings">
-          <summary>설정<span id="voice-options-pending-badge" class="pending-badge" hidden>적용 안 됨</span></summary>
-          <section class="settings-panel" aria-labelledby="settings-title">
-            <div class="settings-head">
-              <h2 id="settings-title">음성 설정</h2>
-              <button id="voice-options-defaults" type="button" class="quiet" disabled>기본값</button>
+      <div class="nav-foot">
+        <p id="nav-conn" class="conn" data-state="loading"><i aria-hidden="true"></i><span>서버 확인 중…</span></p>
+        <dl>
+          <div><dt>음성 처리 방식</dt><dd id="nav-mode">-</dd></div>
+          <div><dt>음성</dt><dd id="nav-voice">-</dd></div>
+          <div><dt>Agent</dt><dd id="nav-agents">-</dd></div>
+        </dl>
+        <button id="nav-settings" type="button" class="btn sm ghost"><svg class="i" aria-hidden="true"><use href="#i-sliders"/></svg>설정 열기</button>
+      </div>
+    </nav>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-text">
+          <h1 id="page-title">엔진 비교</h1>
+          <p id="page-desc">같은 질문을 WebIQ와 Grounding with Bing에 동시에 보내 결과를 비교합니다</p>
+        </div>
+        <div class="top-chips">
+          <span id="applied-mode" class="chip" role="status" hidden></span>
+        </div>
+        <div class="top-actions">
+          <button id="reset" type="button" class="btn"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg>새 대화</button>
+          <button id="open-settings" type="button" class="btn" aria-haspopup="dialog" aria-controls="connection-settings"><svg class="i" aria-hidden="true"><use href="#i-sliders"/></svg>설정<span id="voice-options-pending-badge" class="pending-badge" hidden>적용 안 됨</span></button>
+        </div>
+      </header>
+
+      <div class="views">
+        <main id="view-compare" class="view compare" aria-labelledby="page-title">
+          <div class="lane-bar" role="group" aria-label="엔진별 연결 상태와 실시간 음성 출력">
+            <div class="lane-chip webiq" data-provider="webiq">
+              <span id="lane-webiq-dot" class="lane-dot" data-state="idle" aria-hidden="true"></span>
+              <strong translate="no">WebIQ</strong>
+              <span id="lane-webiq-status" class="lane-status">대기</span>
+              <button id="lane-webiq-live" type="button" class="live-toggle" aria-pressed="true">음성 출력 중</button>
             </div>
-            <p id="voice-settings-state" class="hint" role="status">서버 설정을 불러오는 중…</p>
-            <p id="voice-mode-summary" class="settings-summary" hidden></p>
-            <p class="hint">값을 바꾼 뒤 적용을 누르면 진행 중인 연결을 끝내고 다음 질문부터 새 설정으로 비교합니다.</p>
-            <div id="voice-options-fields" class="settings-fields"></div>
-            <p id="voice-options-error" class="error" role="alert" hidden></p>
-            <div class="settings-actions">
-              <span id="voice-options-pending" class="hint" hidden>바꾼 설정이 아직 적용되지 않았습니다.</span>
-              <button id="voice-options-cancel" type="button" class="quiet" disabled>취소</button>
-              <button id="voice-options-apply" type="button" class="primary" disabled>적용</button>
+            <div class="lane-chip bing" data-provider="bing">
+              <span id="lane-bing-dot" class="lane-dot" data-state="idle" aria-hidden="true"></span>
+              <strong translate="no">Grounding with Bing</strong>
+              <span id="lane-bing-status" class="lane-status">대기</span>
+              <button id="lane-bing-live" type="button" class="live-toggle" aria-pressed="false">이 엔진 음성 듣기</button>
             </div>
-          </section>
-        </details>
-      </div>
-    </header>
+          </div>
+          <div id="compare-scroll" class="compare-scroll" role="region" aria-label="질문별 비교 결과" tabindex="0">
+            <ol id="turns" class="turns" role="log" aria-label="질문별 WebIQ와 Grounding with Bing 결과" aria-live="polite" aria-relevant="additions"></ol>
+            <section id="live-board" class="live-board" aria-label="GPT-Live 세션" hidden></section>
+          </div>
+        </main>
 
-    <main class="compare" aria-labelledby="page-title">
-      <div class="lane-bar" role="group" aria-label="엔진별 연결 상태와 실시간 음성 출력">
-        <div class="lane-chip" data-provider="webiq">
-          <span id="lane-webiq-dot" class="lane-dot" data-state="idle" aria-hidden="true"></span>
-          <strong translate="no">WebIQ</strong>
-          <span id="lane-webiq-status" class="lane-status">대기</span>
-          <button id="lane-webiq-live" type="button" class="live-toggle" aria-pressed="true">음성 출력 중</button>
-        </div>
-        <div class="lane-chip" data-provider="bing">
-          <span id="lane-bing-dot" class="lane-dot" data-state="idle" aria-hidden="true"></span>
-          <strong translate="no">Grounding with Bing</strong>
-          <span id="lane-bing-status" class="lane-status">대기</span>
-          <button id="lane-bing-live" type="button" class="live-toggle" aria-pressed="false">이 엔진 음성 듣기</button>
-        </div>
+        <section id="view-news" class="view news" aria-labelledby="news-title" hidden>
+          <aside class="rail" aria-label="뉴스 시나리오">
+            <div class="rail-head">
+              <h2>시나리오 <span id="news-progress-text">0 / 18</span></h2>
+              <div class="progress" role="presentation"><span id="news-progress-bar"></span></div>
+              <p class="rail-note">WebIQ 뉴스 검색만 사용합니다. 기록은 이 브라우저에만 저장됩니다.</p>
+            </div>
+            <div id="news-scenarios" class="scenarios" role="list"></div>
+          </aside>
+          <div class="stage">
+            <div class="stage-head">
+              <div>
+                <h2 id="news-title">헤드라인 브리핑</h2>
+                <p id="news-desc"></p>
+                <div id="news-crit" class="crit" aria-label="평가 기준"></div>
+              </div>
+              <div class="stage-actions">
+                <button id="news-run-all" type="button" class="btn">전체 실행</button>
+                <button id="news-run" type="button" class="btn primary"><svg class="i" aria-hidden="true"><use href="#i-run"/></svg><span id="news-run-label">이 시나리오 실행</span></button>
+              </div>
+            </div>
+            <div id="news-scroll" class="stage-scroll" role="region" aria-label="뉴스 브리핑 결과" tabindex="0">
+              <p id="news-empty" class="empty">질문을 보내거나 ‘이 시나리오 실행’을 누르면 WebIQ 뉴스 검색 결과와 브리핑이 여기에 쌓입니다.</p>
+              <ol id="news-turns" class="news-turns" role="log" aria-live="polite" aria-relevant="additions"></ol>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-summary" class="view summary" aria-labelledby="page-title" hidden>
+          <div id="summary-root" class="content"></div>
+        </section>
       </div>
 
-      <div id="compare-scroll" class="compare-scroll" role="region" aria-label="질문별 비교 결과" tabindex="0">
-        <ol id="turns" class="turns" role="log" aria-label="질문별 WebIQ와 Grounding with Bing 결과" aria-live="polite" aria-relevant="additions"></ol>
-      </div>
-    </main>
-
-    <footer class="composer">
-      <div id="example-prompts" class="examples" role="group" aria-label="예시 질문 · 누르면 입력창에 준비합니다">
-        <button type="button" data-prompt="삼성전자 주식 찾아줘.">삼성전자 주식 찾아줘</button>
-        <button type="button" data-prompt="서울역 근처 맛집 찾아줘.">서울역 근처 맛집 찾아줘</button>
-        <button type="button" data-prompt="내일 서울 날씨 어때?">내일 서울 날씨 어때?</button>
-        <button type="button" data-prompt="오늘 주요 뉴스 알려줘.">오늘 주요 뉴스 알려줘</button>
-      </div>
-      <form id="command-form" class="composer-form">
-        <label for="command-input" class="visually-hidden">두 엔진에 보낼 질문</label>
-        <textarea id="command-input" name="command" rows="1" maxlength="4000" autocomplete="off" spellcheck="false" placeholder="예: 삼성전자 주식 찾아줘…"></textarea>
-        <div class="composer-actions">
-          <button id="start" type="button" class="mic" aria-label="말하기 · 두 엔진에 음성으로 질문" disabled>
-            <svg width="16" height="20" viewBox="0 0 18 22" aria-hidden="true"><rect x="6" y="1" width="6" height="12" rx="3" fill="currentColor"/><path d="M2 9v2a7 7 0 0 0 14 0V9M9 18v3M5 21h8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-            <span>말하기</span>
-          </button>
-          <button id="stop" type="button" class="stop" aria-label="음성 대화 중지" disabled hidden><span class="stop-icon" aria-hidden="true"></span><span>중지</span></button>
-          <button id="send-command" type="submit" class="send" aria-label="두 엔진에 질문 보내기" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
+      <footer id="composer" class="composer">
+        <div id="example-prompts" class="examples" role="group" aria-label="예시 질문 · 누르면 입력창에 준비합니다">
+          <button type="button" class="ex" data-prompt="삼성전자 주식 찾아줘.">삼성전자 주식 찾아줘</button>
+          <button type="button" class="ex" data-prompt="서울역 근처 맛집 찾아줘.">서울역 근처 맛집 찾아줘</button>
+          <button type="button" class="ex" data-prompt="내일 서울 날씨 어때?">내일 서울 날씨 어때?</button>
+          <button type="button" class="ex" data-prompt="오늘 주요 뉴스 알려줘.">오늘 주요 뉴스 알려줘</button>
         </div>
-      </form>
-      <p id="status" class="status" role="status">준비 중…</p>
-      <p id="error" class="error" role="alert" hidden></p>
-    </footer>
+        <div id="news-examples" class="examples" role="group" aria-label="이 시나리오의 질문 · 누르면 입력창에 준비합니다" hidden></div>
+        <form id="command-form" class="composer-form">
+          <label for="command-input" class="visually-hidden">두 엔진에 보낼 질문</label>
+          <textarea id="command-input" name="command" rows="1" maxlength="4000" autocomplete="off" spellcheck="false" placeholder="예: 삼성전자 주식 찾아줘…"></textarea>
+          <div class="composer-actions">
+            <button id="start" type="button" class="mic" aria-label="말하기 · 두 엔진에 음성으로 질문" disabled>
+              <svg class="i" aria-hidden="true"><use href="#i-mic"/></svg>
+              <span>말하기</span>
+            </button>
+            <button id="stop" type="button" class="stop" aria-label="음성 대화 중지" disabled hidden><span class="stop-icon" aria-hidden="true"></span><span>중지</span></button>
+            <button id="send-command" type="submit" class="send" aria-label="두 엔진에 질문 보내기" disabled>
+              <svg class="i" aria-hidden="true"><use href="#i-up"/></svg>
+            </button>
+          </div>
+        </form>
+        <p id="composer-note" class="composer-note" hidden></p>
+        <p id="status" class="status" role="status">준비 중…</p>
+        <p id="error" class="error" role="alert" hidden></p>
+      </footer>
+    </div>
   </div>
+
+  <dialog id="connection-settings" class="drawer" aria-labelledby="settings-title">
+    <div class="drawer-head">
+      <div>
+        <h2 id="settings-title">설정</h2>
+        <p>바꾼 값은 적용을 눌러야 반영됩니다</p>
+      </div>
+      <button id="voice-options-defaults" type="button" class="btn sm" disabled>기본값</button>
+      <button id="settings-close" type="button" class="icon-btn" aria-label="설정 닫기"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="drawer-body">
+      <p id="voice-settings-state" class="hint" role="status">서버 설정을 불러오는 중…</p>
+      <div id="voice-options-fields" class="settings-fields"></div>
+      <p id="voice-mode-summary" class="settings-summary" hidden></p>
+      <section id="news-options" class="settings-group news-options" aria-labelledby="news-options-title">
+        <h3 id="news-options-title">뉴스 브리핑 규칙 <small>뉴스 브리핑 화면에만 적용</small></h3>
+        <div id="news-options-fields" class="news-fields"></div>
+      </section>
+      <p id="voice-options-error" class="error" role="alert" hidden></p>
+    </div>
+    <div class="drawer-foot">
+      <span id="voice-options-pending" class="pending" hidden><i aria-hidden="true"></i><span id="voice-options-pending-text">변경 사항이 아직 적용되지 않았습니다</span></span>
+      <button id="voice-options-cancel" type="button" class="btn" disabled>취소</button>
+      <button id="voice-options-apply" type="button" class="btn primary" disabled>적용</button>
+    </div>
+  </dialog>
 </body>
 </html>

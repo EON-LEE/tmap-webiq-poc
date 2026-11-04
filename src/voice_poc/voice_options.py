@@ -2,7 +2,9 @@
 
 from collections.abc import Mapping
 from copy import deepcopy
+from datetime import datetime
 import math
+from zoneinfo import ZoneInfo
 
 from azure.ai.voicelive.models import (
     AudioEchoCancellation,
@@ -15,6 +17,8 @@ from azure.ai.voicelive.models import (
     RequestSession,
     ServerVad,
 )
+
+from voice_poc.news import validate_news
 
 
 class VoiceOptionsError(ValueError):
@@ -37,8 +41,10 @@ _VOICES = (
 )
 _SEMANTIC_VAD = "azure_semantic_vad_multilingual"
 _END_TO_END = "end_to_end"
+_GPT_LIVE = "gpt_live"
 _REALTIME_MODELS = ("gpt-realtime", "gpt-realtime-mini")
-CONNECTION_MODES = ("agent", _END_TO_END)
+CONNECTION_MODES = ("agent", _END_TO_END, _GPT_LIVE)
+_VOICE_LIVE_MODES = ("agent", _END_TO_END)
 _OPENAI_VOICES = ("alloy", "coral", "verse", "marin")
 _END_TO_END_TRANSCRIPTION = (
     "whisper-1", "gpt-4o-transcribe", "gpt-4o-mini-transcribe",
@@ -57,7 +63,36 @@ _DEFAULTS = {
     "interrupt_response": True,
     "input_noise_reduction": None,
     "echo_cancellation": None,
+    "live_voice": "noeul",
+    "live_language": "korean",
+    "live_backchannel": "sometimes",
 }
+_LIVE_CHOICES = {
+    "live_voice": ("noeul", "marin"),
+    "live_language": ("korean", "follow_user", "none"),
+    "live_backchannel": ("none", "sometimes", "often"),
+}
+# Voice Live session settings; GPT-Live has its own voice and turn handling.
+_VOICE_LIVE_KEYS = (
+    *(key for key in _DEFAULTS if key != "connection_mode" and key not in _LIVE_CHOICES), "voice_name",
+)
+_LIVE_PERSONA = (
+    "You are a voice assistant in a search comparison demo. "
+    "When the user asks for information that needs current facts or a web/news search, "
+    "delegate the work instead of guessing; while waiting say a very short natural acknowledgement. "
+    "When delegated results arrive, speak them naturally and concisely, mention sources when given."
+)
+_LIVE_LANGUAGE = {
+    "korean": "Always speak Korean (한국어), even if the user speaks another language.",
+    "follow_user": "Reply in the language the user speaks.",
+    "none": None,
+}
+_LIVE_BACKCHANNEL = {
+    "none": "Do not use backchannel acknowledgements while the user is speaking.",
+    "sometimes": "Occasionally use brief natural backchannel acknowledgements (like 네, 음) while the user is speaking.",
+    "often": "Frequently use brief backchannel acknowledgements while the user is speaking.",
+}
+_LIVE_NEWS_LENGTH = {"30s": "about 30 seconds", "60s": "about one minute", "free": "no fixed length, but stay brief"}
 _NUMBERS = {
     "speech_rate": (0.5, 1.5, 0.05),
     "silence_duration_ms": (100, 2000, 50),
@@ -141,7 +176,13 @@ def _mode_defaults(default_voice, mode):
             transcription_model="gpt-4o-mini-transcribe",
             return_agent_response_directly=True,
         )
+    elif mode == _GPT_LIVE:
+        defaults["connection_mode"] = mode
     return defaults
+
+
+def _same(value, default):
+    return type(value) is type(default) and value == default
 
 
 def option_schema(default_voice):
@@ -175,6 +216,10 @@ def option_schema(default_voice):
                 {
                     "value": _END_TO_END, "label": "End-to-end",
                     "help": "Realtime 모델이 음성을 직접 듣고 말합니다. WebIQ는 모델이 MCP로 직접 검색하고, Bing은 Foundry Toolbox 웹 검색(없으면 Bing Agent)을 사용합니다. 별도 Realtime 비용이 발생합니다.",
+                },
+                {
+                    "value": _GPT_LIVE, "label": "GPT-Live",
+                    "help": "Azure OpenAI GPT-Live가 음성을 직접 듣고 말하며, 검색은 클라이언트 위임으로 기존 WebIQ / Bing Agent에 맡깁니다. 음성으로만 질문할 수 있고 별도 GPT-Live 비용이 발생합니다.",
                 },
             ],
         },
@@ -295,6 +340,40 @@ def option_schema(default_voice):
             ],
             "help": help_text,
         })
+    for field in fields[1:]:
+        # Voice Live settings do not apply to GPT-Live; narrower mode requirements are kept.
+        field["requires"] = {"connection_mode": list(_VOICE_LIVE_MODES), **field.get("requires", {})}
+    fields.extend([
+        {
+            "key": "live_voice", "label": "GPT-Live 음성", "type": "select",
+            "requires": {"connection_mode": _GPT_LIVE},
+            "options": [
+                {"value": "noeul", "label": "Noeul", "help": "한국어 권장 음성. Azure 지원 여부는 진단으로 확인합니다."},
+                {"value": "marin", "label": "Marin", "help": "GPT-Live 기본값(영어)."},
+            ],
+            "help": "session.start의 audio.output.voice입니다. 세션을 시작한 뒤에는 바꿀 수 없습니다.",
+        },
+        {
+            "key": "live_language", "label": "GPT-Live 답변 언어", "type": "select",
+            "requires": {"connection_mode": _GPT_LIVE},
+            "options": [
+                {"value": "korean", "label": "항상 한국어"},
+                {"value": "follow_user", "label": "사용자 언어 따라가기"},
+                {"value": "none", "label": "지시 없음"},
+            ],
+            "help": "instructions에 넣는 언어 지시입니다. '지시 없음'은 언어 문장을 넣지 않아 모델 기본 동작을 확인합니다.",
+        },
+        {
+            "key": "live_backchannel", "label": "GPT-Live 맞장구", "type": "select",
+            "requires": {"connection_mode": _GPT_LIVE},
+            "options": [
+                {"value": "none", "label": "없음"},
+                {"value": "sometimes", "label": "가끔"},
+                {"value": "often", "label": "자주"},
+            ],
+            "help": "사용자가 말하는 동안 '네', '음' 같은 짧은 반응을 얼마나 할지 instructions로 요청합니다.",
+        },
+    ])
     for field in fields:
         key = field["key"]
         field["default"] = defaults[key]
@@ -318,6 +397,9 @@ def option_schema(default_voice):
         "fixed_by_mode": {
             "agent": {"tool_executor": "Foundry Agent", "agent_model": "기존 Agent에 설정된 모델"},
             _END_TO_END: {"tool_executor": "WebIQ MCP와 Bing 웹 검색", "model": "선택한 Realtime 모델"},
+            _GPT_LIVE: {
+                "tool_executor": "Foundry Agent (클라이언트 위임)", "model": "GPT-Live 배포", "input": "음성 전용",
+            },
         },
     }
 
@@ -341,6 +423,20 @@ def validate_options(mapping, default_voice):
     if not isinstance(mode, str) or mode not in CONNECTION_MODES:
         raise VoiceOptionsError("지원하지 않는 connection_mode입니다.")
     result = {**_mode_defaults(default_voice, mode), **mapping}
+    for key, allowed in _LIVE_CHOICES.items():
+        if not isinstance(result[key], str) or result[key] not in allowed:
+            raise VoiceOptionsError(f"{key}는 {', '.join(allowed)} 중 하나여야 합니다.")
+    if mode == _GPT_LIVE:
+        live_defaults = _mode_defaults(default_voice, mode)
+        changed = sorted(key for key in _VOICE_LIVE_KEYS if not _same(result[key], live_defaults[key]))
+        if changed:
+            raise VoiceOptionsError(
+                "GPT-Live에서는 Voice Live 설정을 바꿀 수 없습니다: " + ", ".join(changed)
+                + ". live_voice, live_language, live_backchannel만 설정하세요."
+            )
+        return result
+    if any(not _same(result[key], _DEFAULTS[key]) for key in _LIVE_CHOICES):
+        raise VoiceOptionsError("live_voice, live_language, live_backchannel은 gpt_live 모드에서만 설정할 수 있습니다.")
     realtime_model = result["realtime_model"]
     if mode != _END_TO_END:
         if realtime_model is not None:
@@ -571,3 +667,31 @@ def build_end_to_end_session(normalized, target):
     session.instructions = instructions
     session.tool_choice = "auto"
     return session
+
+
+def build_live_session(normalized, *, deployment, news=None, now=None):
+    """Build the strict GPT-Live session.start payload; instructions are English on purpose."""
+    if not isinstance(normalized, Mapping) or "voice_name" not in normalized:
+        raise VoiceOptionsError("validate_options의 결과가 필요합니다.")
+    options = validate_options(normalized, normalized["voice_name"])
+    if options["connection_mode"] != _GPT_LIVE:
+        raise VoiceOptionsError("build_live_session은 gpt_live 모드 전용입니다.")
+    if not isinstance(deployment, str) or not deployment.strip():
+        raise VoiceOptionsError("GPT-Live 배포 이름이 필요합니다.")
+    news = validate_news(news)
+    now = now or datetime.now(ZoneInfo("Asia/Seoul")).isoformat(timespec="seconds")
+    lines = [_LIVE_PERSONA, f"Current date and time (Asia/Seoul): {now}."]
+    if _LIVE_LANGUAGE[options["live_language"]]:
+        lines.append(_LIVE_LANGUAGE[options["live_language"]])
+    lines.append(_LIVE_BACKCHANNEL[options["live_backchannel"]])
+    if news is not None:
+        lines.append(
+            "This is a news briefing. The search agent applies the news briefing rules; "
+            f"keep the spoken briefing to {_LIVE_NEWS_LENGTH[news['length']]}."
+        )
+    return {
+        "model": deployment,
+        "instructions": "\n".join(lines),
+        "audio": {"output": {"voice": options["live_voice"]}},
+        "delegation": {"type": "client"},
+    }
