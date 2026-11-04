@@ -50,10 +50,22 @@ WebIQ 키와 로그인 비밀값은 HTTPS 요청 본문으로만 보내며 명�
 | `--name` | `webiq-vs-bing-voice-poc` | Container App 이름. 다른 리소스 이름은 이 값과 구독·리소스 그룹으로 정한다 |
 | `--location` | `eastus2` | Voice Live와 모델을 함께 쓸 수 있는 지역 |
 | `--model`, `--model-version`, `--model-sku`, `--model-capacity` | `gpt-6-luna`, `2026-09-22`, `GlobalStandard`, `250` | 두 Agent의 모델 |
+| `--with-gpt-live`, `--live-capacity` | 꺼짐, `1` | GPT-Live 방식용 `gpt-live-1` 배포를 추가한다. 아래 GPT-Live 절 참고 |
 | `--image` | 없음 | 이미 있는 이미지를 쓰고 빌드를 건너뛴다 |
 | `--new-sign-in-secret` | 꺼짐 | 로그인 비밀값을 새로 만든다. 끄면 재사용하되, 만료 30일 전이면 새로 만든다 |
 
 `gpt-5.4-mini` Agent는 WebIQ 요청에서 HTTP 429를 반환해 쓰지 않는다(2026-10-21 확인).
+
+### GPT-Live (선택)
+
+`--with-gpt-live`를 붙이면 같은 Foundry 계정에 `gpt-live-1`(`2026-09-10`, GlobalStandard)을 함께 배포한다.
+기본값은 꺼짐이다. 끄면 GPT-Live 방식만 쓸 수 없고 나머지 기능은 그대로 동작한다.
+
+- 지역: `gpt-live-1`은 `eastus2`, `swedencentral`에서만 배포한다. 다른 `--location`이면 아무것도 바꾸지 않고 멈춘다.
+- 할당량: 계획에서 `GPT-Live quota`로 남은 양을 보여 준다. 부족하면 `--live-capacity`를 낮춘다.
+- 설정: Container App에 `POC_LIVE_ENDPOINT`(`https://<계정>.openai.azure.com`)와 `POC_LIVE_DEPLOYMENT`(`gpt-live-1`)를 넣는다. 로컬 `.env` 값으로도 출력한다.
+- 끄기: 옵션 없이 다시 실행하면 앱 설정에서 두 값이 빠진다. 배포 자체는 남으므로 지우려면 포털에서 삭제하거나 `--destroy`를 쓴다.
+- 내리기: `--destroy`는 Foundry 계정을 purge하므로 `gpt-live-1` 배포도 함께 지운다.
 
 ## 내리기
 

@@ -8,13 +8,14 @@ const staticRoot = join(process.cwd(), "src", "voice_poc", "static");
 const readStaticFile = (fileName) => readFileSync(join(staticRoot, fileName), "utf8");
 
 const htmlSource = readStaticFile("index.html");
-const appSource = readStaticFile("app.js");
-const compareSource = readStaticFile("compare-view.js");
 const clientModuleOrder = [
   "search-results.js",
   "labels.js",
   "settings-view.js",
   "compare-view.js",
+  "news-view.js",
+  "news-summary.js",
+  "live-view.js",
   "app.js",
 ];
 const tick = () => new Promise(setImmediate);
@@ -234,7 +235,13 @@ function voiceOptionsSchema() {
     speech_rate: null,
     silence_duration_ms: null,
     return_agent_response_directly: true,
+    live_voice: "noeul",
+    live_language: "korean",
+    live_backchannel: "sometimes",
   };
+  const voiceLive = { connection_mode: ["agent", "end_to_end"] };
+  const gptLive = { connection_mode: "gpt_live" };
+  const voiceLiveField = (field) => ({ ...field, requires: { ...voiceLive, ...(field.requires || {}) } });
 
   return {
     defaults,
@@ -245,59 +252,88 @@ function voiceOptionsSchema() {
         connection_mode: "end_to_end",
         realtime_model: "gpt-realtime-mini",
       },
+      gpt_live: { ...defaults, connection_mode: "gpt_live" },
     },
-    supported_modes: ["agent", "end_to_end"],
+    supported_modes: ["agent", "end_to_end", "gpt_live"],
     fields: [
       selectField("connection_mode", "실행 구조", "agent", [
         option("agent", "Agent"),
         option("end_to_end", "Realtime"),
+        option("gpt_live", "GPT-Live"),
       ]),
-      selectField("realtime_model", "Realtime 모델", null, [
-        option(null, "없음", { connection_mode: ["agent"] }),
-        option("gpt-realtime-mini", "gpt-realtime-mini", { connection_mode: "end_to_end" }),
-      ], { nullable: true, requires: { connection_mode: "end_to_end" } }),
-      selectField("return_agent_response_directly", "Bing Agent 답변 전달", true, [
-        option(true, "직접", { voice_name: ["ko-KR-SunHiNeural", "ko-KR-SunHi:DragonHDLatestNeural"] }),
-        option(false, "재작성"),
-      ], { requires: { connection_mode: ["end_to_end"] } }),
-      selectField("transcription_model", "STT", "azure-speech", [
-        option("azure-speech", "azure-speech"),
-        option("mai-transcribe", "mai-transcribe"),
-      ]),
-      selectField("voice_name", "TTS", "ko-KR-SunHiNeural", [
-        option("ko-KR-SunHiNeural", "SunHi"),
-        option("ko-KR-SunHi:DragonHDLatestNeural", "Dragon"),
-        {
-          ...option("openai:marin", "OpenAI native · marin", { connection_mode: "end_to_end" }),
-          implies: { return_agent_response_directly: false },
-        },
-      ]),
-      selectField("turn_detection", "VAD", "azure_semantic_vad_multilingual", [
-        option("azure_semantic_vad_multilingual", "semantic"),
-        option("server_vad", "server"),
-      ]),
-      {
-        key: "speech_rate",
-        label: "속도",
-        type: "number",
-        default: null,
-        nullable: true,
-        min: 0.5,
-        max: 1.5,
-        step: 0.05,
-      },
-      {
-        key: "silence_duration_ms",
-        label: "무음",
-        type: "number",
-        default: null,
-        nullable: true,
-        min: 100,
-        max: 2000,
-        step: 50,
-      },
-    ],
+      ...voiceLiveFields(selectField, option),
+    ].map((field, index) => index === 0 ? field : voiceLiveField(field)).concat([
+      selectField("live_voice", "GPT-Live 음성", "noeul", [
+        option("noeul", "Noeul"),
+        option("marin", "Marin"),
+      ], { requires: gptLive }),
+      selectField("live_language", "GPT-Live 답변 언어", "korean", [
+        option("korean", "항상 한국어"),
+        option("follow_user", "사용자 언어 따라가기"),
+        option("none", "지시 없음"),
+      ], { requires: gptLive }),
+      selectField("live_backchannel", "GPT-Live 맞장구", "sometimes", [
+        option("none", "없음"),
+        option("sometimes", "가끔"),
+        option("often", "자주"),
+      ], { requires: gptLive }),
+    ]),
   };
+}
+
+function voiceLiveFields(selectField, option) {
+  return [
+    selectField("realtime_model", "Realtime 모델", null, [
+      option(null, "없음", { connection_mode: ["agent"] }),
+      option("gpt-realtime-mini", "gpt-realtime-mini", { connection_mode: "end_to_end" }),
+    ], { nullable: true, requires: { connection_mode: "end_to_end" } }),
+    selectField("return_agent_response_directly", "Bing Agent 답변 전달", true, [
+      option(true, "직접", { voice_name: ["ko-KR-SunHiNeural", "ko-KR-SunHi:DragonHDLatestNeural"] }),
+      option(false, "재작성"),
+    ], { requires: { connection_mode: ["end_to_end"] } }),
+    selectField("transcription_model", "STT", "azure-speech", [
+      option("azure-speech", "azure-speech"),
+      option("mai-transcribe", "mai-transcribe"),
+    ]),
+    selectField("voice_name", "TTS", "ko-KR-SunHiNeural", [
+      option("ko-KR-SunHiNeural", "SunHi"),
+      option("ko-KR-SunHi:DragonHDLatestNeural", "Dragon"),
+      {
+        ...option("openai:marin", "OpenAI native · marin", { connection_mode: "end_to_end" }),
+        implies: { return_agent_response_directly: false },
+      },
+    ]),
+    selectField("turn_detection", "VAD", "azure_semantic_vad_multilingual", [
+      option("azure_semantic_vad_multilingual", "semantic"),
+      option("server_vad", "server"),
+    ]),
+    {
+      key: "speech_rate",
+      label: "속도",
+      type: "number",
+      default: null,
+      nullable: true,
+      min: 0.5,
+      max: 1.5,
+      step: 0.05,
+    },
+    {
+      key: "silence_duration_ms",
+      label: "무음",
+      type: "number",
+      default: null,
+      nullable: true,
+      min: 100,
+      max: 2000,
+      step: 50,
+    },
+  ];
+}
+
+function liveConfig(configured = true) {
+  return configured
+    ? { configured: true, deployment: "gpt-live-1", errors: [] }
+    : { configured: false, deployment: "", errors: ["GPT-Live 배포 설정이 없습니다."] };
 }
 
 function configuredResponse(overrides = {}) {
@@ -322,6 +358,7 @@ function configuredResponse(overrides = {}) {
     ],
     errors: [],
     voice_options: voiceOptionsSchema(),
+    live: liveConfig(),
     observability: { flow_schema_version: 1 },
     ...overrides,
   };
@@ -509,11 +546,18 @@ async function createHarness(options = {}) {
 
   const location = { protocol: options.protocol || "http:", host: "localhost:8080" };
   const windowListeners = {};
+  const stored = new Map(Object.entries(options.storage || {}));
+  const localStorage = {
+    getItem: (key) => stored.has(key) ? stored.get(key) : null,
+    setItem: (key, value) => stored.set(key, String(value)),
+    removeItem: (key) => stored.delete(key),
+  };
   const window = {
     isSecureContext: options.secure !== false,
     AudioContext: FakeAudioContext,
     AudioWorkletNode: FakeWorklet,
     location,
+    localStorage,
     confirm(message) {
       confirmations.push(message);
       return options.confirm !== false;
@@ -591,6 +635,7 @@ async function createHarness(options = {}) {
     track,
     stream,
     context,
+    storage: stored,
     visible: (id) => isVisible(elements[id]),
     getUserMediaCalls: () => getUserMediaCalls,
     advance: async (ms) => {
@@ -708,13 +753,25 @@ test("static contract: comparison DOM, examples, settings and no unsafe sinks", 
     "lane-bing-dot",
     "lane-webiq-live",
     "lane-bing-live",
+    "nav-compare",
+    "nav-news",
+    "nav-summary",
+    "view-compare",
+    "view-news",
+    "view-summary",
+    "news-run",
+    "news-run-all",
+    "news-turns",
+    "news-options-fields",
+    "live-board",
+    "summary-root",
   ]) {
     assert.ok(elements[id], id);
   }
   for (const id of ["provider", "agent-flow-panel", "navigation-demo", "trace-panel", "scenario-control"]) {
     assert.equal(elements[id], undefined, id);
   }
-  assert.equal(elements["connection-settings"].tagName, "details");
+  assert.equal(elements["connection-settings"].tagName, "dialog");
   assert.equal(elements["connection-settings"].open, false);
   assert.equal(elements["example-prompts"].children.length, 4);
   assert.deepEqual(elements["example-prompts"].children.map((button) => button.dataset.prompt), [
@@ -723,14 +780,19 @@ test("static contract: comparison DOM, examples, settings and no unsafe sinks", 
     "내일 서울 날씨 어때?",
     "오늘 주요 뉴스 알려줘.",
   ]);
-  assert.doesNotMatch(appSource, /\binnerHTML\b|\beval\s*\(/);
-  assert.doesNotMatch(compareSource, /\binnerHTML\b|\beval\s*\(/);
+  for (const fileName of clientModuleOrder) {
+    assert.doesNotMatch(readStaticFile(fileName), /\binnerHTML\b|\bouterHTML\b|insertAdjacentHTML|\beval\s*\(/, fileName);
+  }
+  assert.doesNotMatch(htmlSource, /TMAP|티맵|운전/i);
 
   const env = await createHarness();
-  for (const id of ["voice-group-pipeline", "voice-group-stt", "voice-group-tts"]) {
+  for (const id of ["voice-group-pipeline", "voice-group-live", "voice-group-stt", "voice-group-tts"]) {
     assert.equal(env.elements[id].tagName, "fieldset");
   }
+  assert.equal(env.elements["voice-group-live"].hidden, true, "GPT-Live choices appear only for GPT-Live");
   assert.equal(env.elements["lane-webiq-live"].getAttribute("aria-pressed"), "true");
+  assert.equal(env.elements["view-news"].hidden, true);
+  assert.equal(env.elements["live-board"].hidden, true);
 });
 
 test("configuration: both providers, one unconfigured, fetch failure and insecure context", async () => {
@@ -1175,11 +1237,11 @@ test("stop releases sockets tracks worklet and suspends AudioContext", async () 
   assert.equal(env.sockets[0].sent.length, sentCount);
 });
 
-test("settings offer only Agent and End-to-end and change nothing until Apply", async () => {
+test("settings offer Agent, End-to-end and GPT-Live and change nothing until Apply", async () => {
   const env = await createHarness();
   const modeSelect = descendants(env.root).find((node) => node.id === "voice-option-connection_mode");
   const offered = modeSelect.children.filter((option) => !option.hidden && !option.disabled).map((option) => option.textContent);
-  assert.deepEqual(offered, ["Agent 연결 (기본)", "End-to-end (Realtime)"]);
+  assert.deepEqual(offered, ["Agent 연결 (기본)", "End-to-end (Realtime)", "GPT-Live"]);
   assert.equal(env.elements["voice-options-apply"].disabled, true, "nothing to apply yet");
   assert.match(env.elements["applied-mode"].textContent, /Agent 연결/);
 
@@ -1588,4 +1650,218 @@ test("End-to-end Bing shows its web search answer and sources without an Agent",
   completeResponse(bing, "r2", "삼성전자 종가는 272,500원입니다.");
   assert.equal(cell.dataset.status, "done");
   assert.equal(classText(cell, "answer-text"), "삼성전자 종가는 272,500원입니다.");
+});
+
+function liveCard(env, provider) {
+  return findByClass(env.elements["live-board"], "lane").find((node) => node.dataset.provider === provider);
+}
+function liveCheck(card, text) {
+  return findByClass(card, "check").find((node) => node.textContent.includes(text));
+}
+function newsCell(env, turnIndex = 0) {
+  return descendants(env.elements["news-turns"].children[turnIndex]).find((node) => (
+    hasClass(node, "cell") && node.dataset.provider === "webiq"
+  ));
+}
+function newsToolEvent(now, responseId = "r1") {
+  const published = new Date(now - 30 * 60000).toISOString();
+  return {
+    type: "tool", id: "news-call", kind: "mcp_call", name: "news_search", status: "completed", response_id: responseId,
+    arguments: { query: "주요 뉴스" },
+    output: {
+      newsResults: [
+        { title: "기준금리 동결", url: "https://news.example/rate", provider: "연합뉴스", datePublished: published, category: "경제" },
+        { title: "반도체 수출 증가", url: "https://news.example/chip", provider: [{ name: "한국경제" }], datePublished: published },
+        { title: "위험한 링크", url: "javascript:alert(1)", provider: "기타" },
+      ],
+    },
+  };
+}
+
+test("GPT-Live is offered only when deployed", async () => {
+  const env = await createHarness({ config: configuredResponse({ live: liveConfig(false) }) });
+  const modeSelect = descendants(env.root).find((node) => node.id === "voice-option-connection_mode");
+  const live = modeSelect.children.find((option) => option.textContent.startsWith("GPT-Live"));
+  assert.equal(live.hidden, false);
+  assert.equal(live.disabled, true);
+});
+
+test("GPT-Live talks by voice only and diagnoses Korean speech for each engine", async () => {
+  const env = await createHarness();
+  env.changeVoiceOption("connection_mode", "gpt_live");
+  assert.equal(env.elements["voice-group-live"].hidden, false);
+  await env.click("voice-options-apply");
+  assert.equal(env.elements["connection-settings"].open, false);
+  assert.equal(env.elements["applied-mode"].textContent, "적용 중: GPT-Live · 음성 Noeul");
+  assert.equal(env.elements["command-input"].disabled, true);
+  assert.equal(env.elements["send-command"].disabled, true);
+  assert.match(env.elements.status.textContent, /GPT-Live 세션을 시작합니다/);
+
+  await env.submit("오늘 서울 날씨 어때?");
+  assert.equal(env.sockets.length, 0);
+  assert.equal(env.elements.error.textContent, "GPT-Live는 음성으로만 대화합니다. 말하기를 눌러 주세요.");
+
+  await env.click("start");
+  assert.equal(env.sockets.length, 2);
+  for (const socket of env.sockets) socket.open();
+  for (const socket of env.sockets) {
+    const start = JSON.parse(socket.sent[0]);
+    assert.equal(start.voice_options.connection_mode, "gpt_live");
+    assert.equal(start.news, undefined);
+  }
+  assert.equal(env.elements["live-board"].hidden, false);
+  assert.equal(env.elements.turns.hidden, true);
+  const webiq = readyProviderLane(env, "webiq");
+  const bing = readyProviderLane(env, "bing");
+  const card = liveCard(env, "webiq");
+
+  webiq.event({ type: "live_session", model: "gpt-live-1", voice: "noeul", language: "korean", backchannel: "sometimes" });
+  assert.equal(liveCheck(card, "세션 시작 · 음성 Noeul · 항상 한국어").dataset.state, "ok");
+  webiq.event({ type: "live_transcript", role: "user", delta: "오늘 서울 날씨 ", start_ms: 0, end_ms: 800 });
+  webiq.event({ type: "live_transcript", role: "user", delta: "어때?", start_ms: 800, end_ms: 1500 });
+  webiq.event({ type: "live_transcript", role: "assistant", delta: "네,", start_ms: 1000, end_ms: 1300 });
+  webiq.event({ type: "delegation", id: "d1", status: "created", offset_ms: 1700, request: "오늘 서울 날씨 어때?" });
+  webiq.event({
+    type: "delegation", id: "d1", status: "completed", elapsed_ms: 2400, tools: [],
+    answer: "서울은 맑고 최고 20도입니다.", spoken: "서울은 맑고 최고 20도입니다.",
+    citations: [{ url: "https://weather.example/seoul", title: "서울 날씨" }, { url: "javascript:alert(1)", title: "unsafe" }],
+  });
+  webiq.event({ type: "delegation", id: "d1", status: "delivered", start_ms: 5000, end_ms: 7000 });
+  webiq.event({ type: "live_transcript", role: "assistant", delta: "서울은 맑고 최고 20도입니다.", start_ms: 5000, end_ms: 7000 });
+  webiq.event({ type: "audio", data: validPcmBase64, start_ms: 5000, end_ms: 7000 });
+
+  const bubbles = findByClass(card, "bubble");
+  assert.deepEqual(bubbles.map((node) => node.className), ["bubble user", "bubble back", "bubble ai"]);
+  assert.match(bubbles[1].textContent, /맞장구/);
+  assert.match(bubbles[2].textContent, /검색 결과로 답변/);
+  const delegate = findByClass(card, "delegate");
+  assert.equal(delegate.length, 1);
+  assert.match(delegate[0].textContent, /요청 “오늘 서울 날씨 어때\?”/);
+  assert.match(delegate[0].textContent, /답변 “서울은 맑고 최고 20도입니다\.”/);
+  assert.equal(descendants(delegate[0], "a").length, 1, "only safe source links");
+  for (const step of ["listen", "delegate", "search", "deliver", "speak"]) {
+    assert.equal(descendants(card, "li").find((node) => node.dataset.step === step).dataset.state, "done", step);
+  }
+  assert.equal(liveCheck(card, "출력 음성 수신 · 24kHz PCM16").dataset.state, "ok");
+  assert.equal(liveCheck(card, "답변 전사의 한글 비율").dataset.state, "ok");
+  assert.match(liveCheck(card, "답변 전사의 한글 비율").textContent, /100%/);
+  assert.equal(liveCheck(card, "검색 위임 1회 · 결과 전달 1회").dataset.state, "ok");
+  assert.equal(JSON.parse(env.storage.get("voice-poc.live-combos.v1"))["noeul|korean"].verdict, "ok");
+
+  webiq.event({ type: "error", code: "live_rate_limited", message: "GPT-Live 오류: 잠시 후 다시 시도하세요.", terminal: false });
+  assert.equal(liveCheck(card, "잠시 후 다시 시도하세요").dataset.state, "warn");
+  assert.notEqual(env.elements["lane-webiq-dot"].dataset.state, "error");
+  assert.equal(webiq.closed, undefined);
+  assert.equal(env.elements.error.hidden, true);
+
+  bing.event({ type: "live_transcript", role: "assistant", delta: "Sunny and 20 degrees.", start_ms: 0, end_ms: 900 });
+  const bingCard = liveCard(env, "bing");
+  assert.equal(liveCheck(bingCard, "답변 전사는 있지만 음성이 오지 않음").dataset.state, "bad");
+  assert.equal(liveCheck(bingCard, "답변 전사의 한글 비율").dataset.state, "bad");
+  assert.equal(JSON.parse(env.storage.get("voice-poc.live-combos.v1"))["noeul|korean"].verdict, "warn");
+
+  await env.click("stop");
+  assert.equal(env.sockets.every((socket) => socket.closed), true);
+  assert.equal(env.elements["live-board"].hidden, false, "the session record stays for review");
+});
+
+test("news briefing asks WebIQ only, checks articles and saves the record", async () => {
+  const env = await createHarness();
+  await env.click("nav-news");
+  assert.equal(env.elements["view-news"].hidden, false);
+  assert.equal(env.elements["view-compare"].hidden, true);
+  assert.equal(env.elements["nav-news"].getAttribute("aria-current"), "page");
+  assert.equal(env.elements["applied-mode"].textContent, "적용 중: Agent 연결 · 최근 24시간 · 기사 5건 · 1분 이내");
+  assert.equal(env.elements["news-progress-text"].textContent, "0 / 18");
+
+  await env.submit("오늘 주요 뉴스 브리핑해줘");
+  assert.equal(env.sockets.length, 1);
+  const webiq = env.sockets[0];
+  webiq.open();
+  const start = JSON.parse(webiq.sent[0]);
+  assert.equal(start.provider, "webiq");
+  assert.deepEqual(start.news, { freshness: "day", count: 5, length: "60s", cite: true, group_events: true });
+  webiq.event({ type: "status", state: "ready" });
+  assert.deepEqual(sentMessages(webiq).at(-1), { type: "text", text: "오늘 주요 뉴스 브리핑해줘" });
+  assert.equal(classText(env.elements["news-turns"], "turn-scenario"), "① 헤드라인 브리핑 · 문항 1");
+
+  webiq.event(newsToolEvent(vm.runInContext("Date.now()", env.context)));
+  const articles = findByClass(env.elements["news-turns"], "art");
+  assert.equal(articles.length, 3);
+  assert.equal(descendants(articles[0], "a").length, 1);
+  assert.equal(descendants(articles[2], "a").length, 0, "unsafe article links render as text");
+  assert.equal(classText(articles[0], "age"), "30분 전");
+
+  completeResponse(webiq, "r2", "연합뉴스가 30분 전에 보도한 기준금리 동결 소식입니다.");
+  assert.equal(newsCell(env).dataset.status, "done");
+  const records = JSON.parse(env.storage.get("voice-poc.news.v1"));
+  assert.equal(records.length, 1);
+  assert.equal(records[0].scenario, 0);
+  assert.equal(records[0].q, 0);
+  assert.equal(records[0].status, "done");
+  assert.equal(records[0].metrics.articles, 3);
+  assert.equal(records[0].metrics.mentioned, 1);
+  assert.equal(records[0].metrics.timeMentioned, true);
+  assert.equal(env.elements["news-progress-text"].textContent, "1 / 18");
+  assert.equal(env.elements["nav-news-count"].textContent, "1/18");
+  assert.ok(findByClass(env.elements["news-turns"], "check").length > 0);
+
+  await env.click("nav-summary");
+  assert.equal(env.elements["view-summary"].hidden, false);
+  assert.equal(env.elements.composer.hidden, true);
+  assert.match(env.elements["summary-root"].textContent, /1 \/ 18/);
+});
+
+test("news briefing runs through Agent while GPT-Live is applied", async () => {
+  const env = await createHarness();
+  env.changeVoiceOption("connection_mode", "gpt_live");
+  await env.click("voice-options-apply");
+  await env.click("nav-news");
+  assert.equal(env.elements["command-input"].disabled, false);
+  assert.equal(env.elements["composer-note"].hidden, false);
+  assert.match(env.elements["applied-mode"].textContent, /^적용 중: Agent 연결 · /);
+  await env.submit("오늘 경제 뉴스 3개 알려줘");
+  assert.equal(env.sockets.length, 1);
+  env.sockets[0].open();
+  const start = JSON.parse(env.sockets[0].sent[0]);
+  assert.deepEqual(start.voice_options, {});
+  assert.ok(start.news);
+  assert.equal(classText(env.elements["news-turns"], "turn-scenario"), "② 분야별 뉴스 · 문항 1");
+});
+
+test("scenario runner asks each question on a fresh connection and stops on request", async () => {
+  const env = await createHarness({ storage: { "voice-poc.news.v1": "not json" } });
+  await env.click("nav-news");
+  assert.equal(env.elements["news-progress-text"].textContent, "0 / 18");
+  await env.click("news-run");
+  assert.equal(env.sockets.length, 1);
+  assert.equal(env.elements["news-run"].disabled, true);
+  env.sockets[0].open();
+  env.sockets[0].event({ type: "status", state: "ready" });
+  assert.equal(sentMessages(env.sockets[0]).at(-1).text, "오늘 주요 뉴스 브리핑해줘");
+  assert.match(env.elements.status.textContent, /시나리오 실행 1\/3/);
+
+  completeResponse(env.sockets[0], "r1", "첫 브리핑");
+  await env.advance(800);
+  assert.equal(env.sockets[0].closed, true);
+  assert.equal(env.sockets.length, 2);
+  env.sockets[1].open();
+  env.sockets[1].event({ type: "status", state: "ready" });
+  assert.equal(sentMessages(env.sockets[1]).at(-1).text, "아침 뉴스 1분 요약해줘");
+
+  await env.click("stop");
+  assert.equal(env.elements.status.textContent, "시나리오 실행을 중지했습니다.");
+  assert.equal(env.sockets[1].closed, true);
+  await env.advance(5000);
+  assert.equal(env.sockets.length, 2);
+  assert.equal(env.elements["news-run"].disabled, false);
+});
+
+test("running every scenario asks for confirmation first", async () => {
+  const env = await createHarness({ confirm: false });
+  await env.click("nav-news");
+  await env.click("news-run-all");
+  assert.equal(env.confirmations.length, 1);
+  assert.match(env.confirmations[0], /질문 18개/);
+  assert.equal(env.sockets.length, 0);
 });

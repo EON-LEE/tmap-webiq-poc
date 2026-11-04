@@ -32,6 +32,9 @@ param location string = resourceGroup().location
 param names resourceNames
 param model modelDeployment
 
+@description('Optional GPT-Live deployment on the same Foundry account. An empty name skips it.')
+param liveModel modelDeployment = { name: '', version: '', sku: 'GlobalStandard', capacity: 1 }
+
 @description('Object ID of the identity running the deployment. It gets Foundry User on the project to register agents.')
 param deployerPrincipalId string
 
@@ -63,6 +66,7 @@ var azureCliAppId = '04b07795-8ddb-461a-bbee-02f9e1bf7b46'
 var webiqConnectionName = 'webiq-mcp'
 var signInSecretName = 'aad-client-secret'
 var projectEndpoint = 'https://${names.account}.services.ai.azure.com/api/projects/${names.project}'
+var liveEnabled = !empty(liveModel.name)
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: names.workspace
@@ -136,6 +140,25 @@ resource modelDeploymentResource 'Microsoft.CognitiveServices/accounts/deploymen
   dependsOn: [project]
 }
 
+resource liveDeploymentResource 'Microsoft.CognitiveServices/accounts/deployments@2025-06-01' = if (liveEnabled) {
+  parent: account
+  name: liveEnabled ? liveModel.name : 'gpt-live-disabled'
+  sku: {
+    name: liveModel.sku
+    capacity: liveModel.capacity
+  }
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: liveModel.name
+      version: liveModel.version
+    }
+    versionUpgradeOption: 'OnceNewDefaultVersionAvailable'
+    raiPolicyName: 'Microsoft.DefaultV2'
+  }
+  dependsOn: [modelDeploymentResource]
+}
+
 #disable-next-line BCP081
 resource bing 'Microsoft.Bing/accounts@2020-06-10' = {
   name: names.bing
@@ -162,7 +185,7 @@ resource bingConnection 'Microsoft.CognitiveServices/accounts/projects/connectio
       ResourceId: bing.id
     }
   }
-  dependsOn: [modelDeploymentResource]
+  dependsOn: [modelDeploymentResource, liveDeploymentResource]
 }
 
 resource appEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' = {
@@ -271,7 +294,7 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = if (deployApp) {
             cpu: json('1.0')
             memory: '2Gi'
           }
-          env: [
+          env: concat([
             { name: 'POC_AUTH_MODE', value: 'managed_identity' }
             { name: 'AZURE_CLIENT_ID', value: identity.properties.clientId }
             { name: 'FOUNDRY_PROJECT_ENDPOINT', value: projectEndpoint }
@@ -285,7 +308,10 @@ resource app 'Microsoft.App/containerApps@2024-03-01' = if (deployApp) {
             { name: 'POC_WEB_SEARCH_TOOLBOX', value: webSearchToolbox }
             { name: 'POC_ALLOWED_ORIGINS', value: appUrl }
             { name: 'POC_TRACE_EXPORTER', value: 'none' }
-          ]
+          ], liveEnabled ? [
+            { name: 'POC_LIVE_ENDPOINT', value: 'https://${names.account}.openai.azure.com' }
+            { name: 'POC_LIVE_DEPLOYMENT', value: liveModel.name }
+          ] : [])
         }
       ]
       scale: {

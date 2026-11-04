@@ -1,5 +1,6 @@
 import asyncio
 from contextlib import asynccontextmanager, redirect_stdout
+from dataclasses import replace
 import io
 import json
 import os
@@ -15,6 +16,7 @@ from starlette.websockets import WebSocketDisconnect
 from voice_poc.agents import AgentReference, SEARCH_AGENT_INSTRUCTIONS, agent_definition
 from voice_poc.api import create_app
 from voice_poc.cli import prepare_agents
+from voice_poc.news import NEWS_DEFAULTS
 from voice_poc.settings import AppSettings, ConfigError
 from voice_poc.voice_options import VoiceOptionsError
 from voice_poc.voice import (
@@ -217,6 +219,100 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(calls[0]["transcription_model"], "mai-transcribe")
         self.assertEqual(calls[0]["speech_rate"], 1.25)
         self.assertFalse(calls[0]["interrupt_response"])
+
+    def test_config_reports_gpt_live_readiness_without_endpoints(self):
+        with TestClient(create_app(settings())) as client:
+            missing = client.get("/api/config").json()
+        with TestClient(create_app(replace(
+            settings(), live_endpoint="https://live.example.invalid", live_deployment="gpt-live-1",
+        ))) as client:
+            ready = client.get("/api/config").json()
+        self.assertEqual(missing["live"], {
+            "configured": False, "deployment": None,
+            "errors": ["GPT-Live 배포가 설정되지 않았습니다. POC_LIVE_ENDPOINT와 POC_LIVE_DEPLOYMENT를 확인하세요."],
+        })
+        self.assertEqual(missing["errors"], [])
+        self.assertEqual(ready["live"], {"configured": True, "deployment": "gpt-live-1", "errors": []})
+        self.assertNotIn("live.example.invalid", json.dumps(ready))
+        modes = next(field for field in ready["voice_options"]["fields"] if field["key"] == "connection_mode")
+        self.assertIn("gpt_live", [option["value"] for option in modes["options"]])
+
+    def test_gpt_live_start_uses_the_live_session_with_news(self):
+        calls = []
+
+        def voice_factory(*args, **kwargs):
+            raise AssertionError("Voice Live must not start in gpt_live mode")
+
+        class FakeLive:
+            def __init__(self, config, provider, context, *, voice_options, news=None):
+                calls.append({"provider": provider, "context": context, "options": voice_options, "news": news})
+                self.session_id = "live-session"
+
+            async def run(self, socket):
+                await socket.send_json({"type": "status", "state": "ready", "connection_mode": "gpt_live"})
+                return "stopped"
+
+        config = replace(settings(), live_endpoint="https://live.example.invalid", live_deployment="gpt-live-1")
+        with TestClient(create_app(config, voice_factory=voice_factory, live_factory=FakeLive)) as client:
+            with client.websocket_connect("/ws/voice", headers={"origin": "http://localhost:8000"}) as ws:
+                ws.send_json({
+                    "type": "start", "provider": "webiq", "context": "arrival 20:10", "news": {"count": 3},
+                    "voice_options": {"connection_mode": "gpt_live", "live_voice": "marin"},
+                })
+                self.assertEqual(ws.receive_json()["state"], "connecting")
+                self.assertEqual(ws.receive_json()["connection_mode"], "gpt_live")
+                done = ws.receive_json()
+        self.assertEqual(done, {"type": "done", "reason": "stopped", "provider": "webiq", "session_id": "live-session"})
+        self.assertEqual(len(calls), 1)
+        self.assertEqual((calls[0]["provider"], calls[0]["context"]), ("webiq", "arrival 20:10"))
+        self.assertEqual((calls[0]["options"]["connection_mode"], calls[0]["options"]["live_voice"]), ("gpt_live", "marin"))
+        self.assertEqual(calls[0]["news"], {**NEWS_DEFAULTS, "count": 3})
+
+    def test_gpt_live_requires_its_deployment_and_voice_live_values_stay_fixed(self):
+        def unused(*args, **kwargs):
+            raise AssertionError("no session should start")
+
+        with TestClient(create_app(settings(), voice_factory=unused, live_factory=unused)) as client:
+            with client.websocket_connect("/ws/voice", headers={"origin": "http://localhost:8000"}) as ws:
+                ws.send_json({"type": "start", "provider": "bing", "voice_options": {"connection_mode": "gpt_live"}})
+                missing = ws.receive_json()
+            with client.websocket_connect("/ws/voice", headers={"origin": "http://localhost:8000"}) as ws:
+                ws.send_json({"type": "start", "provider": "bing", "voice_options": {
+                    "connection_mode": "gpt_live", "speech_rate": 1.25,
+                }})
+                fixed = ws.receive_json()
+        self.assertEqual((missing["type"], missing["code"], missing["terminal"]), ("error", "ConfigError", True))
+        self.assertIn("POC_LIVE_ENDPOINT", missing["message"])
+        self.assertEqual((fixed["code"], fixed["terminal"]), ("VoiceOptionsError", True))
+
+    def test_news_reaches_the_voice_session_and_is_webiq_only(self):
+        calls = []
+
+        class FakeSession:
+            def __init__(self, config, provider, context, *, news):
+                calls.append(news)
+
+            async def run(self, socket):
+                return "stopped"
+
+        with TestClient(create_app(settings(), voice_factory=FakeSession)) as client:
+            with client.websocket_connect("/ws/voice", headers={"origin": "http://localhost:8000"}) as ws:
+                ws.send_json({"type": "start", "provider": "webiq", "news": {"freshness": "week"}})
+                self.assertEqual(ws.receive_json()["state"], "connecting")
+                self.assertEqual(ws.receive_json()["type"], "done")
+            errors = []
+            for start in (
+                {"type": "start", "provider": "bing", "news": {}},
+                {"type": "start", "provider": "webiq", "news": {"count": 4}},
+            ):
+                with client.websocket_connect("/ws/voice", headers={"origin": "http://localhost:8000"}) as ws:
+                    ws.send_json(start)
+                    errors.append(ws.receive_json())
+        self.assertEqual(calls, [{**NEWS_DEFAULTS, "freshness": "week"}])
+        self.assertEqual([(error["code"], error["terminal"]) for error in errors], [
+            ("news_requires_webiq", True), ("invalid_news_options", True),
+        ])
+        self.assertEqual(errors[0]["message"], "뉴스 브리핑은 WebIQ로만 실행합니다.")
 
 
 class VoiceEventsTests(unittest.IsolatedAsyncioTestCase):

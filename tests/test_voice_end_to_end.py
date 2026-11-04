@@ -35,13 +35,14 @@ class EndToEndOptionsTests(unittest.TestCase):
     def test_schema_declares_public_mode_contract(self):
         schema = option_schema(DEFAULT_VOICE)
         modes = [(option["value"], option["label"], option["help"]) for option in schema["fields"][0]["options"]]
-        self.assertEqual([mode[0] for mode in modes], ["agent", END_TO_END])
+        self.assertEqual([mode[0] for mode in modes], ["agent", END_TO_END, "gpt_live"])
         self.assertEqual(modes[0][1], "Agent 연결")
         self.assertEqual(modes[1][1], "End-to-end")
+        self.assertEqual(modes[2][1], "GPT-Live")
         self.assertIn("WebIQ는 모델이 MCP로 직접 검색", modes[1][2])
         self.assertIn("Foundry Toolbox 웹 검색(없으면 Bing Agent)", modes[1][2])
-        self.assertEqual(schema["supported_modes"], ["agent", END_TO_END])
-        self.assertEqual(set(schema["defaults_by_mode"]), {"agent", END_TO_END})
+        self.assertEqual(schema["supported_modes"], ["agent", END_TO_END, "gpt_live"])
+        self.assertEqual(set(schema["defaults_by_mode"]), {"agent", END_TO_END, "gpt_live"})
         self.assertNotIn("llm_model", [field["key"] for field in schema["fields"]])
 
     def test_end_to_end_builder_supports_mcp_without_exposing_header_in_safe_repr(self):

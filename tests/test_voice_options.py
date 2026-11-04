@@ -17,6 +17,7 @@ from voice_poc.voice_options import (
     VoiceOptionsError,
     build_agent_session,
     build_end_to_end_session,
+    build_live_session,
     option_schema,
     validate_options,
 )
@@ -37,6 +38,8 @@ class VoiceOptionsTests(unittest.TestCase):
         chosen = validate_options(values or {}, default_voice)
         if chosen["connection_mode"] == "end_to_end":
             return build_end_to_end_session(chosen, AGENT_CONFIG).as_dict()
+        if chosen["connection_mode"] == "gpt_live":
+            return build_live_session(chosen, deployment="gpt-live-1")
         return build_agent_session(chosen).as_dict()
 
     def test_defaults_match_previous_actual_sdk_payload_exactly(self):
@@ -99,7 +102,7 @@ class VoiceOptionsTests(unittest.TestCase):
         schema["fields"][0]["options"].clear()
         schema["defaults"]["transcription_model"] = "changed"
         self.assertEqual(validate_options({}, DEFAULT_VOICE)["transcription_model"], "azure-speech")
-        self.assertEqual(len(option_schema(DEFAULT_VOICE)["fields"][0]["options"]), 2)
+        self.assertEqual(len(option_schema(DEFAULT_VOICE)["fields"][0]["options"]), 3)
 
     def test_arbitrary_server_configured_default_voice_is_preserved(self):
         configured = "en-GB-ServerConfiguredNeural"

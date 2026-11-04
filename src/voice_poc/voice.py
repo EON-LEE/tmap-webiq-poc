@@ -26,11 +26,12 @@ from starlette.websockets import WebSocketDisconnect
 
 from voice_poc.agents import PROVIDER_LABELS
 from voice_poc.citations import citation_links
+from voice_poc.news import NewsOptionsError, news_rules, validate_news
 from voice_poc.settings import ConfigError
 from voice_poc.telemetry import foundry_response_link, span, trace_headers
 from voice_poc.tool_calls import ToolLifecycle
 from voice_poc.voice_options import (
-    FOLLOWUP_INSTRUCTIONS, build_agent_session, build_end_to_end_session,
+    FOLLOWUP_INSTRUCTIONS, VoiceOptionsError, build_agent_session, build_end_to_end_session,
     build_end_to_end_web_search_session, validate_options,
 )
 
@@ -130,7 +131,9 @@ def _flow_session(session):
 
 
 class VoiceProtocolError(ValueError):
-    pass
+    def __init__(self, message, *, code=None):
+        super().__init__(message)
+        self.code = code
 
 
 class VoiceServiceError(RuntimeError):
@@ -159,7 +162,7 @@ def parse_control(text):
         raise VoiceProtocolError("메시지는 JSON 객체여야 합니다.")
     kind = data.get("type")
     fields = {
-        "start": {"type", "provider", "context", "voice_options"},
+        "start": {"type", "provider", "context", "voice_options", "news"},
         "text": {"type", "text"},
         "stop": {"type"},
     }
@@ -173,6 +176,13 @@ def parse_control(text):
             raise VoiceProtocolError("앱 맥락은 4,000자 이내여야 합니다.")
         if "voice_options" in data and not isinstance(data["voice_options"], dict):
             raise VoiceProtocolError("voice_options는 JSON 객체여야 합니다.")
+        if "news" in data:
+            try:
+                data["news"] = validate_news(data["news"])
+            except NewsOptionsError as exc:
+                raise VoiceProtocolError(str(exc), code="invalid_news_options") from exc
+            if data["news"] is not None and data["provider"] != "webiq":
+                raise VoiceProtocolError("뉴스 브리핑은 WebIQ로만 실행합니다.", code="news_requires_webiq")
     if kind == "text":
         prompt = data.get("text")
         if not isinstance(prompt, str) or not prompt.strip() or len(prompt) > MAX_TEXT:
@@ -180,12 +190,14 @@ def parse_control(text):
     return data
 
 
-def context_message(context, at=None):
+def context_message(context, at=None, news=None):
     at = at or datetime.now(ZoneInfo("Asia/Seoul")).isoformat(timespec="seconds")
+    rules = news_rules(news)
     return (
         f"대화 기준시각: {at}\n"
         f"앱에서 전달한 맥락:\n{context or '별도 앱 맥락 없음'}\n"
-        "이 메시지 자체에는 답하지 말고 다음 사용자 질문을 해석할 때 참고하세요."
+        + (rules + "\n" if rules else "")
+        + "이 메시지 자체에는 답하지 말고 다음 사용자 질문을 해석할 때 참고하세요."
     )
 
 
@@ -241,13 +253,20 @@ async def open_connection(settings, agent, *, voice_options=None, credential=Non
 
 
 class VoiceSession:
-    def __init__(self, settings, provider, context="", *, connector=open_connection, voice_options=None):
+    def __init__(
+        self, settings, provider, context="", *, connector=open_connection, voice_options=None, news=None,
+    ):
         self.options = validate_options({} if voice_options is None else voice_options, settings.voice_name)
+        if self.options["connection_mode"] == "gpt_live":
+            raise VoiceOptionsError("GPT-Live는 별도 세션으로 실행합니다.")
         settings.require(provider)
         self.settings = settings
         self.provider = provider
         self.agent = settings.agents.get(provider)
         self.context = context
+        self.news = validate_news(news)
+        if self.news is not None and provider != "webiq":
+            raise VoiceProtocolError("뉴스 브리핑은 WebIQ로만 실행합니다.", code="news_requires_webiq")
         self.response_generation = 0
         self.connector = connector
         self.ready = asyncio.Event()
@@ -807,7 +826,7 @@ class VoiceSession:
             )
         if kind == "session.updated" and not self.context_sent:
             self.context_sent = True
-            context = context_message(self.context)
+            context = context_message(self.context, news=self.news)
             await connection.conversation.item.create(item=MessageItem(
                 id=self.context_id, role="user",
                 content=[InputTextContentPart(text=context)],

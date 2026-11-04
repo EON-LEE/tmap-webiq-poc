@@ -7,6 +7,7 @@ the Entra sign-in app, the Container App with sign-in required, and a health che
 Running it again converges to the same environment. The WebIQ key and the sign-in client
 secret stay in memory and travel only in HTTPS request bodies, never in command lines or output.
 --destroy removes the environment again (plan by default; --apply deletes after a typed confirmation).
+--with-gpt-live also deploys gpt-live-1 on the same Foundry account for the GPT-Live mode (opt-in).
 """
 
 from __future__ import annotations
@@ -48,6 +49,8 @@ WEBIQ_CONNECTION = "webiq-mcp"
 AGENT_NAMES = {"bing": "voice-poc-bing", "webiq": "voice-poc-webiq"}
 WEB_SEARCH_TOOLBOX = "voice-poc-web-search"
 WEB_SEARCH_TOOLS = [{"type": "web_search", "user_location": {"type": "approximate", "country": "KR"}}]
+LIVE_MODEL = {"name": "gpt-live-1", "version": "2026-09-10", "sku": "GlobalStandard"}
+LIVE_REGIONS = ("eastus2", "swedencentral")
 TAGS = {"workload": "webiq-vs-bing-voice-poc", "environment": "poc"}
 RESOURCE_PROVIDERS = (
     "Microsoft.App", "Microsoft.Bing", "Microsoft.CognitiveServices",
@@ -127,7 +130,7 @@ class Context:
     model: dict
     deployer_id: str
     deployer_type: str
-
+    live_model: dict | None = None
     @property
     def group_path(self):
         return f"/subscriptions/{self.subscription_id}/resourceGroups/{self.resource_group}"
@@ -255,6 +258,14 @@ class Azure:
 
 
 def resolve(azure, args):
+    live_model = None
+    if args.with_gpt_live:
+        if args.location.lower() not in LIVE_REGIONS:
+            raise ProvisionError(
+                f"{LIVE_MODEL['name']} is available only in {' and '.join(LIVE_REGIONS)}; "
+                f"use --location {LIVE_REGIONS[0]} or drop --with-gpt-live."
+            )
+        live_model = {**LIVE_MODEL, "capacity": args.live_capacity}
     account = azure.az_json("account", "show", "--subscription", args.subscription)
     azure.subscription = account["id"]
     user = account.get("user") or {}
@@ -270,7 +281,7 @@ def resolve(azure, args):
     }
     names = Names.derive(account["id"], args.resource_group, args.name)
     return Context(account["id"], account.get("name", ""), args.resource_group, args.location,
-                   names, model, deployer, kind)
+                   names, model, deployer, kind, live_model)
 
 
 def missing_providers(azure, ctx):
@@ -302,18 +313,19 @@ def group_exists(azure, ctx):
     return status == 200
 
 
-def available_quota(azure, ctx):
+def available_quota(azure, ctx, model=None):
     """Capacity this environment can use, counting what its own deployment already holds."""
+    model = model or ctx.model
     _, usages, _ = azure.arm(
         "GET", f"/subscriptions/{ctx.subscription_id}/providers/Microsoft.CognitiveServices/locations/{ctx.location}/usages",
         API_USAGES,
     )
-    key = f"OpenAI.{ctx.model['sku']}.{ctx.model['name']}"
+    key = f"OpenAI.{model['sku']}.{model['name']}"
     usage = next((item for item in usages.get("value", []) if item.get("name", {}).get("value") == key), None)
     if usage is None:
         return None
     status, deployment, _ = azure.arm(
-        "GET", f"{ctx.account_path}/deployments/{ctx.model['name']}", API_FOUNDRY, allow=(404,),
+        "GET", f"{ctx.account_path}/deployments/{model['name']}", API_FOUNDRY, allow=(404,),
     )
     held = deployment.get("sku", {}).get("capacity", 0) if status == 200 else 0
     return int(usage["limit"] - usage["currentValue"] + held)
@@ -326,6 +338,7 @@ def compile_template(azure):
 def parameters(ctx, **application):
     values = {
         "location": ctx.location, "names": ctx.names.template_value(), "model": ctx.model,
+        **({"liveModel": ctx.live_model} if ctx.live_model else {}),
         "deployerPrincipalId": ctx.deployer_id, "deployerPrincipalType": ctx.deployer_type,
         **application,
     }
@@ -652,6 +665,9 @@ def describe(ctx, out):
     out(f"Container App: {names.app} (environment {names.environment}, identity {names.identity})")
     out(f"Foundry: account {names.account}, project {names.project}, "
         f"model {model['name']} {model['version']} {model['sku']} x{model['capacity']}")
+    live = ctx.live_model
+    out(f"GPT-Live: {live['name']} {live['version']} {live['sku']} x{live['capacity']} on the same account"
+        if live else "GPT-Live: not deployed (add --with-gpt-live to deploy gpt-live-1)")
     out(f"Grounding with Bing: {names.bing}; registry: {names.registry}; logs: {names.workspace}")
     out(f"Sign-in app: {names.sign_in}; agents: {', '.join(AGENT_NAMES.values())}")
 
@@ -668,6 +684,13 @@ def plan(azure, ctx, template, out):
     else:
         verdict = "enough" if quota >= ctx.model["capacity"] else "NOT enough; lower --model-capacity or pick another model"
         out(f"Model quota: {quota} available, {ctx.model['capacity']} requested ({verdict}).")
+    if ctx.live_model:
+        quota = available_quota(azure, ctx, ctx.live_model)
+        if quota is None:
+            out("GPT-Live quota: unknown for gpt-live-1 in this region.")
+        else:
+            verdict = "enough" if quota >= ctx.live_model["capacity"] else "NOT enough; lower --live-capacity"
+            out(f"GPT-Live quota: {quota} available, {ctx.live_model['capacity']} requested ({verdict}).")
     source = "WEBIQ_API_KEY" if os.environ.get("WEBIQ_API_KEY", "").strip() else "a hidden prompt, or keep the existing connection"
     out(f"WebIQ key: {source}.")
     if group_exists(azure, ctx):
@@ -691,6 +714,13 @@ def apply(azure, ctx, template, args, out):
             f"Only {quota} {ctx.model['sku']} capacity is available for {ctx.model['name']} in {ctx.location}; "
             f"{ctx.model['capacity']} was requested. Lower --model-capacity or pick another model."
         )
+    if ctx.live_model:
+        quota = available_quota(azure, ctx, ctx.live_model)
+        if quota is not None and quota < ctx.live_model["capacity"]:
+            raise ProvisionError(
+                f"Only {quota} {ctx.live_model['sku']} capacity is available for {ctx.live_model['name']} in "
+                f"{ctx.location}; {ctx.live_model['capacity']} was requested. Lower --live-capacity."
+            )
     describe(ctx, out)
     total = len(STEPS)
 
@@ -732,6 +762,10 @@ def apply(azure, ctx, template, args, out):
     check_sign_in(azure, outputs["appUrl"])
     out(f"Ready: {outputs['appUrl']} (Microsoft Entra sign-in required)")
     out("For local development, put these in .env (no secrets):")
+    live = [
+        f"POC_LIVE_ENDPOINT=https://{ctx.names.account}.openai.azure.com",
+        f"POC_LIVE_DEPLOYMENT={ctx.live_model['name']}",
+    ] if ctx.live_model else []
     for line in (
         "POC_AUTH_MODE=cli",
         f"POC_AZ_SUBSCRIPTION={ctx.subscription_id}",
@@ -745,6 +779,7 @@ def apply(azure, ctx, template, args, out):
         f"POC_WEBIQ_AGENT_NAME={agents['webiq']['name']}",
         f"POC_WEBIQ_AGENT_VERSION={agents['webiq']['version']}",
         f"POC_WEB_SEARCH_TOOLBOX={WEB_SEARCH_TOOLBOX}",
+        *live,
     ):
         out(f"  {line}")
 
@@ -870,12 +905,18 @@ def parser():
     result.add_argument("--model-version", default="2026-09-22")
     result.add_argument("--model-sku", default="GlobalStandard")
     result.add_argument("--model-capacity", type=int, default=250, help="Thousands of tokens per minute.")
+    result.add_argument("--with-gpt-live", action="store_true",
+                        help="Also deploy gpt-live-1 on the same Foundry account for the GPT-Live mode "
+                             f"(opt-in; only in {' or '.join(LIVE_REGIONS)}).")
+    result.add_argument("--live-capacity", type=int, default=1,
+                        help="Capacity for the gpt-live-1 deployment with --with-gpt-live (default: 1).")
     result.add_argument("--image", help="Use this image instead of building one (registry/repository:tag).")
     result.add_argument("--new-sign-in-secret", action="store_true",
                         help="Create a new sign-in client secret (valid one year) instead of reusing the current one.")
     result.add_argument("--apply", action="store_true", help="Create or update resources. Without it only read.")
     result.add_argument("--destroy", action="store_true",
-                        help="Delete the environment: the resource group, its Foundry accounts (purged) and the "
+                        help="Delete the environment: the resource group, its Foundry accounts (purged, which also "
+                             "removes their model deployments, including gpt-live-1) and the "
                              "Entra sign-in app. Without --apply only lists what would be deleted.")
     result.add_argument("--yes", action="store_true", help="With --destroy --apply, skip the typed confirmation.")
     return result
